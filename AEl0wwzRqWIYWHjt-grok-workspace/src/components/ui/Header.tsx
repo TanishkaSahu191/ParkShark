@@ -1,5 +1,5 @@
 import React from "react";
-import { Moon, Sun, Bike, User, LogOut } from "lucide-react";
+import { Moon, Sun, Bike, User, LogOut, QrCode } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useUIStore } from "@/store/useUIStore";
 import { useSessionStore } from "@/store/useSessionStore";
@@ -52,6 +52,16 @@ export const Header: React.FC<HeaderProps> = ({ onNavigateRoute }) => {
               <span>Stand {activeSession.standId}</span>
             </button>
           )}
+
+          {/* Admin QR Codes Link */}
+          <button
+            onClick={() => onNavigateRoute?.("/admin/qrcodes")}
+            title="Print Stand QR Codes"
+            aria-label="Print Stand QR Codes"
+            className="p-2 rounded-xl text-slate-300 hover:text-sky-300 hover:bg-white/10 transition-colors"
+          >
+            <QrCode className="size-4.5" />
+          </button>
 
           {/* Theme Toggle Button */}
           <button
