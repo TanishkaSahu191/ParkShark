@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
 import {
-  Navigation as NavIcon,
   QrCode,
   MapPin,
   X,
@@ -45,7 +44,6 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
 
   // Live navigation telemetry
   const [distance, setDistance] = useState(0);
-  const [bearingAngle, setBearingAngle] = useState(0);
 
   // Set navigating stand ID on mount and cleanup on unmount
   useEffect(() => {
@@ -55,7 +53,7 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
     };
   }, [standId, setNavigatingStandId]);
 
-  // Live telemetry loop (distance and heading updated directly from sim state)
+  // Live telemetry loop (distance updated directly from sim state)
   useEffect(() => {
     if (!stand) return;
 
@@ -64,12 +62,6 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
       const dz = stand.position.z - sim.z;
       const d = Math.hypot(dx, dz) * METRES_PER_WORLD_UNIT;
       setDistance(Math.round(d * 10) / 10);
-
-      // Relative heading angle to target from camera/avatar yaw
-      // In 3D campus: Forward is -Z, Right is +X
-      const targetAngle = Math.atan2(dx, -dz);
-      const relativeAngle = targetAngle - sim.yaw;
-      setBearingAngle(relativeAngle * (180 / Math.PI));
     };
 
     updateNav();
@@ -256,30 +248,6 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
         )}
       </div>
 
-      {/* 2. Center Dynamic Compass & Heading Pointer */}
-      <div className="pointer-events-none flex flex-col items-center justify-center my-auto select-none">
-        <div className="size-24 rounded-full bg-slate-900/50 backdrop-blur-md border border-white/25 flex items-center justify-center relative shadow-2xl">
-          {/* Compass bearing pointer */}
-          <div
-            style={{ transform: `rotate(${bearingAngle}deg)` }}
-            className="transition-transform duration-75 ease-out flex flex-col items-center"
-          >
-            <NavIcon className="size-10 text-sky-400 fill-current drop-shadow-lg" />
-          </div>
-
-          {/* Pulse ring when close */}
-          {hasArrived && (
-            <div className="absolute inset-0 rounded-full border-2 border-emerald-400 animate-ping opacity-60" />
-          )}
-
-          <span className="absolute bottom-1.5 text-[9px] font-bold text-white/90 uppercase font-mono">
-            {distance.toFixed(1)}m
-          </span>
-        </div>
-        <p className="mt-2 text-[11px] font-semibold text-white drop-shadow bg-black/60 px-3 py-0.5 rounded-full backdrop-blur-sm">
-          {hasArrived ? "Rack reached!" : "Follow glowing arrows in 3D"}
-        </p>
-      </div>
 
       {/* 3. Bottom Action Card & Arrival Confirmation */}
       <div className="pointer-events-auto max-w-lg w-full mx-auto space-y-2 mb-16 sm:mb-2">
