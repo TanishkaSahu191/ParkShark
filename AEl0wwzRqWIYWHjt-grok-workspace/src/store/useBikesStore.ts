@@ -19,11 +19,13 @@ interface BikesState {
   stands: Stand[];
   selectedStandId: string | null;
   hoveredStandId: string | null;
+  navigatingStandId: string | null;
   playerPosition: { x: number; z: number };
 
   setStands: (stands: Stand[]) => void;
   selectStand: (id: string | null) => void;
   setHoveredStand: (id: string | null) => void;
+  setNavigatingStandId: (id: string | null) => void;
   setPlayerPosition: (x: number, z: number) => void;
   updateStandStatus: (id: string, status: StandStatus) => void;
 
@@ -37,6 +39,7 @@ export const useBikesStore = create<BikesState>((set, get) => ({
   stands: INITIAL_STANDS,
   selectedStandId: null,
   hoveredStandId: null,
+  navigatingStandId: null,
   playerPosition: { x: 0, z: 80 }, // Initial spawn area near campus center
 
   setStands: (stands) => set({ stands }),
@@ -44,6 +47,8 @@ export const useBikesStore = create<BikesState>((set, get) => ({
   selectStand: (id) => set({ selectedStandId: id }),
 
   setHoveredStand: (id) => set({ hoveredStandId: id }),
+
+  setNavigatingStandId: (id) => set({ navigatingStandId: id }),
 
   setPlayerPosition: (x, z) =>
     set((state) => {
