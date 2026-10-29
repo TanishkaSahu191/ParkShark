@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Source Sans 3", "Segoe UI", sans-serif;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+  --color-ink: #142033;
+  --color-paper: #f4efe4;
+  --color-navy: #0b2a4a;
+  --color-gold: #d4a017;
+  --color-line: #c5d0de;
+  --color-primary-blue: #1d4ed8;
+  --color-available: #16a34a;
+  --color-occupied: #dc2626;
+  --color-maintenance: #6b7280;
+  --radius: 0.75rem;
+}
+
+:root {
+  --bg-app: #f8fafc;
+  --bg-surface: rgba(255, 255, 255, 0.88);
+  --bg-surface-solid: #ffffff;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --border-color: rgba(203, 213, 225, 0.8);
+  --header-bg: #0b2a4a;
+  --header-text: #f8fafc;
+  --tab-bg: rgba(255, 255, 255, 0.92);
+  --tab-border: #e2e8f0;
+  --accent-blue: #1d4ed8;
+  --status-available: #16a34a;
+  --status-occupied: #dc2626;
+  --status-maintenance: #6b7280;
+}
+
+.dark {
+  --bg-app: #08162b;
+  --bg-surface: rgba(11, 42, 74, 0.86);
+  --bg-surface-solid: #0d2847;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --border-color: rgba(51, 80, 115, 0.7);
+  --header-bg: #071c33;
+  --header-text: #f8fafc;
+  --tab-bg: rgba(11, 42, 74, 0.94);
+  --tab-border: rgba(51, 80, 115, 0.8);
+  --accent-blue: #2563eb;
+}
+
+@layer base {
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+    background: var(--bg-app);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+  }
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}
+
+/* Glassmorphism utility for modern UI */
+.glass-panel {
+  background: var(--bg-surface);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+}

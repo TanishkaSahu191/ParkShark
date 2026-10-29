@@ -3,6 +3,10 @@ node_modules/
 dist/
 build/
 .cache/
+.tanstack/
+.vercel/
+.grok/
+.node_modules.lock
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -13,6 +17,14 @@ yarn-error.log*
 .env.local
 .env.*.local
 *.env
+
+# Firebase & Emulators
+.firebase/
+firebase-debug.log*
+firestore-debug.log*
+ui-debug.log*
+functions/lib/
+.runtimeconfig.json
 
 # IDE & Editor files
 .vscode/

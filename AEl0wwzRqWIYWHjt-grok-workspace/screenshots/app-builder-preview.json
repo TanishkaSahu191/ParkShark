@@ -1,0 +1,36 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "VIT Campus Walk",
+      "hasCanvas": true,
+      "bodyTextLen": 287,
+      "bodyTextHash": "d11d3c54ae33b91cfcdd7069a877c99607a1a83c6f5694656d4c949c16bf3048",
+      "bodyTextPrefix": "Loading campus… VELLORE VIT Campus Walk Main Gate Places N Walk ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "VIT Campus Walk",
+      "hasCanvas": true,
+      "bodyTextLen": 285,
+      "bodyTextHash": "11318f9895f9ab4dc2a9c931c4163e64afc5cc8136d1128dccb01a7fe3dd59b7",
+      "bodyTextPrefix": "Loading campus… VELLORE VIT Campus Walk Main Gate Places Walk th",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}
