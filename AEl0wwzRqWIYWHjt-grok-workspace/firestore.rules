@@ -1,0 +1,53 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.role == 'admin' || 
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+    }
+
+    // User profile documents:
+    // Students can read and update their own document.
+    match /users/{userId} {
+      allow read: if isAuthenticated() && (isOwner(userId) || isAdmin());
+      allow create, update: if isAuthenticated() && (isOwner(userId) || isAdmin());
+      allow delete: if isAdmin();
+    }
+
+    // Bicycle parking stands:
+    // Anyone authenticated can read stands to see live availability in 3D scene / navigation.
+    // Only admins or backend Cloud Functions (admin SDK) can create/update stand status.
+    match /stands/{standId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // Active & completed sessions:
+    // Users can read only their own sessions.
+    // Writes (locking, unlocking, expiring) must go through secure Cloud Functions (Admin SDK).
+    match /sessions/{sessionId} {
+      allow read: if isAuthenticated() && (resource.data.uid == request.auth.uid || isAdmin());
+      allow write: if isAdmin();
+    }
+
+    // Activity log:
+    // Users can read only their own activity history.
+    // Writes are made by Cloud Functions upon session events.
+    match /activity/{activityId} {
+      allow read: if isAuthenticated() && (resource.data.uid == request.auth.uid || isAdmin());
+      allow write: if isAdmin();
+    }
+  }
+}
