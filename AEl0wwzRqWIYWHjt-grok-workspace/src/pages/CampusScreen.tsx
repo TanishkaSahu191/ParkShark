@@ -33,9 +33,26 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
     };
 
     updateNearest();
-    const interval = setInterval(updateNearest, 350);
+    const interval = setInterval(updateNearest, 250);
     return () => clearInterval(interval);
   }, [getNearestAvailableStand, playerPosition]);
+
+  // Requirement 1: Near a rack prompt (Press E to scan / Tap to scan)
+  const isNearRack = nearest && nearest.distance <= 2.5;
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.code === "KeyE" || e.key === "e" || e.key === "E") && isNearRack && nearest) {
+        // Avoid triggering if inside an input
+        const active = document.activeElement;
+        if (active && (active.tagName === "INPUT" || active.tagName === "TEXTAREA")) return;
+        e.preventDefault();
+        onNavigate(`/lock/${nearest.stand.id}`);
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isNearRack, nearest, onNavigate]);
 
   // Group stands by building with free counts (Requirement 4)
   const buildingSummaries = groupStandsByBuilding(stands);
@@ -125,6 +142,35 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
               </button>
             </div>
           </Card>
+        </div>
+      )}
+
+      {/* Requirement 1: Near a rack prompt (Press E to scan / Tap to scan) */}
+      {isNearRack && nearest && (
+        <div className="pointer-events-auto self-center max-w-sm w-full animate-bounce-short z-30">
+          <button
+            type="button"
+            onClick={() => onNavigate(`/lock/${nearest.stand.id}`)}
+            className="w-full flex items-center justify-between p-3 rounded-2xl bg-[#1d4ed8] hover:bg-blue-600 text-white shadow-2xl border-2 border-white/60 transition-all active:scale-95 group"
+          >
+            <div className="flex items-center gap-3">
+              <div className="size-9 rounded-xl bg-white/20 flex items-center justify-center font-black font-mono text-base border border-white/30 text-white">
+                E
+              </div>
+              <div className="text-left">
+                <div className="font-extrabold text-sm flex items-center gap-1.5 text-white">
+                  <span>Press E to scan / Tap to scan</span>
+                  <span className="text-[10px] bg-emerald-400 text-slate-900 font-bold px-1.5 py-0.5 rounded-full font-mono">
+                    Stand {nearest.stand.id}
+                  </span>
+                </div>
+                <div className="text-[11px] text-blue-100">
+                  {nearest.stand.building} Section &bull; {nearest.distance}m away
+                </div>
+              </div>
+            </div>
+            <QrCode className="size-5 shrink-0 text-white group-hover:scale-110 transition-transform" />
+          </button>
         </div>
       )}
 

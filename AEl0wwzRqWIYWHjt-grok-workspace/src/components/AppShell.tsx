@@ -16,6 +16,7 @@ import { LockScreen } from "@/pages/LockScreen";
 import { SessionScreen } from "@/pages/SessionScreen";
 import { UnlockScreen } from "@/pages/UnlockScreen";
 import { DashboardScreen } from "@/pages/DashboardScreen";
+import { AdminQrCodesScreen } from "@/pages/AdminQrCodesScreen";
 
 export const AppShellContent: React.FC = () => {
   const [mounted, setMounted] = useState(false);
@@ -85,6 +86,7 @@ export const AppShellContent: React.FC = () => {
   const isSessionRoute = currentPath === "/session";
   const isUnlockRoute = currentPath === "/unlock";
   const isDashboardRoute = currentPath === "/dashboard";
+  const isAdminQrRoute = currentPath === "/admin/qrcodes" || currentPath === "/admin/qr";
 
   // Sync navigating stand ID to bikes store for 3D path rendering
   useEffect(() => {
@@ -96,7 +98,8 @@ export const AppShellContent: React.FC = () => {
   }, [isNavigateRoute, navigateStandId]);
 
   // When viewing overlay screens over campus, apply subtle backdrop blur
-  const hasOverlayBackdrop = isDashboardRoute || isSessionRoute || isUnlockRoute || isLockRoute;
+  const hasOverlayBackdrop =
+    isDashboardRoute || isSessionRoute || isUnlockRoute || isLockRoute || isAdminQrRoute;
 
   return (
     <div className="relative h-dvh w-full overflow-hidden bg-[#08162b] text-slate-100 select-none flex flex-col font-sans">
@@ -168,6 +171,7 @@ export const AppShellContent: React.FC = () => {
             {isSessionRoute && <SessionScreen onNavigate={navigate} />}
             {isUnlockRoute && <UnlockScreen onNavigate={navigate} />}
             {isDashboardRoute && <DashboardScreen onNavigate={navigate} />}
+            {isAdminQrRoute && <AdminQrCodesScreen onNavigate={navigate} />}
           </>
         )}
       </main>
