@@ -3,6 +3,7 @@ import { BikeRacks } from "./BikeRacks";
 import { Player } from "./Player";
 import { Scenery } from "./Scenery";
 import { Structures } from "./Structures";
+import { NavigationPath } from "./NavigationPath";
 
 export function CampusScene() {
   return (
@@ -32,6 +33,7 @@ export function CampusScene() {
       <Scenery />
       <Structures />
       <BikeRacks />
+      <NavigationPath />
       <Player />
     </>
   );

@@ -8,6 +8,7 @@ import { BottomTabBar } from "@/components/ui/BottomTabBar";
 import { Toast } from "@/components/ui/Toast";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useBikesStore } from "@/store/useBikesStore";
 import { LoginScreen } from "@/pages/LoginScreen";
 import { CampusScreen } from "@/pages/CampusScreen";
 import { NavigationScreen } from "@/pages/NavigationScreen";
@@ -85,6 +86,15 @@ export const AppShellContent: React.FC = () => {
   const isUnlockRoute = currentPath === "/unlock";
   const isDashboardRoute = currentPath === "/dashboard";
 
+  // Sync navigating stand ID to bikes store for 3D path rendering
+  useEffect(() => {
+    if (isNavigateRoute && navigateStandId) {
+      useBikesStore.getState().setNavigatingStandId(navigateStandId);
+    } else {
+      useBikesStore.getState().setNavigatingStandId(null);
+    }
+  }, [isNavigateRoute, navigateStandId]);
+
   // When viewing overlay screens over campus, apply subtle backdrop blur
   const hasOverlayBackdrop = isDashboardRoute || isSessionRoute || isUnlockRoute || isLockRoute;
 
@@ -139,7 +149,11 @@ export const AppShellContent: React.FC = () => {
       <Toast />
 
       {/* 6. Dynamic Route Overlays */}
-      <main className="relative z-20 flex-1 overflow-y-auto pointer-events-auto">
+      <main
+        className={`relative z-20 flex-1 overflow-y-auto ${
+          isCampusRoute || isNavigateRoute ? "pointer-events-none" : "pointer-events-auto"
+        }`}
+      >
         {!isAuthenticated || isLoginRoute ? (
           <LoginScreen onNavigate={navigate} />
         ) : (

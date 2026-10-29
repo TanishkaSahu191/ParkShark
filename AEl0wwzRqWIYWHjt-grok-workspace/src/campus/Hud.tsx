@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { MapPin, X } from "lucide-react";
 import { sim } from "./sim";
 import { MAP_RECTS, PLACES, ROADS, SPAWN } from "./world";
+import { useBikesStore } from "@/store/useBikesStore";
 
 type Snap = { x: number; z: number; yaw: number; place: string; speed: number };
 
@@ -67,6 +68,38 @@ function MiniMap() {
         ctx.fillRect(cx - rw / 2, cy - rh / 2, rw, rh);
       }
       const [px, py] = project(sim.x, sim.z);
+
+      // Render active navigation route and destination beacon on minimap
+      const { navigatingStandId, getStandById } = useBikesStore.getState();
+      if (navigatingStandId) {
+        const targetStand = getStandById(navigatingStandId);
+        if (targetStand) {
+          const [tx, ty] = project(targetStand.position.x, targetStand.position.z);
+          ctx.save();
+          // Dashed guide line
+          ctx.strokeStyle = "#38bdf8";
+          ctx.lineWidth = 2;
+          ctx.setLineDash([4, 3]);
+          ctx.beginPath();
+          ctx.moveTo(px, py);
+          ctx.lineTo(tx, ty);
+          ctx.stroke();
+
+          // Pulsing target beacon marker
+          const pulse = (Math.sin(Date.now() / 180) + 1) / 2;
+          ctx.fillStyle = "#38bdf8";
+          ctx.beginPath();
+          ctx.arc(tx, ty, 3 + pulse * 2, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = "#ef4444";
+          ctx.beginPath();
+          ctx.arc(tx, ty, 2.5, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      }
+
       ctx.save();
       ctx.translate(px, py);
       ctx.rotate(-sim.yaw);
