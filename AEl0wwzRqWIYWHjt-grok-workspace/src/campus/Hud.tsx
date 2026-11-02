@@ -366,10 +366,15 @@ export function Hud() {
 
   return (
     <div className="pointer-events-none absolute inset-0 z-10">
-      <div className="pointer-events-auto absolute top-3 left-3 max-w-56 rounded-lg border border-line bg-navy/90 px-3 py-2 text-paper md:max-w-sm md:px-4 md:py-3 shadow-xl backdrop-blur-md">
-        <p className="text-xs tracking-wide text-gold uppercase">Vellore</p>
-        <h1 className="font-display text-xl leading-tight md:text-2xl">VIT Campus Walk</h1>
-        <p className="mt-1 text-sm text-paper/80">{snap.place}</p>
+      {/* Location / Current Area Chip (offset cleanly below sticky Header) */}
+      <div className="pointer-events-auto absolute top-3 left-3 rounded-2xl border border-slate-200/80 dark:border-slate-700/80 bg-white/95 dark:bg-slate-900/90 px-3.5 py-2 text-slate-900 dark:text-slate-100 shadow-xl backdrop-blur-md max-w-xs transition-colors">
+        <div className="flex items-center gap-1.5 text-[10px] font-bold tracking-wider text-sky-600 dark:text-sky-400 uppercase">
+          <MapPin className="size-3 text-sky-500 shrink-0" />
+          <span>VIT Campus Location</span>
+        </div>
+        <h2 className="font-display text-sm sm:text-base font-bold text-slate-900 dark:text-white leading-tight mt-0.5 truncate">
+          {snap.place}
+        </h2>
       </div>
 
       <div className="pointer-events-auto absolute top-3 right-3 flex flex-col items-end gap-2.5 z-20">

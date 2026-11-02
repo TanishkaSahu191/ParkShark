@@ -160,9 +160,9 @@ export const AppShellContent: React.FC = () => {
         </div>
       )}
 
-      {/* 2. Campus 2D Minimap & Compass HUD (rendered only on 3D view routes when authenticated) */}
+      {/* 2. Campus 2D Minimap & Compass HUD (rendered only on 3D view routes when authenticated, offset below top header and above bottom bar) */}
       {isAuthenticated && (isCampusRoute || isNavigateRoute) && (
-        <div className="pointer-events-none absolute inset-0 z-10">
+        <div className="pointer-events-none absolute inset-x-0 top-14 bottom-16 z-10">
           <Hud />
         </div>
       )}
