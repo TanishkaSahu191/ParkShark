@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from "react";
-import { MapPin, X } from "lucide-react";
-import { sim } from "./sim";
+import { MapPin, X, Flame } from "lucide-react";
+import { sim, resetCameraToNorth } from "./sim";
 import { MAP_RECTS, PLACES, ROADS, SPAWN } from "./world";
 import { useBikesStore } from "@/store/useBikesStore";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useUIStore } from "@/store/useUIStore";
 
 type Snap = { x: number; z: number; yaw: number; place: string; speed: number };
 
@@ -130,23 +132,133 @@ function MiniMap() {
 
 function Compass() {
   const needle = useRef<HTMLDivElement>(null);
+  const [heading, setHeading] = useState("N 0°");
+  const dragStart = useRef<{ x: number; y: number } | null>(null);
+  const moved = useRef(false);
+
   useEffect(() => {
     let frame = 0;
+    let lastDeg = -1;
     const tick = () => {
       if (needle.current) {
         needle.current.style.transform = `rotate(${sim.yaw}rad)`;
+      }
+      // Compute cardinal + degrees
+      const rawDeg = Math.round(((-sim.yaw * 180) / Math.PI) % 360);
+      const deg = rawDeg < 0 ? rawDeg + 360 : rawDeg;
+      if (Math.abs(deg - lastDeg) >= 2) {
+        lastDeg = deg;
+        let card = "N";
+        if (deg >= 338 || deg < 23) card = "N";
+        else if (deg >= 23 && deg < 68) card = "NE";
+        else if (deg >= 68 && deg < 113) card = "E";
+        else if (deg >= 113 && deg < 158) card = "SE";
+        else if (deg >= 158 && deg < 203) card = "S";
+        else if (deg >= 203 && deg < 248) card = "SW";
+        else if (deg >= 248 && deg < 293) card = "W";
+        else if (deg >= 293 && deg < 338) card = "NW";
+        setHeading(`${card} ${deg}°`);
       }
       frame = requestAnimationFrame(tick);
     };
     frame = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(frame);
   }, []);
+
+  const handlePointerDown = (e: React.PointerEvent<HTMLButtonElement>) => {
+    e.currentTarget.setPointerCapture(e.pointerId);
+    dragStart.current = { x: e.clientX, y: e.clientY };
+    moved.current = false;
+  };
+
+  const handlePointerMove = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (!dragStart.current) return;
+    const dx = e.clientX - dragStart.current.x;
+    const dy = e.clientY - dragStart.current.y;
+    if (Math.hypot(dx, dy) > 3) {
+      moved.current = true;
+      // Direct tactile camera rotation
+      sim.lookX += dx * 3.5;
+      dragStart.current = { x: e.clientX, y: e.clientY };
+    }
+  };
+
+  const handlePointerUp = (e: React.PointerEvent<HTMLButtonElement>) => {
+    if (!moved.current) {
+      // Clean click: smoothly reset to North!
+      resetCameraToNorth();
+    }
+    dragStart.current = null;
+    try {
+      e.currentTarget.releasePointerCapture(e.pointerId);
+    } catch {
+      // Ignore if pointer capture already lost
+    }
+  };
+
   return (
-    <div className="relative size-14 rounded-full border border-line bg-navy/90" aria-hidden="true">
-      <div ref={needle} className="absolute inset-0">
-        <span className="absolute left-1/2 top-1 -translate-x-1/2 text-xs font-semibold text-gold">N</span>
-        <span className="absolute left-1/2 top-3 h-5 w-0.5 -translate-x-1/2 bg-gold" />
-      </div>
+    <div className="flex flex-col items-center group pointer-events-auto select-none">
+      <button
+        type="button"
+        title="Campus Compass: Click to face North (N) • Drag to rotate camera"
+        aria-label="Campus Compass - Click to face North, drag to rotate camera"
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        className="relative size-14 sm:size-16 rounded-full border-2 border-sky-400/50 hover:border-sky-300 bg-slate-950/90 dark:bg-[#07192f]/95 shadow-xl shadow-black/50 backdrop-blur-md flex items-center justify-center cursor-pointer hover:scale-105 active:scale-95 transition-transform ring-1 ring-white/10 group-hover:ring-sky-400/40"
+      >
+        {/* Subtle cardinal markings on the dial */}
+        <span className="absolute top-1 text-[9px] font-black tracking-widest text-amber-400">N</span>
+        <span className="absolute right-1 text-[8px] font-bold text-slate-400">E</span>
+        <span className="absolute bottom-1 text-[8px] font-bold text-slate-400">S</span>
+        <span className="absolute left-1 text-[8px] font-bold text-slate-400">W</span>
+
+        {/* 45 degree tick marks ring */}
+        <div className="absolute inset-2 rounded-full border border-slate-700/40 pointer-events-none" />
+
+        {/* The rotating Needle */}
+        <div
+          ref={needle}
+          className="absolute inset-0 flex items-center justify-center pointer-events-none transition-transform duration-75"
+        >
+          <svg viewBox="0 0 56 56" className="size-full">
+            {/* North half needle (Red / Gold) */}
+            <polygon
+              points="28,8 24,28 28,24"
+              fill="#ef4444"
+              stroke="#b91c1c"
+              strokeWidth="0.5"
+            />
+            <polygon
+              points="28,8 32,28 28,24"
+              fill="#f87171"
+              stroke="#b91c1c"
+              strokeWidth="0.5"
+            />
+            {/* South half needle (Silver / Slate) */}
+            <polygon
+              points="28,48 24,28 28,32"
+              fill="#64748b"
+              stroke="#475569"
+              strokeWidth="0.5"
+            />
+            <polygon
+              points="28,48 32,28 28,32"
+              fill="#94a3b8"
+              stroke="#475569"
+              strokeWidth="0.5"
+            />
+            {/* Center brass pivot */}
+            <circle cx="28" cy="28" r="3.2" fill="#facc15" stroke="#1e293b" strokeWidth="1.2" />
+            <circle cx="28" cy="28" r="1.2" fill="#ffffff" />
+          </svg>
+        </div>
+      </button>
+
+      {/* Live Heading Pill */}
+      <span className="mt-1 px-1.5 py-0.5 rounded text-[10px] font-mono font-bold tracking-tight bg-slate-900/90 text-sky-300 border border-slate-700/70 shadow-sm backdrop-blur-sm pointer-events-none">
+        {heading}
+      </span>
     </div>
   );
 }
@@ -225,8 +337,9 @@ function LookPad() {
 
 export function Hud() {
   const snap = useSnap();
-  const [help, setHelp] = useState(true);
-  const [places, setPlaces] = useState(false);
+  const { user } = useAuthStore();
+  const { heatmapMode, toggleHeatmapMode } = useBikesStore();
+  const { showPlaces, setShowPlaces } = useUIStore();
   const [touchUi, setTouchUi] = useState(false);
   useEffect(() => {
     const apply = () => {
@@ -251,62 +364,72 @@ export function Hud() {
     return { name: place.name, dist, hint };
   }).sort((a, b) => a.dist - b.dist);
 
-  const enter = () => {
-    setHelp(false);
-    const canvas = document.querySelector("canvas");
-    if (canvas && !touchUi) {
-      canvas.requestPointerLock?.()?.catch(() => undefined);
-    }
-  };
-
   return (
     <div className="pointer-events-none absolute inset-0 z-10">
-      <div className="pointer-events-auto absolute top-3 left-3 max-w-56 rounded-lg border border-line bg-navy/90 px-3 py-2 text-paper md:max-w-sm md:px-4 md:py-3">
+      <div className="pointer-events-auto absolute top-3 left-3 max-w-56 rounded-lg border border-line bg-navy/90 px-3 py-2 text-paper md:max-w-sm md:px-4 md:py-3 shadow-xl backdrop-blur-md">
         <p className="text-xs tracking-wide text-gold uppercase">Vellore</p>
         <h1 className="font-display text-xl leading-tight md:text-2xl">VIT Campus Walk</h1>
         <p className="mt-1 text-sm text-paper/80">{snap.place}</p>
-        <div className="mt-2 flex gap-2">
+      </div>
+
+      <div className="pointer-events-auto absolute top-3 right-3 flex flex-col items-end gap-2.5 z-20">
+        <MiniMap />
+        <Compass />
+
+        {/* Phase 7 Requirement 3: Admin 3D Scene Heatmap Toggle */}
+        {user?.role === "admin" && (
           <button
             type="button"
-            className="inline-flex h-11 items-center gap-1 rounded-lg bg-gold px-3 text-sm font-semibold text-ink"
-            onClick={() => setPlaces((open) => !open)}
+            onClick={toggleHeatmapMode}
+            className={`pointer-events-auto flex items-center gap-1.5 px-3 py-1.5 rounded-xl border text-xs font-semibold shadow-lg transition-all ${
+              heatmapMode
+                ? "bg-gradient-to-r from-amber-500 to-rose-600 text-white border-rose-400 ring-2 ring-rose-500/50"
+                : "bg-slate-900/90 text-slate-200 border-slate-700 hover:text-white hover:bg-slate-800"
+            }`}
           >
-            <MapPin className="size-4" aria-hidden="true" />
-            Places
+            <Flame className="size-4 text-orange-400" />
+            <span>3D Heatmap: {heatmapMode ? "ON" : "OFF"}</span>
           </button>
-          {!help && (
+        )}
+
+        {heatmapMode && (
+          <div className="pointer-events-auto rounded-lg border border-slate-700/80 bg-slate-950/90 p-2.5 text-[10px] text-white shadow-xl backdrop-blur-md max-w-[160px]">
+            <div className="font-bold uppercase tracking-wider text-slate-300 mb-1 flex items-center gap-1">
+              <Flame className="size-3 text-orange-400" />
+              <span>Rack Utilization</span>
+            </div>
+            <div className="h-2 w-full rounded-full bg-gradient-to-r from-[#0284c7] via-[#eab308] to-[#ef4444] mb-1" />
+            <div className="flex justify-between text-slate-400 font-mono">
+              <span>Low</span>
+              <span>Med</span>
+              <span>High</span>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {showPlaces && (
+        <div className="pointer-events-auto absolute top-28 right-3 left-3 max-h-72 overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900/95 p-4 text-white shadow-2xl backdrop-blur-xl md:right-auto md:w-84 z-30">
+          <div className="mb-3 flex items-center justify-between border-b border-slate-800 pb-2">
+            <div className="flex items-center gap-2">
+              <span className="size-2 rounded-full bg-amber-400" />
+              <p className="font-display text-lg font-bold">Campus Places</p>
+            </div>
             <button
               type="button"
-              className="h-11 rounded-lg border border-line px-3 text-sm font-semibold text-paper"
-              onClick={() => setHelp(true)}
+              className="grid size-9 place-items-center rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white"
+              onClick={() => setShowPlaces(false)}
+              aria-label="Close places"
             >
-              Controls
-            </button>
-          )}
-        </div>
-      </div>
-
-      <div className="absolute top-3 right-3 flex flex-col items-end gap-2">
-        <MiniMap />
-        <div className="hidden md:block">
-          <Compass />
-        </div>
-      </div>
-
-      {places && (
-        <div className="pointer-events-auto absolute top-28 right-3 left-3 max-h-72 overflow-y-auto rounded-lg border border-line bg-paper p-3 text-ink md:right-auto md:w-80">
-          <div className="mb-2 flex items-center justify-between">
-            <p className="font-display text-lg">Campus places</p>
-            <button type="button" className="grid size-11 place-items-center rounded-lg" onClick={() => setPlaces(false)} aria-label="Close places">
               <X className="size-5" />
             </button>
           </div>
-          <ul className="space-y-1">
+          <ul className="space-y-1.5 divide-y divide-slate-800/60">
             {rows.map((row) => (
-              <li key={row.name} className="flex items-baseline justify-between gap-3 border-b border-line py-1 text-sm">
-                <span className="font-semibold">{row.name}</span>
-                <span className="text-ink/70">
-                  {Math.round(row.dist)} m · {row.hint}
+              <li key={row.name} className="flex items-baseline justify-between gap-3 pt-1.5 text-xs">
+                <span className="font-semibold text-slate-200">{row.name}</span>
+                <span className="text-sky-400 font-mono text-[11px]">
+                  {Math.round(row.dist)} m &bull; {row.hint}
                 </span>
               </li>
             ))}
@@ -314,26 +437,7 @@ export function Hud() {
         </div>
       )}
 
-      {help && !touchUi && (
-        <div className="pointer-events-auto absolute bottom-4 left-4 w-80 max-w-full rounded-lg border border-line bg-paper p-4 text-ink">
-          <p className="font-display text-lg">Walk the campus</p>
-          <p className="mt-1 text-sm leading-relaxed">
-            You start at the main gate. Academic blocks, hostels, and 150 numbered bicycle stands are all on this grounds.
-          </p>
-          <ul className="mt-3 space-y-1 text-sm">
-            <li>W A S D — move, relative to the camera</li>
-            <li>Drag the mouse — look around</li>
-            <li>Shift — run, Space — jump</li>
-          </ul>
-          <button
-            type="button"
-            className="mt-4 h-11 rounded-lg bg-gold px-4 text-sm font-semibold text-ink"
-            onClick={enter}
-          >
-            Dismiss
-          </button>
-        </div>
-      )}
+
 
       {touchUi && (
         <div className="pointer-events-auto absolute right-3 bottom-3 left-3 flex items-end justify-between gap-3">

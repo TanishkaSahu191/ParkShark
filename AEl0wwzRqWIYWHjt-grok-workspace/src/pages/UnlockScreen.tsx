@@ -1,24 +1,45 @@
-import React, { useState, useRef } from "react";
-import { ArrowLeft, KeyRound, Unlock, AlertCircle, CheckCircle2 } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { ArrowLeft, KeyRound, Unlock, AlertCircle, CheckCircle2, ShieldAlert } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { useSessionStore } from "@/store/useSessionStore";
 import { useUIStore } from "@/store/useUIStore";
+import { callUnlockBicycle } from "@/services/lockService";
 
 interface UnlockScreenProps {
   onNavigate: (route: string) => void;
 }
 
 export const UnlockScreen: React.FC<UnlockScreenProps> = ({ onNavigate }) => {
-  const { activeSession, unlockSession } = useSessionStore();
+  const { activeSession, failedAttempts, lockoutUntil, resetLockout } = useSessionStore();
   const { showToast } = useUIStore();
 
   const [pin, setPin] = useState(["", "", "", ""]);
   const [error, setError] = useState<string | null>(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const [unlockedSuccess, setUnlockedSuccess] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const [lockoutRemainingSecs, setLockoutRemainingSecs] = useState<number>(0);
 
   const pinRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  // Ticking countdown for lockout timer
+  useEffect(() => {
+    const updateLockout = () => {
+      if (lockoutUntil && Date.now() < lockoutUntil) {
+        setLockoutRemainingSecs(Math.max(0, Math.ceil((lockoutUntil - Date.now()) / 1000)));
+      } else {
+        if (lockoutRemainingSecs > 0) {
+          resetLockout();
+        }
+        setLockoutRemainingSecs(0);
+      }
+    };
+
+    updateLockout();
+    const interval = setInterval(updateLockout, 1000);
+    return () => clearInterval(interval);
+  }, [lockoutUntil, lockoutRemainingSecs, resetLockout]);
 
   if (!activeSession && !unlockedSuccess) {
     return (
@@ -32,7 +53,12 @@ export const UnlockScreen: React.FC<UnlockScreenProps> = ({ onNavigate }) => {
     );
   }
 
+  const isLockedOut = lockoutRemainingSecs > 0;
+  const lockoutMinutes = Math.floor(lockoutRemainingSecs / 60);
+  const lockoutSeconds = lockoutRemainingSecs % 60;
+
   const handlePinChange = (index: number, val: string) => {
+    if (isLockedOut) return;
     if (!/^\d*$/.test(val)) return;
     setError(null);
 
@@ -46,33 +72,51 @@ export const UnlockScreen: React.FC<UnlockScreenProps> = ({ onNavigate }) => {
   };
 
   const handlePinKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (isLockedOut) return;
     if (e.key === "Backspace" && !pin[index] && index > 0) {
       pinRefs.current[index - 1]?.focus();
     }
   };
 
-  const handleUnlock = (e: React.FormEvent) => {
+  const handleUnlock = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isLockedOut) return;
+
     const pinCode = pin.join("");
     if (pinCode.length !== 4) {
       setError("Please enter the complete 4-digit security PIN");
       return;
     }
 
+    if (!activeSession) return;
+
     setIsVerifying(true);
-    setTimeout(() => {
-      setIsVerifying(false);
-      const res = unlockSession(pinCode);
+    setError(null);
+
+    try {
+      const res = await callUnlockBicycle(activeSession.id, pinCode);
+
       if (res.success) {
+        const msg = res.message || `Bicycle unlocked successfully! Stand ${activeSession.standId} is now available.`;
+        setSuccessMessage(msg);
         setUnlockedSuccess(true);
-        showToast("Bicycle unlocked! Stand has been released.", "success");
+        showToast(msg, "success");
+
         setTimeout(() => {
           onNavigate("/dashboard");
-        }, 1500);
+        }, 2000);
       } else {
-        setError(res.error || "Incorrect PIN. Please try again.");
+        if (res.lockedOut) {
+          setError(res.error || "Too many wrong attempts. Locked out for 5 minutes.");
+        } else {
+          setError(res.error || "Incorrect 4-digit security code. Please check your PIN.");
+        }
       }
-    }, 600);
+    } catch (err: any) {
+      setError(err?.message || "Failed to process unlock request.");
+    } finally {
+      setIsVerifying(false);
+    }
   };
 
   return (
@@ -95,10 +139,14 @@ export const UnlockScreen: React.FC<UnlockScreenProps> = ({ onNavigate }) => {
             </div>
             <div>
               <h2 className="text-2xl font-bold font-display text-slate-900 dark:text-white">
-                Bicycle Unlocked!
+                Unlock Complete!
               </h2>
-              <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-                Thank you for using ParkShark. Stand is now available for other students.
+              {/* Exact Phase 6 Requirement 6 Success Message */}
+              <p className="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mt-2 bg-emerald-50 dark:bg-emerald-950/40 p-3 rounded-xl border border-emerald-200 dark:border-emerald-800">
+                {successMessage}
+              </p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-2">
+                Thank you for parking responsibly with ParkShark.
               </p>
             </div>
             <div className="text-xs text-sky-500 font-semibold pt-2">
@@ -112,19 +160,37 @@ export const UnlockScreen: React.FC<UnlockScreenProps> = ({ onNavigate }) => {
                 <KeyRound className="size-7" />
               </div>
               <h1 className="text-2xl font-bold font-display text-slate-900 dark:text-white">
-                Early Unlock
+                Unlock Stand {activeSession?.standId}
               </h1>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
-                Enter your 4-digit code to release Stand {activeSession?.standId}
+                Enter your 4-digit code to release your locked bicycle
               </p>
             </div>
 
-            {error && (
+            {/* Lockout Warning Banner */}
+            {isLockedOut ? (
+              <div className="mb-5 p-3.5 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-300 dark:border-red-800 text-xs text-red-600 dark:text-red-400 flex items-start gap-2.5">
+                <ShieldAlert className="size-5 shrink-0 text-red-500 mt-0.5" />
+                <div>
+                  <span className="font-bold block text-sm">Account Locked Out</span>
+                  <p className="mt-0.5">
+                    Limit of 5 wrong attempts reached. Security lockout active for:
+                  </p>
+                  <div className="text-base font-extrabold font-mono text-red-600 dark:text-red-400 mt-1">
+                    {String(lockoutMinutes).padStart(2, "0")}:{String(lockoutSeconds).padStart(2, "0")}
+                  </div>
+                </div>
+              </div>
+            ) : error ? (
               <div className="mb-5 p-3 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800/60 text-xs text-red-600 dark:text-red-400 flex items-center gap-2">
                 <AlertCircle className="size-4 shrink-0" />
                 <span>{error}</span>
               </div>
-            )}
+            ) : failedAttempts > 0 ? (
+              <div className="mb-4 text-center text-xs text-amber-500 font-medium">
+                Failed attempts: {failedAttempts} of 5. After 5 attempts, a 5-minute lockout will apply.
+              </div>
+            ) : null}
 
             <form onSubmit={handleUnlock} className="space-y-6">
               <div>
@@ -132,6 +198,7 @@ export const UnlockScreen: React.FC<UnlockScreenProps> = ({ onNavigate }) => {
                   Enter 4-Digit Security Code
                 </label>
 
+                {/* 4 Digit Boxes */}
                 <div className="grid grid-cols-4 gap-3 max-w-xs mx-auto">
                   {pin.map((digit, idx) => (
                     <input
@@ -142,12 +209,17 @@ export const UnlockScreen: React.FC<UnlockScreenProps> = ({ onNavigate }) => {
                       type="password"
                       inputMode="numeric"
                       maxLength={1}
+                      disabled={isLockedOut}
                       value={digit}
                       onChange={(e) => handlePinChange(idx, e.target.value)}
                       onKeyDown={(e) => handlePinKeyDown(idx, e)}
                       data-input="true"
-                      autoFocus={idx === 0}
-                      className="size-14 rounded-2xl text-center font-extrabold text-2xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-transparent transition-all shadow-sm"
+                      autoFocus={idx === 0 && !isLockedOut}
+                      className={`size-14 rounded-2xl text-center font-extrabold text-2xl border text-slate-900 dark:text-white focus:outline-none transition-all shadow-sm ${
+                        isLockedOut
+                          ? "bg-slate-200 dark:bg-slate-800/50 border-slate-300 dark:border-slate-700 cursor-not-allowed opacity-60"
+                          : "bg-slate-50 dark:bg-slate-900 border-slate-300 dark:border-slate-700 focus:ring-2 focus:ring-[#1d4ed8] focus:border-transparent"
+                      }`}
                       aria-label={`Code digit ${idx + 1}`}
                     />
                   ))}
@@ -158,10 +230,11 @@ export const UnlockScreen: React.FC<UnlockScreenProps> = ({ onNavigate }) => {
                 type="submit"
                 fullWidth
                 size="lg"
+                disabled={isLockedOut}
                 isLoading={isVerifying}
                 leftIcon={<Unlock className="size-5" />}
               >
-                Verify & Unlock Bicycle
+                {isLockedOut ? "Locked Out (Wait 5 min)" : "Verify & Unlock Bicycle"}
               </Button>
             </form>
           </>

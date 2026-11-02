@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useUIStore } from "@/store/useUIStore";
+import { useBikesStore } from "@/store/useBikesStore";
 import {
   lookupPreRegistered,
   initRecaptcha,
@@ -13,6 +14,9 @@ import {
   type PreRegisteredStudent,
 } from "@/services/authService";
 import type { ConfirmationResult, RecaptchaVerifier } from "firebase/auth";
+
+const LOGIN_BG_VIDEO_URL =
+  "https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261029_084141_6ac02cf2-9847-4e03-9a9c-81a4ec81dd93.mp4";
 
 interface LoginScreenProps {
   onNavigate: (route: string) => void;
@@ -188,7 +192,8 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate }) => {
 
       // 3. Update store and transition
       setUser(profile);
-      showToast(`Welcome back, ${profile.name}!`, "success");
+      showToast(`Welcome back, ${profile.name}! Tracing location...`, "success");
+      useBikesStore.getState().setShowLocationTracer(true);
       onNavigate("/campus");
     } catch (err: any) {
       console.error("[LoginScreen] verifyOtp error:", err);
@@ -230,18 +235,36 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-3.5rem)] flex items-center justify-center p-4 pb-20 animate-fade-in">
+    <div className="relative min-h-[calc(100vh-3.5rem)] flex items-center justify-center p-4 pb-20 animate-fade-in overflow-hidden">
+      {/* Background Video */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          preload="auto"
+          className="size-full object-cover scale-105"
+          src={LOGIN_BG_VIDEO_URL}
+        />
+        {/* Deep navy frosted gradient overlay to ensure card readability & contrast */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#08162b]/85 via-[#08162b]/65 to-[#061224]/90 backdrop-blur-[1px]" />
+      </div>
+
       {/* Invisible reCAPTCHA container */}
       <div id="recaptcha-container" />
 
-      <Card className="w-full max-w-md p-6 sm:p-8 shadow-2xl border-white/20 bg-slate-900/90 backdrop-blur-xl">
+      <Card className="relative z-10 w-full max-w-md p-6 sm:p-8 shadow-2xl border-white/20 bg-slate-900/85 backdrop-blur-xl">
         {/* Brand Header */}
         <div className="text-center mb-6">
-          <div className="inline-flex size-14 rounded-2xl bg-gradient-to-tr from-[#1d4ed8] to-[#38bdf8] text-white items-center justify-center shadow-lg shadow-blue-500/30 mb-3">
-            <Bike className="size-8" />
-          </div>
-          <h1 className="text-2xl font-bold font-display tracking-tight text-white">
-            ParkShark Login
+          <img
+            src="/parkshark-icon.png"
+            alt="ParkShark Logo"
+            className="size-20 mx-auto object-contain mb-3 drop-shadow-2xl"
+          />
+          <h1 className="text-2xl font-bold font-display tracking-tight text-white flex items-center justify-center gap-1.5">
+            <span>Park</span><span className="text-[#00c2cb]">Shark</span>
+            <span className="text-slate-300 font-normal">Login</span>
           </h1>
           <p className="text-sm text-slate-400 mt-1">
             Smart Bicycle Management & 3D Campus Explorer

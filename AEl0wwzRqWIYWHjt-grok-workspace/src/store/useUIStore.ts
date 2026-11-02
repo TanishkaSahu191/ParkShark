@@ -5,9 +5,11 @@ interface UIState {
   activeTab: "campus" | "session" | "dashboard";
   navigatingStandId: string | null;
   toast: { message: string; type: "info" | "success" | "error" | "warning" } | null;
+  showPlaces: boolean;
   toggleTheme: () => void;
   setActiveTab: (tab: "campus" | "session" | "dashboard") => void;
   setNavigatingStandId: (id: string | null) => void;
+  setShowPlaces: (val: boolean | ((prev: boolean) => boolean)) => void;
   showToast: (message: string, type?: "info" | "success" | "error" | "warning") => void;
   clearToast: () => void;
 }
@@ -17,6 +19,12 @@ export const useUIStore = create<UIState>((set) => ({
   activeTab: "campus",
   navigatingStandId: null,
   toast: null,
+  showPlaces: false,
+
+  setShowPlaces: (val) =>
+    set((state) => ({
+      showPlaces: typeof val === "function" ? val(state.showPlaces) : val,
+    })),
 
   toggleTheme: () =>
     set((state) => {

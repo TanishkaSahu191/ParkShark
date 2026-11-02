@@ -1,5 +1,5 @@
 import React from "react";
-import { Moon, Sun, Bike, User, LogOut, QrCode } from "lucide-react";
+import { Moon, Sun, Bike, User, LogOut, QrCode, ShieldCheck, AlertTriangle } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useUIStore } from "@/store/useUIStore";
 import { useSessionStore } from "@/store/useSessionStore";
@@ -21,11 +21,14 @@ export const Header: React.FC<HeaderProps> = ({ onNavigateRoute }) => {
           onClick={() => onNavigateRoute?.("/campus")}
           className="flex items-center gap-2.5 font-bold text-lg tracking-tight hover:opacity-90 transition-opacity"
         >
-          <div className="size-8 rounded-lg bg-gradient-to-tr from-[#1d4ed8] to-[#38bdf8] flex items-center justify-center text-white shadow-sm">
-            <Bike className="size-5" />
-          </div>
-          <span className="font-display tracking-normal text-xl font-bold bg-gradient-to-r from-white via-slate-100 to-sky-200 bg-clip-text text-transparent">
-            ParkShark
+          <img
+            src="/parkshark-icon.png"
+            alt="ParkShark Logo"
+            className="size-9 object-contain drop-shadow"
+          />
+          <span className="font-display tracking-tight text-xl font-extrabold flex items-center">
+            <span className="text-white">Park</span>
+            <span className="text-[#00c2cb]">Shark</span>
           </span>
           <span className="hidden sm:inline-block text-[11px] font-semibold uppercase tracking-widest px-2 py-0.5 rounded bg-sky-950/60 border border-sky-700/50 text-sky-300">
             VIT
@@ -53,6 +56,21 @@ export const Header: React.FC<HeaderProps> = ({ onNavigateRoute }) => {
             </button>
           )}
 
+          {/* Admin Portal Link */}
+          <button
+            onClick={() => onNavigateRoute?.("/admin")}
+            title={user?.role === "admin" ? "Admin Control Center" : "Admin Portal"}
+            aria-label="Admin Control Center"
+            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold transition-colors ${
+              user?.role === "admin"
+                ? "bg-purple-950/60 border border-purple-500/50 text-purple-300 hover:bg-purple-900/60"
+                : "bg-slate-800/80 border border-slate-700 text-slate-300 hover:text-white hover:bg-slate-700"
+            }`}
+          >
+            <ShieldCheck className="size-4 text-purple-400" />
+            <span className="hidden sm:inline">Admin</span>
+          </button>
+
           {/* Admin QR Codes Link */}
           <button
             onClick={() => onNavigateRoute?.("/admin/qrcodes")}
@@ -62,6 +80,19 @@ export const Header: React.FC<HeaderProps> = ({ onNavigateRoute }) => {
           >
             <QrCode className="size-4.5" />
           </button>
+
+          {/* Complaints / Report Issue Link */}
+          {isAuthenticated && (
+            <button
+              onClick={() => onNavigateRoute?.("/complaints")}
+              title="Register a Complaint"
+              aria-label="Register a Complaint"
+              className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold bg-rose-950/50 hover:bg-rose-900/50 border border-rose-500/40 text-rose-300 transition-colors"
+            >
+              <AlertTriangle className="size-3.5 text-rose-400" />
+              <span className="hidden sm:inline">Complaints</span>
+            </button>
+          )}
 
           {/* Theme Toggle Button */}
           <button

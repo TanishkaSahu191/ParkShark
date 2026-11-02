@@ -9,13 +9,15 @@ import {
   Clock,
   Footprints,
   Info,
+  Pause,
+  Play,
 } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { StatusPill } from "@/components/ui/StatusPill";
-import { MobileControls } from "@/components/ui/MobileControls";
 import { useBikesStore } from "@/store/useBikesStore";
-import { sim } from "@/campus/sim";
+import { sim, startAutoNav, stopAutoNav } from "@/campus/sim";
+import { computeRoute } from "@/campus/NavigationPath";
 
 /**
  * World Units to Metric Scale Documentation:
@@ -44,14 +46,24 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
 
   // Live navigation telemetry
   const [distance, setDistance] = useState(0);
+  const [isAutoNavigating, setIsAutoNavigating] = useState(false);
 
   // Set navigating stand ID on mount and cleanup on unmount
   useEffect(() => {
     setNavigatingStandId(standId);
+
+    // Auto-start auto-walk if URL param indicates or auto-nav was requested
+    if (typeof window !== "undefined" && window.location.search.includes("autowalk=true") && stand) {
+      const waypoints = computeRoute(sim.x, sim.z, stand.position.x, stand.position.z);
+      startAutoNav(waypoints);
+      setIsAutoNavigating(true);
+    }
+
     return () => {
       setNavigatingStandId(null);
+      stopAutoNav();
     };
-  }, [standId, setNavigatingStandId]);
+  }, [standId, setNavigatingStandId, stand]);
 
   // Live telemetry loop (distance updated directly from sim state)
   useEffect(() => {
@@ -62,6 +74,13 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
       const dz = stand.position.z - sim.z;
       const d = Math.hypot(dx, dz) * METRES_PER_WORLD_UNIT;
       setDistance(Math.round(d * 10) / 10);
+      setIsAutoNavigating(sim.autoNavActive);
+
+      // If arrived while auto-navigating, stop auto-nav
+      if (d <= 2.0 && sim.autoNavActive) {
+        stopAutoNav();
+        setIsAutoNavigating(false);
+      }
     };
 
     updateNav();
@@ -104,6 +123,7 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
 
   // Cancel navigation handler
   const handleCancel = () => {
+    stopAutoNav();
     setNavigatingStandId(null);
     onNavigate("/campus");
   };
@@ -294,6 +314,44 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
                 />
               </div>
 
+              {/* Auto-walk along route control */}
+              {isAutoNavigating ? (
+                <div className="p-2 rounded-xl bg-sky-950/80 border border-sky-500/40 flex items-center justify-between gap-2 text-xs">
+                  <div className="flex items-center gap-2 text-sky-200">
+                    <span className="size-2 rounded-full bg-sky-400 animate-ping" />
+                    <Footprints className="size-4 text-sky-400" />
+                    <span className="font-semibold">Auto-navigating to Stand {stand.id}...</span>
+                  </div>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      stopAutoNav();
+                      setIsAutoNavigating(false);
+                    }}
+                    leftIcon={<Pause className="size-3.5 text-amber-400" />}
+                    className="h-7 text-xs px-2.5 border-amber-500/40 text-amber-300 hover:bg-amber-950/60"
+                  >
+                    Pause
+                  </Button>
+                </div>
+              ) : (
+                <Button
+                  variant="primary"
+                  size="sm"
+                  fullWidth
+                  onClick={() => {
+                    const waypoints = computeRoute(sim.x, sim.z, stand.position.x, stand.position.z);
+                    startAutoNav(waypoints);
+                    setIsAutoNavigating(true);
+                  }}
+                  leftIcon={<Footprints className="size-4 text-white" />}
+                  className="bg-gradient-to-r from-blue-600 to-sky-600 hover:from-blue-500 hover:to-sky-500 font-semibold shadow-md shadow-blue-500/20 text-xs py-2"
+                >
+                  Auto-Walk to Stand {stand.id} (Take Me There)
+                </Button>
+              )}
+
               <div className="grid grid-cols-2 gap-2 pt-1">
                 <Button
                   variant="outline"
@@ -331,9 +389,6 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
           </div>
         </Card>
       </div>
-
-      {/* 4. Requirement 5: Mobile Controls on Navigation Screen */}
-      <MobileControls />
     </div>
   );
 };

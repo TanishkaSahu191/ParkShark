@@ -12,7 +12,7 @@ const DUMMY = new THREE.Object3D();
 /**
  * Computes waypoints routing around central academic block AB2 if blocked
  */
-function computeRoute(px: number, pz: number, tx: number, tz: number): [number, number][] {
+export function computeRoute(px: number, pz: number, tx: number, tz: number): [number, number][] {
   // AB2 bounding area with margin
   const ab2MinX = -18;
   const ab2MaxX = 18;

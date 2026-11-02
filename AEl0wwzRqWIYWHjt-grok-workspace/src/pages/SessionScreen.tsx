@@ -1,23 +1,29 @@
 import React, { useState, useEffect } from "react";
-import { Unlock, AlertTriangle, Clock, MapPin, Bike, ArrowRight } from "lucide-react";
+import { Unlock, AlertTriangle, Clock, MapPin, Bike, ArrowRight, Bell, BellRing } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Input } from "@/components/ui/Input";
 import { useSessionStore } from "@/store/useSessionStore";
 import { useUIStore } from "@/store/useUIStore";
+import {
+  requestNotificationPermission,
+  hasNotificationPermission,
+  sendLocalPushNotification,
+} from "@/services/notificationService";
 
 interface SessionScreenProps {
   onNavigate: (route: string) => void;
 }
 
 export const SessionScreen: React.FC<SessionScreenProps> = ({ onNavigate }) => {
-  const { activeSession, expireSession, reportIssue } = useSessionStore();
+  const { activeSession, expireSession, reportIssue, markNotified10Min, fcmToken } = useSessionStore();
   const { showToast } = useUIStore();
 
   const [timeLeftMs, setTimeLeftMs] = useState(0);
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [reportText, setReportText] = useState("");
+  const [notificationsEnabled, setNotificationsEnabled] = useState(hasNotificationPermission());
 
   useEffect(() => {
     if (!activeSession) return;
@@ -27,16 +33,41 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ onNavigate }) => {
       if (remaining <= 0) {
         setTimeLeftMs(0);
         expireSession();
-        showToast("Parking session duration expired!", "warning");
+        showToast("Parking session duration expired! Stand released.", "warning");
       } else {
         setTimeLeftMs(remaining);
+
+        // Check 10-minute threshold (10 minutes = 600,000 ms)
+        if (remaining <= 10 * 60 * 1000 && !activeSession.notified10min) {
+          markNotified10Min();
+
+          // Push browser notification
+          sendLocalPushNotification("ParkShark: 10-Minute Parking Alert", {
+            body: `Your parking session on Stand ${activeSession.standId} has less than 10 minutes remaining.`,
+          });
+
+          showToast(
+            `10-Minute Warning: Session on Stand ${activeSession.standId} is expiring soon!`,
+            "warning"
+          );
+        }
       }
     };
 
     tick();
     const interval = setInterval(tick, 1000);
     return () => clearInterval(interval);
-  }, [activeSession, expireSession, showToast]);
+  }, [activeSession, expireSession, markNotified10Min, showToast]);
+
+  const handleEnableNotifications = async () => {
+    const token = await requestNotificationPermission();
+    if (token) {
+      setNotificationsEnabled(true);
+      showToast("Push notifications enabled! You'll receive a 10-minute alert.", "success");
+    } else {
+      showToast("Notification permission not granted.", "info");
+    }
+  };
 
   if (!activeSession) {
     return (
@@ -59,7 +90,7 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ onNavigate }) => {
     );
   }
 
-  // Format countdown
+  // Format countdown driven strictly by activeSession.endAt
   const totalSeconds = Math.max(0, Math.floor(timeLeftMs / 1000));
   const hours = Math.floor(totalSeconds / 3600);
   const minutes = Math.floor((totalSeconds % 3600) / 60);
@@ -73,7 +104,8 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ onNavigate }) => {
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - progressRatio * circumference;
 
-  const isLowTime = totalSeconds < 600; // less than 10 minutes
+  // Turns red under 10 minutes (600 seconds)
+  const isLowTime = totalSeconds < 600;
 
   const handleReportSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,12 +119,22 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ onNavigate }) => {
   return (
     <div className="relative min-h-[calc(100vh-3.5rem)] flex items-center justify-center p-4 pb-24 animate-fade-in">
       <Card className="w-full max-w-md p-6 sm:p-8 shadow-2xl border-white/20">
-        {/* Header Badge */}
+        {/* Header Badge & Report Button */}
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
-            <span className="size-2.5 rounded-full bg-emerald-500 animate-ping" />
-            <span className="text-xs uppercase font-bold tracking-wider text-emerald-600 dark:text-emerald-400">
-              Active Parking Session
+            <span
+              className={`size-2.5 rounded-full ${
+                isLowTime ? "bg-red-500 animate-ping" : "bg-emerald-500 animate-ping"
+              }`}
+            />
+            <span
+              className={`text-xs uppercase font-bold tracking-wider ${
+                isLowTime
+                  ? "text-red-600 dark:text-red-400"
+                  : "text-emerald-600 dark:text-emerald-400"
+              }`}
+            >
+              {isLowTime ? "Session Expiring Soon" : "Active Parking Session"}
             </span>
           </div>
           <button
@@ -103,6 +145,19 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ onNavigate }) => {
             <span>Report</span>
           </button>
         </div>
+
+        {/* Phase 6 Requirement 1 & 3: In-App 10-Minute Banner */}
+        {isLowTime && (
+          <div className="mb-4 p-3.5 rounded-xl bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-900/60 text-red-700 dark:text-red-300 flex items-start gap-2.5 animate-pulse">
+            <AlertTriangle className="size-5 shrink-0 mt-0.5 text-red-500" />
+            <div className="text-xs">
+              <span className="font-bold block text-sm">10-Minute Expiry Warning</span>
+              <p className="mt-0.5 text-slate-600 dark:text-slate-300">
+                Your parking session for Stand <span className="font-bold text-red-600 dark:text-red-400">{activeSession.standId}</span> has under 10 minutes remaining. Please unlock your bicycle soon.
+              </p>
+            </div>
+          </div>
+        )}
 
         {/* Circular Countdown Timer */}
         <div className="relative flex flex-col items-center justify-center my-6">
@@ -117,13 +172,13 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ onNavigate }) => {
               stroke="currentColor"
               fill="transparent"
             />
-            {/* Active Progress Ring */}
+            {/* Active Progress Ring - Turns RED under 10 minutes */}
             <circle
               cx="105"
               cy="105"
               r={radius}
               className={`transition-all duration-1000 ease-linear ${
-                isLowTime ? "text-amber-500" : "text-[#1d4ed8] dark:text-sky-400"
+                isLowTime ? "text-red-500 stroke-red-500" : "text-[#1d4ed8] dark:text-sky-400"
               }`}
               strokeWidth="12"
               strokeDasharray={circumference}
@@ -139,22 +194,36 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ onNavigate }) => {
             <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-1">
               Time Remaining
             </span>
-            <div className="text-4xl font-extrabold tracking-tight font-mono text-slate-900 dark:text-white">
+            <div
+              className={`text-4xl font-extrabold tracking-tight font-mono ${
+                isLowTime
+                  ? "text-red-500 dark:text-red-400 animate-pulse"
+                  : "text-slate-900 dark:text-white"
+              }`}
+            >
               {formattedTime}
             </div>
-            {isLowTime && (
-              <span className="text-[11px] font-semibold text-amber-500 mt-1 animate-pulse">
-                &bull; 10-Minute Reminder
+            {isLowTime ? (
+              <span className="text-[11px] font-bold text-red-500 mt-1">
+                &bull; Less Than 10 Min
+              </span>
+            ) : (
+              <span className="text-[11px] font-medium text-slate-400 mt-1">
+                Duration: {activeSession.durationHours} hr{activeSession.durationHours > 1 ? "s" : ""}
               </span>
             )}
           </div>
         </div>
 
         {/* Stand Details Card */}
-        <div className="rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-4 mb-6">
+        <div className="rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 p-4 mb-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="size-10 rounded-xl bg-[#1d4ed8]/10 text-[#1d4ed8] flex items-center justify-center">
+              <div
+                className={`size-10 rounded-xl flex items-center justify-center ${
+                  isLowTime ? "bg-red-500/10 text-red-500" : "bg-[#1d4ed8]/10 text-[#1d4ed8]"
+                }`}
+              >
                 <Bike className="size-5" />
               </div>
               <div>
@@ -168,7 +237,7 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ onNavigate }) => {
               </div>
             </div>
             <div className="text-right">
-              <span className="text-xs text-slate-400">Total Allotted</span>
+              <span className="text-xs text-slate-400">Total Duration</span>
               <div className="text-sm font-bold text-slate-800 dark:text-slate-200">
                 {activeSession.durationHours} hr{activeSession.durationHours > 1 ? "s" : ""}
               </div>
@@ -176,12 +245,36 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ onNavigate }) => {
           </div>
         </div>
 
+        {/* Notification Permission Card / Status */}
+        <div className="flex items-center justify-between p-3 rounded-xl bg-slate-100/70 dark:bg-slate-900/40 border border-slate-200/80 dark:border-slate-800 text-xs mb-6">
+          <div className="flex items-center gap-2 text-slate-600 dark:text-slate-300">
+            {notificationsEnabled ? (
+              <BellRing className="size-4 text-emerald-500 shrink-0" />
+            ) : (
+              <Bell className="size-4 text-amber-500 shrink-0" />
+            )}
+            <span>
+              {notificationsEnabled
+                ? "Push notifications enabled (FCM active)"
+                : "Receive 10-min expiry alert via push"}
+            </span>
+          </div>
+          {!notificationsEnabled && (
+            <button
+              onClick={handleEnableNotifications}
+              className="text-xs font-semibold text-[#1d4ed8] dark:text-sky-400 hover:underline shrink-0 ml-2"
+            >
+              Enable
+            </button>
+          )}
+        </div>
+
         {/* Action Button: Early Unlock */}
         <div className="space-y-3">
           <Button
             fullWidth
             size="lg"
-            variant="primary"
+            variant={isLowTime ? "danger" : "primary"}
             onClick={() => onNavigate("/unlock")}
             leftIcon={<Unlock className="size-5" />}
           >

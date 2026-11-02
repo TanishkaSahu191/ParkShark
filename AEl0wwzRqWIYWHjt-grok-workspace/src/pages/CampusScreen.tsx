@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Navigation, QrCode, Bike, MapPin, Eye, ListFilter, X, Sparkles } from "lucide-react";
+import { Navigation, QrCode, Bike, MapPin, Eye, ListFilter, X, Sparkles, Compass, AlertTriangle } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { StatusPill } from "@/components/ui/StatusPill";
-import { MobileControls } from "@/components/ui/MobileControls";
+import { LocationTracerModal } from "@/components/ui/LocationTracerModal";
+import { QrCodeSvg } from "@/components/ui/QrCodeSvg";
 import { useBikesStore } from "@/store/useBikesStore";
 import { groupStandsByBuilding, calculateDistance2D } from "@/utils/distance";
+import { createStandQRPayload } from "@/utils/qr";
 import { sim } from "@/campus/sim";
 
 interface CampusScreenProps {
@@ -19,11 +21,14 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
     selectStand,
     getNearestAvailableStand,
     playerPosition,
+    showLocationTracer,
+    setShowLocationTracer,
   } = useBikesStore();
 
   const [nearest, setNearest] = useState<{ stand: any; distance: number } | null>(null);
   const [showAllStands, setShowAllStands] = useState(false);
   const [selectedBuildingTab, setSelectedBuildingTab] = useState<"ALL" | "AB1" | "AB2" | "AB3">("ALL");
+  const [viewingQrStand, setViewingQrStand] = useState<any | null>(null);
 
   // Dynamically update nearest stand as player traverses campus
   useEffect(() => {
@@ -96,16 +101,19 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
           })}
         </div>
 
-        {/* Toggle All Stands List */}
-        <Button
-          variant="secondary"
-          size="sm"
-          onClick={() => setShowAllStands(true)}
-          leftIcon={<ListFilter className="size-3.5 text-sky-400" />}
-          className="shadow-md bg-slate-900/90 text-xs backdrop-blur-md"
-        >
-          All Stands (150)
-        </Button>
+        {/* Actions */}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Toggle All Stands List */}
+          <Button
+            variant="secondary"
+            size="sm"
+            onClick={() => setShowAllStands(true)}
+            leftIcon={<ListFilter className="size-3.5 text-sky-400" />}
+            className="shadow-md bg-slate-900/90 text-xs backdrop-blur-md"
+          >
+            All Stands (150)
+          </Button>
+        </div>
       </div>
 
       {/* 2. Middle Notification: Tapped / Highlighted Stand Banner */}
@@ -122,6 +130,24 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
               </div>
             </div>
             <div className="flex items-center gap-1.5 shrink-0">
+              <button
+                type="button"
+                onClick={() => setViewingQrStand(highlightedStand)}
+                className="h-8 px-2.5 rounded-lg bg-sky-800/80 hover:bg-sky-700 text-sky-200 border border-sky-600/50 flex items-center gap-1 font-semibold text-xs transition-colors"
+                title="View Stand QR Code"
+              >
+                <QrCode className="size-3.5" />
+                <span>QR</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => onNavigate(`/complaints?stand=${highlightedStand.id}`)}
+                className="h-8 px-2 rounded-lg bg-rose-950/60 hover:bg-rose-900/60 text-rose-300 border border-rose-500/40 flex items-center gap-1 font-semibold text-xs transition-colors"
+                title="Report issue with this stand"
+              >
+                <AlertTriangle className="size-3" />
+                <span className="hidden sm:inline">Report</span>
+              </button>
               {/* Requirement 5: "View Route" goes to the navigation screen */}
               <Button
                 variant="primary"
@@ -327,9 +353,22 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
                               }`}
                             >
                               <div className="flex items-center justify-between mb-1.5">
-                                <span className="font-mono font-bold text-xs text-white">
-                                  {stand.id}
-                                </span>
+                                <div className="flex items-center gap-1.5">
+                                  <span className="font-mono font-bold text-xs text-white">
+                                    {stand.id}
+                                  </span>
+                                  <button
+                                    type="button"
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      setViewingQrStand(stand);
+                                    }}
+                                    className="p-1 rounded hover:bg-sky-500/20 text-sky-400 hover:text-sky-300 transition-colors"
+                                    title="View Stand QR Code"
+                                  >
+                                    <QrCode className="size-3.5" />
+                                  </button>
+                                </div>
                                 <StatusPill status={stand.status} size="sm" />
                               </div>
 
@@ -362,20 +401,100 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
             {/* Footer */}
             <div className="pt-3 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
               <span>Tip: Tap any stand to highlight it with a glowing 3D beacon in the scene.</span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => setShowAllStands(false)}
-              >
-                Close
-              </Button>
+              <div className="flex items-center gap-2">
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={() => {
+                    setShowAllStands(false);
+                    onNavigate("/complaints");
+                  }}
+                  leftIcon={<AlertTriangle className="size-3.5 text-rose-400" />}
+                >
+                  Report an Issue
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => setShowAllStands(false)}
+                >
+                  Close
+                </Button>
+              </div>
             </div>
           </Card>
         </div>
       )}
 
-      {/* On-screen touch controls for mobile devices */}
-      <MobileControls />
+      {/* Location Tracing & Nearest Parking Slot Modal */}
+      {showLocationTracer && (
+        <LocationTracerModal
+          onNavigate={onNavigate}
+          onClose={() => setShowLocationTracer(false)}
+        />
+      )}
+
+      {/* Stand QR Code Placard Modal */}
+      {viewingQrStand && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fade-in pointer-events-auto">
+          <Card className="max-w-sm w-full p-6 bg-slate-900/95 border-sky-400/40 shadow-2xl relative space-y-4 text-center">
+            <button
+              onClick={() => setViewingQrStand(null)}
+              className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              title="Close"
+            >
+              <X className="size-5" />
+            </button>
+
+            <div>
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-950 border border-sky-400/40 text-sky-300 text-xs font-semibold mb-2">
+                <Bike className="size-3.5" />
+                <span>{viewingQrStand.building} Section &bull; Slot #{viewingQrStand.slot}</span>
+              </div>
+              <h3 className="text-2xl font-black font-display text-white tracking-tight">
+                Stand {viewingQrStand.id}
+              </h3>
+              <p className="text-xs text-slate-400 mt-1">
+                Scan this official QR code with your camera to lock your bicycle
+              </p>
+            </div>
+
+            {/* QR Placard */}
+            <div className="p-4 rounded-2xl bg-white shadow-xl mx-auto inline-block border-2 border-slate-200">
+              <QrCodeSvg
+                value={createStandQRPayload(viewingQrStand.id)}
+                size={180}
+                className="mx-auto"
+              />
+              <div className="mt-2 text-[11px] font-mono font-bold text-slate-900 tracking-wider">
+                STAND {viewingQrStand.id}
+              </div>
+            </div>
+
+            <div className="flex gap-2 pt-2">
+              <Button
+                variant="outline"
+                className="w-1/2"
+                onClick={() => setViewingQrStand(null)}
+              >
+                Close
+              </Button>
+              <Button
+                variant="primary"
+                className="w-1/2"
+                onClick={() => {
+                  const id = viewingQrStand.id;
+                  setViewingQrStand(null);
+                  onNavigate(`/lock/${id}`);
+                }}
+                leftIcon={<QrCode className="size-4" />}
+              >
+                Lock Here
+              </Button>
+            </div>
+          </Card>
+        </div>
+      )}
     </div>
   );
 };

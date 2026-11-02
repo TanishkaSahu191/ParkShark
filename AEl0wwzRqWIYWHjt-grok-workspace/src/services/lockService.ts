@@ -11,6 +11,72 @@ export interface LockBicycleResult {
   error?: string;
 }
 
+export interface UnlockBicycleResult {
+  success: boolean;
+  message?: string;
+  error?: string;
+  lockedOut?: boolean;
+}
+
+/**
+ * Invokes the callable Cloud Function unlockBicycle.
+ * Limits to 5 wrong attempts before a 5-minute lockout.
+ * Verifies code, marks session completed, frees the stand, and logs activity.
+ */
+export async function callUnlockBicycle(sessionId: string, code: string): Promise<UnlockBicycleResult> {
+  const sessionState = useSessionStore.getState();
+
+  // 1. Check local lockout first before hitting network
+  if (sessionState.lockoutUntil && Date.now() < sessionState.lockoutUntil) {
+    const remainingSeconds = Math.ceil((sessionState.lockoutUntil - Date.now()) / 1000);
+    const mins = Math.floor(remainingSeconds / 60);
+    const secs = remainingSeconds % 60;
+    return {
+      success: false,
+      lockedOut: true,
+      error: `Too many wrong attempts. Locked out for ${mins}m ${secs}s.`,
+    };
+  }
+
+  // 2. Try calling Cloud Function unlockBicycle
+  try {
+    const unlockCallable = httpsCallable<
+      { sessionId: string; code: string },
+      { success: boolean; message: string; standId?: string }
+    >(functions, "unlockBicycle");
+
+    const result = await unlockCallable({ sessionId, code });
+    if (result.data?.success) {
+      const standId = result.data.standId || sessionState.activeSession?.standId || "stand";
+      const message = result.data.message || `Bicycle unlocked successfully! Stand ${standId} is now available.`;
+
+      // Update local client stores
+      sessionState.unlockSession(code);
+      return {
+        success: true,
+        message,
+      };
+    }
+  } catch (err: any) {
+    console.warn("[lockService] Cloud Function unlock error/fallback:", err.message);
+  }
+
+  // 3. Client transactional fallback
+  const res = sessionState.unlockSession(code);
+  if (res.success) {
+    return {
+      success: true,
+      message: res.message,
+    };
+  } else {
+    return {
+      success: false,
+      error: res.error,
+      lockedOut: res.lockedOut,
+    };
+  }
+}
+
 /**
  * Invokes the callable Cloud Function lockBicycle.
  * Includes seamless fallback to local Firestore transactional execution if Cloud Functions emulator is offline.

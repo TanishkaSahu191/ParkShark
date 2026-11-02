@@ -86,12 +86,22 @@ export function parseAndVerifyQRPayload(rawText: string): {
     }
   }
 
-  // 4. Stand ID pattern (e.g. AB1-01 to AB3-50)
-  const idMatch = text.match(/^(AB[1-3])-?(\d{1,2})$/i);
+  // 4. Stand ID pattern (e.g. AB1-01 to AB3-50, with optional dashes/spaces)
+  const clean = text.replace(/\s+/g, "");
+  const idMatch = clean.match(/^(AB[1-3])-?(\d{1,2})$/i);
   if (idMatch) {
     const b = idMatch[1].toUpperCase();
     const num = idMatch[2].padStart(2, "0");
     const id = `${b}-${num}`;
+    return { valid: true, standId: id, token: generateStandToken(id) };
+  }
+
+  // 5. Stand slot number fallback (e.g. "12", "#12" when entering just the slot)
+  const slotMatch = clean.match(/^#?(\d{1,2})$/);
+  if (slotMatch) {
+    const num = slotMatch[1].padStart(2, "0");
+    // Default to AB1 if only slot number given
+    const id = `AB1-${num}`;
     return { valid: true, standId: id, token: generateStandToken(id) };
   }
 

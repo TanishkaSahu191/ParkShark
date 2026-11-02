@@ -66,7 +66,10 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
           // If scanner instance already exists, stop it first
           if (scannerRef.current) {
             try {
-              await scannerRef.current.stop();
+              const state = (scannerRef.current as any).getState?.();
+              if (state === 2 || state === 3 || (scannerRef.current as any).isScanning) {
+                await scannerRef.current.stop();
+              }
             } catch {
               // ignore
             }
@@ -114,7 +117,12 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
         clearTimeout(timer);
         isMounted = false;
         if (scannerRef.current) {
-          scannerRef.current.stop().catch(() => {});
+          try {
+            const state = (scannerRef.current as any).getState?.();
+            if (state === 2 || state === 3 || (scannerRef.current as any).isScanning) {
+              scannerRef.current.stop().catch(() => {});
+            }
+          } catch {}
         }
       };
     }
@@ -124,19 +132,38 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
   useEffect(() => {
     return () => {
       if (scannerRef.current) {
-        scannerRef.current.stop().catch(() => {});
+        try {
+          const state = (scannerRef.current as any).getState?.();
+          if (state === 2 || state === 3 || (scannerRef.current as any).isScanning) {
+            scannerRef.current.stop().catch(() => {});
+          }
+        } catch {}
       }
     };
   }, []);
 
   const stopCamera = async () => {
-    if (scannerRef.current) {
-      try {
-        await scannerRef.current.stop();
-      } catch {
-        // ignore
+    try {
+      if (scannerRef.current) {
+        const state = (scannerRef.current as any).getState?.();
+        if (state === 2 || state === 3 || (scannerRef.current as any).isScanning) {
+          await scannerRef.current.stop();
+        }
       }
+    } catch (err) {
+      console.warn("[LockScreen] Safe stopCamera caught:", err);
+    } finally {
       setIsCameraActive(false);
+    }
+  };
+
+  const handleSwitchMode = async (mode: "camera" | "manual") => {
+    setError(null);
+    if (mode === "manual") {
+      await stopCamera();
+      setScanMode("manual");
+    } else {
+      setScanMode("camera");
     }
   };
 
@@ -157,16 +184,17 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
   };
 
   // Manual fallback submission
-  const handleManualSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!manualCodeInput.trim()) {
+  const handleManualSubmit = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
+    const candidate = manualCodeInput.trim() || stand?.id || standId;
+    if (!candidate) {
       setError("Please enter a valid stand ID (e.g. AB1-12)");
       return;
     }
 
-    const verified = parseAndVerifyQRPayload(manualCodeInput);
+    const verified = parseAndVerifyQRPayload(candidate);
     if (verified.valid && verified.standId) {
-      stopCamera();
+      stopCamera().catch(() => {});
       setScanned(true);
       setScannedToken(verified.token || generateStandToken(verified.standId));
       setScanMode("verified");
@@ -364,93 +392,113 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
                 1. Stand QR Verification
               </label>
               {/* Scan Mode Toggle */}
-              <div className="flex items-center gap-1 bg-slate-800 p-0.5 rounded-lg border border-slate-700">
+              <div className="flex items-center gap-1.5 bg-slate-800/90 p-1 rounded-xl border border-slate-700/80">
                 <button
                   type="button"
-                  onClick={() => {
-                    setScanMode("camera");
-                    setError(null);
-                  }}
-                  className={`px-2 py-0.5 rounded-md text-[11px] font-semibold flex items-center gap-1 transition-all ${
-                    scanMode === "camera" ? "bg-[#1d4ed8] text-white" : "text-slate-400 hover:text-white"
+                  id="tab-scan-camera"
+                  onClick={() => handleSwitchMode("camera")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                    scanMode === "camera"
+                      ? "bg-blue-600 text-white shadow-md ring-1 ring-blue-400/40"
+                      : "text-slate-300 hover:text-white hover:bg-slate-700/60"
                   }`}
                 >
-                  <Camera className="size-3" />
+                  <Camera className="size-3.5" />
                   <span>Camera</span>
                 </button>
                 <button
                   type="button"
-                  onClick={() => {
-                    stopCamera();
-                    setScanMode("manual");
-                    setError(null);
-                  }}
-                  className={`px-2 py-0.5 rounded-md text-[11px] font-semibold flex items-center gap-1 transition-all ${
-                    scanMode === "manual" ? "bg-[#1d4ed8] text-white" : "text-slate-400 hover:text-white"
+                  id="tab-scan-manual"
+                  onClick={() => handleSwitchMode("manual")}
+                  className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                    scanMode === "manual"
+                      ? "bg-blue-600 text-white shadow-md ring-1 ring-blue-400/40"
+                      : "text-slate-300 hover:text-white hover:bg-slate-700/60"
                   }`}
                 >
-                  <Keyboard className="size-3" />
+                  <Keyboard className="size-3.5" />
                   <span>Manual</span>
                 </button>
               </div>
             </div>
 
-            {/* Mode A: Real Camera Scanner (html5-qrcode) */}
-            {scanMode === "camera" && (
-              <div className="relative rounded-2xl overflow-hidden border border-slate-700 bg-black min-h-[220px] flex flex-col items-center justify-center">
-                {/* HTML5 QR Code Container */}
-                <div id={scannerId} className="w-full max-w-[280px] overflow-hidden" />
+            {/* Mode A: Real Camera Scanner (html5-qrcode) - Kept in DOM with hidden to prevent teardown crashes */}
+            <div
+              className={`relative rounded-2xl overflow-hidden border border-slate-700 bg-black min-h-[220px] flex-col items-center justify-center ${
+                scanMode === "camera" ? "flex" : "hidden"
+              }`}
+            >
+              {/* HTML5 QR Code Container */}
+              <div id={scannerId} className="w-full max-w-[280px] overflow-hidden" />
 
-                {/* Camera Error or Permission Banner */}
-                {cameraError && (
-                  <div className="p-4 text-center space-y-2 bg-slate-900/90 w-full h-full absolute inset-0 flex flex-col items-center justify-center">
-                    <AlertCircle className="size-7 text-amber-400 mx-auto" />
-                    <p className="text-xs text-amber-200 font-semibold px-4">{cameraError}</p>
-                    <div className="flex gap-2 pt-1">
-                      <Button
-                        size="sm"
-                        variant="secondary"
-                        onClick={() => setScanMode("manual")}
-                        leftIcon={<Keyboard className="size-3.5" />}
-                        className="text-xs"
-                      >
-                        Enter Code Manually
-                      </Button>
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={handleSimulateScan}
-                        className="text-xs text-sky-400"
-                      >
-                        Simulate Scan
-                      </Button>
-                    </div>
+              {/* Camera Error or Permission Banner */}
+              {cameraError && (
+                <div className="p-4 text-center space-y-2 bg-slate-900/90 w-full h-full absolute inset-0 flex flex-col items-center justify-center">
+                  <AlertCircle className="size-7 text-amber-400 mx-auto" />
+                  <p className="text-xs text-amber-200 font-semibold px-4">{cameraError}</p>
+                  <div className="flex gap-2 pt-1">
+                    <Button
+                      size="sm"
+                      variant="secondary"
+                      onClick={() => handleSwitchMode("manual")}
+                      leftIcon={<Keyboard className="size-3.5" />}
+                      className="text-xs"
+                    >
+                      Enter Code Manually
+                    </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      onClick={handleSimulateScan}
+                      className="text-xs text-sky-400"
+                    >
+                      Simulate Scan
+                    </Button>
                   </div>
-                )}
-              </div>
-            )}
+                </div>
+              )}
 
-            {/* Mode B: Manual Entry Fallback (Requirement 2) */}
+              {/* Camera Active bar with direct switch button */}
+              <div className="w-full bg-slate-950/80 px-3 py-1.5 border-t border-slate-800 flex items-center justify-between text-[11px] text-slate-300">
+                <span>Camera scanner active</span>
+                <button
+                  type="button"
+                  onClick={() => handleSwitchMode("manual")}
+                  className="text-sky-400 hover:text-sky-300 font-semibold flex items-center gap-1 hover:underline cursor-pointer"
+                >
+                  <Keyboard className="size-3" />
+                  <span>Switch to Manual</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Mode B: Manual Entry Fallback */}
             {scanMode === "manual" && (
               <form
                 onSubmit={handleManualSubmit}
-                className="p-4 rounded-2xl bg-slate-800/80 border border-slate-700 space-y-3"
+                className="p-4 rounded-2xl bg-slate-800/90 border border-slate-700 space-y-3 animate-fade-in"
               >
                 <div>
-                  <label className="block text-xs text-slate-300 font-medium mb-1">
-                    Stand Code or QR String
-                  </label>
+                  <div className="flex items-center justify-between mb-1">
+                    <label className="block text-xs text-slate-300 font-medium">
+                      Stand Code or QR String
+                    </label>
+                    <span className="text-[10px] text-sky-400 font-mono font-semibold">
+                      Current Rack: {stand?.id || standId}
+                    </span>
+                  </div>
                   <div className="relative">
                     <input
                       type="text"
-                      placeholder="e.g. AB1-12 or scan payload"
+                      placeholder={`e.g. ${stand?.id || "AB1-12"} or ${stand?.slot || "12"}`}
                       value={manualCodeInput}
                       onChange={(e) => setManualCodeInput(e.target.value)}
-                      className="w-full px-3 py-2 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white font-mono placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      className="w-full px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white font-mono placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      autoFocus
                     />
                   </div>
                   <span className="text-[10px] text-slate-400 mt-1 block">
-                    Located on the metal plaque affixed to this rack.
+                    Located on the metal plaque affixed to this rack. You can type <code className="text-sky-300">{stand?.id || standId}</code>.
                   </span>
                 </div>
 
@@ -462,10 +510,13 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
                     type="button"
                     size="sm"
                     variant="outline"
-                    onClick={handleSimulateScan}
+                    onClick={() => {
+                      setManualCodeInput(stand?.id || standId);
+                      handleManualSubmit();
+                    }}
                     className="text-xs text-sky-400 whitespace-nowrap"
                   >
-                    Auto-fill
+                    Use Stand {stand?.id || standId}
                   </Button>
                 </div>
               </form>

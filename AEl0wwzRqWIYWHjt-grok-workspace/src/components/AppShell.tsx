@@ -16,7 +16,9 @@ import { LockScreen } from "@/pages/LockScreen";
 import { SessionScreen } from "@/pages/SessionScreen";
 import { UnlockScreen } from "@/pages/UnlockScreen";
 import { DashboardScreen } from "@/pages/DashboardScreen";
+import { ComplaintsScreen } from "@/pages/ComplaintsScreen";
 import { AdminQrCodesScreen } from "@/pages/AdminQrCodesScreen";
+import { AdminScreen } from "@/pages/AdminScreen";
 
 export const AppShellContent: React.FC = () => {
   const [mounted, setMounted] = useState(false);
@@ -86,7 +88,19 @@ export const AppShellContent: React.FC = () => {
   const isSessionRoute = currentPath === "/session";
   const isUnlockRoute = currentPath === "/unlock";
   const isDashboardRoute = currentPath === "/dashboard";
+  const isComplaintsRoute =
+    currentPath === "/complaints" ||
+    currentPath === "/complaint" ||
+    currentPath.startsWith("/complaints/") ||
+    currentPath.startsWith("/complaints?");
+  const complaintStandId =
+    isComplaintsRoute && currentPath.includes("stand=")
+      ? currentPath.split("stand=")[1]?.split("&")[0]
+      : currentPath.startsWith("/complaints/")
+      ? currentPath.replace("/complaints/", "")
+      : null;
   const isAdminQrRoute = currentPath === "/admin/qrcodes" || currentPath === "/admin/qr";
+  const isAdminRoute = currentPath === "/admin";
 
   // Sync navigating stand ID to bikes store for 3D path rendering
   useEffect(() => {
@@ -99,7 +113,13 @@ export const AppShellContent: React.FC = () => {
 
   // When viewing overlay screens over campus, apply subtle backdrop blur
   const hasOverlayBackdrop =
-    isDashboardRoute || isSessionRoute || isUnlockRoute || isLockRoute || isAdminQrRoute;
+    isDashboardRoute ||
+    isSessionRoute ||
+    isUnlockRoute ||
+    isLockRoute ||
+    isComplaintsRoute ||
+    isAdminQrRoute ||
+    isAdminRoute;
 
   return (
     <div className="relative h-dvh w-full overflow-hidden bg-[#08162b] text-slate-100 select-none flex flex-col font-sans">
@@ -125,11 +145,18 @@ export const AppShellContent: React.FC = () => {
           </Canvas>
         </div>
       ) : (
-        <div className="absolute inset-0 z-0 pointer-events-none bg-gradient-to-b from-[#08162b] via-[#0b2444] to-[#061224] flex items-center justify-center overflow-hidden">
-          {/* Subtle decorative glowing mesh rings for login background */}
-          <div className="absolute -top-32 -left-32 size-96 rounded-full bg-blue-600/10 blur-3xl" />
-          <div className="absolute -bottom-32 -right-32 size-96 rounded-full bg-sky-500/10 blur-3xl" />
-          <div className="absolute inset-0 bg-[radial-gradient(#1d4ed8_1px,transparent_1px)] [background-size:24px_24px] opacity-15" />
+        <div className="absolute inset-0 z-0 pointer-events-none bg-[#08162b] flex items-center justify-center overflow-hidden">
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="auto"
+            className="size-full object-cover scale-105"
+            src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20261029_084141_6ac02cf2-9847-4e03-9a9c-81a4ec81dd93.mp4"
+          />
+          {/* Subtle cinematic gradient overlay to ensure card & text pop */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#08162b]/80 via-[#08162b]/60 to-[#061224]/85 backdrop-blur-[1px]" />
         </div>
       )}
 
@@ -171,7 +198,11 @@ export const AppShellContent: React.FC = () => {
             {isSessionRoute && <SessionScreen onNavigate={navigate} />}
             {isUnlockRoute && <UnlockScreen onNavigate={navigate} />}
             {isDashboardRoute && <DashboardScreen onNavigate={navigate} />}
+            {isComplaintsRoute && (
+              <ComplaintsScreen onNavigate={navigate} initialStandId={complaintStandId} />
+            )}
             {isAdminQrRoute && <AdminQrCodesScreen onNavigate={navigate} />}
+            {isAdminRoute && <AdminScreen onNavigate={navigate} />}
           </>
         )}
       </main>
