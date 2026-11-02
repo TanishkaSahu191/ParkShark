@@ -343,42 +343,42 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
         <div className="space-y-6">
           {/* Phase 7 Requirement 2: Basic Usage Stats Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-            <Card className="p-4 bg-slate-900/90 border-slate-800">
-              <div className="flex items-center justify-between text-slate-400 mb-2">
+            <Card className="p-4 bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 shadow-sm text-slate-900 dark:text-slate-100">
+              <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
                 <span className="text-xs uppercase font-semibold">Sessions / Day</span>
-                <TrendingUp className="size-4 text-emerald-400" />
+                <TrendingUp className="size-4 text-emerald-500 dark:text-emerald-400" />
               </div>
-              <div className="text-2xl font-extrabold text-white font-mono">142</div>
-              <p className="text-[11px] text-emerald-400 mt-1">+12% vs last week</p>
+              <div className="text-2xl font-extrabold text-slate-900 dark:text-white font-mono">142</div>
+              <p className="text-[11px] text-emerald-600 dark:text-emerald-400 mt-1">+12% vs last week</p>
             </Card>
 
-            <Card className="p-4 bg-slate-900/90 border-slate-800">
-              <div className="flex items-center justify-between text-slate-400 mb-2">
+            <Card className="p-4 bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 shadow-sm text-slate-900 dark:text-slate-100">
+              <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
                 <span className="text-xs uppercase font-semibold">Average Duration</span>
-                <Clock className="size-4 text-sky-400" />
+                <Clock className="size-4 text-sky-500 dark:text-sky-400" />
               </div>
-              <div className="text-2xl font-extrabold text-white font-mono">1.75 hrs</div>
-              <p className="text-[11px] text-slate-400 mt-1">105 mins average session</p>
+              <div className="text-2xl font-extrabold text-slate-900 dark:text-white font-mono">1.75 hrs</div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">105 mins average session</p>
             </Card>
 
-            <Card className="p-4 bg-slate-900/90 border-slate-800">
-              <div className="flex items-center justify-between text-slate-400 mb-2">
+            <Card className="p-4 bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 shadow-sm text-slate-900 dark:text-slate-100">
+              <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
                 <span className="text-xs uppercase font-semibold">Peak Hours</span>
-                <Flame className="size-4 text-amber-400" />
+                <Flame className="size-4 text-amber-500 dark:text-amber-400" />
               </div>
-              <div className="text-lg font-bold text-amber-400 font-mono">08:30 - 10:30</div>
-              <p className="text-[11px] text-slate-400 mt-1">Evening peak: 15:00 - 17:00</p>
+              <div className="text-lg font-bold text-amber-600 dark:text-amber-400 font-mono">08:30 - 10:30</div>
+              <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-1">Evening peak: 15:00 - 17:00</p>
             </Card>
 
-            <Card className="p-4 bg-slate-900/90 border-slate-800">
-              <div className="flex items-center justify-between text-slate-400 mb-2">
+            <Card className="p-4 bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 shadow-sm text-slate-900 dark:text-slate-100">
+              <div className="flex items-center justify-between text-slate-500 dark:text-slate-400 mb-2">
                 <span className="text-xs uppercase font-semibold">Total Occupancy</span>
-                <Bike className="size-4 text-purple-400" />
+                <Bike className="size-4 text-purple-500 dark:text-purple-400" />
               </div>
-              <div className="text-2xl font-extrabold text-white font-mono">
+              <div className="text-2xl font-extrabold text-slate-900 dark:text-white font-mono">
                 {stats.occupied} / {stats.total}
               </div>
-              <p className="text-[11px] text-purple-400 mt-1">
+              <p className="text-[11px] text-purple-600 dark:text-purple-400 mt-1">
                 {Math.round((stats.occupied / stats.total) * 100)}% utilization
               </p>
             </Card>
@@ -387,52 +387,52 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
           {/* Phase 7 Requirement 2: Occupancy per building as a table & bar chart */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {/* Building Occupancy Table */}
-            <Card className="p-5 bg-slate-900/90 border-slate-800 shadow-xl space-y-4">
+            <Card className="p-5 bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 shadow-xl space-y-4 text-slate-900 dark:text-slate-100">
               <div className="flex items-center gap-2">
-                <Building2 className="size-5 text-sky-400" />
-                <h3 className="text-base font-bold text-white">Occupancy by Building</h3>
+                <Building2 className="size-5 text-sky-500 dark:text-sky-400" />
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">Occupancy by Building</h3>
               </div>
 
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs">
                   <thead>
-                    <tr className="border-b border-slate-800 text-slate-400">
+                    <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400">
                       <th className="py-2.5 font-bold uppercase tracking-wider">Building</th>
                       <th className="py-2.5 font-bold uppercase tracking-wider text-center">Total</th>
-                      <th className="py-2.5 font-bold uppercase tracking-wider text-center text-red-400">Occupied</th>
-                      <th className="py-2.5 font-bold uppercase tracking-wider text-center text-emerald-400">Available</th>
-                      <th className="py-2.5 font-bold uppercase tracking-wider text-center text-slate-400">Maintenance</th>
+                      <th className="py-2.5 font-bold uppercase tracking-wider text-center text-red-500 dark:text-red-400">Occupied</th>
+                      <th className="py-2.5 font-bold uppercase tracking-wider text-center text-emerald-600 dark:text-emerald-400">Available</th>
+                      <th className="py-2.5 font-bold uppercase tracking-wider text-center text-slate-500 dark:text-slate-400">Maintenance</th>
                       <th className="py-2.5 font-bold uppercase tracking-wider text-right">Occupancy %</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-800">
+                  <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                     {(["AB1", "AB2", "AB3"] as const).map((building) => {
                       const b = stats.byBuilding[building];
                       return (
-                        <tr key={building} className="hover:bg-slate-800/40 transition-colors">
-                          <td className="py-3 font-bold text-white flex items-center gap-2">
-                            <span className="size-2 rounded-full bg-sky-400" />
+                        <tr key={building} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                          <td className="py-3 font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                            <span className="size-2 rounded-full bg-sky-500 dark:bg-sky-400" />
                             <span>{building} Section</span>
                           </td>
-                          <td className="py-3 text-center font-mono text-slate-300">{b.total}</td>
-                          <td className="py-3 text-center font-mono font-bold text-red-400">{b.occupied}</td>
-                          <td className="py-3 text-center font-mono font-bold text-emerald-400">{b.available}</td>
-                          <td className="py-3 text-center font-mono text-slate-400">{b.maintenance}</td>
+                          <td className="py-3 text-center font-mono text-slate-700 dark:text-slate-300">{b.total}</td>
+                          <td className="py-3 text-center font-mono font-bold text-red-500 dark:text-red-400">{b.occupied}</td>
+                          <td className="py-3 text-center font-mono font-bold text-emerald-600 dark:text-emerald-400">{b.available}</td>
+                          <td className="py-3 text-center font-mono text-slate-500 dark:text-slate-400">{b.maintenance}</td>
                           <td className="py-3 text-right">
-                            <span className="font-mono font-extrabold text-sm px-2 py-0.5 rounded bg-slate-800 border border-slate-700 text-sky-300">
+                            <span className="font-mono font-extrabold text-sm px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-sky-700 dark:text-sky-300">
                               {b.rate}%
                             </span>
                           </td>
                         </tr>
                       );
                     })}
-                    <tr className="border-t-2 border-slate-700 font-bold bg-slate-950/40">
-                      <td className="py-3 text-white">Total Campus</td>
+                    <tr className="border-t-2 border-slate-200 dark:border-slate-700 font-bold bg-slate-50 dark:bg-slate-950/40">
+                      <td className="py-3 text-slate-900 dark:text-white">Total Campus</td>
                       <td className="py-3 text-center font-mono">{stats.total}</td>
-                      <td className="py-3 text-center font-mono text-red-400">{stats.occupied}</td>
-                      <td className="py-3 text-center font-mono text-emerald-400">{stats.available}</td>
-                      <td className="py-3 text-center font-mono text-slate-400">{stats.maintenance}</td>
-                      <td className="py-3 text-right font-mono text-sky-300">
+                      <td className="py-3 text-center font-mono text-red-500 dark:text-red-400">{stats.occupied}</td>
+                      <td className="py-3 text-center font-mono text-emerald-600 dark:text-emerald-400">{stats.available}</td>
+                      <td className="py-3 text-center font-mono text-slate-500 dark:text-slate-400">{stats.maintenance}</td>
+                      <td className="py-3 text-right font-mono text-sky-700 dark:text-sky-300">
                         {Math.round((stats.occupied / stats.total) * 100)}%
                       </td>
                     </tr>
@@ -442,13 +442,13 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
             </Card>
 
             {/* Building Occupancy Bar Chart (SVG) */}
-            <Card className="p-5 bg-slate-900/90 border-slate-800 shadow-xl space-y-4">
+            <Card className="p-5 bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 shadow-xl space-y-4 text-slate-900 dark:text-slate-100">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <BarChart3 className="size-5 text-purple-400" />
-                  <h3 className="text-base font-bold text-white">Occupancy Rate Comparison</h3>
+                  <BarChart3 className="size-5 text-purple-500 dark:text-purple-400" />
+                  <h3 className="text-base font-bold text-slate-900 dark:text-white">Occupancy Rate Comparison</h3>
                 </div>
-                <span className="text-xs text-slate-400">Live Campus Data</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400">Live Campus Data</span>
               </div>
 
               {/* Clean Interactive SVG Bar Chart */}
@@ -569,21 +569,21 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
       {activeTab === "stands" && (
         <div className="space-y-6">
           {/* Active Sessions Panel (Phase 7: View all active sessions & Force Release) */}
-          <Card className="p-5 bg-slate-900/90 border-slate-800 shadow-xl space-y-4">
+          <Card className="p-5 bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 shadow-xl space-y-4 text-slate-900 dark:text-slate-100">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
-                <span className="size-2.5 rounded-full bg-emerald-400 animate-ping" />
-                <h3 className="text-base font-bold text-white">
+                <span className="size-2.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-ping" />
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">
                   Active Parking Sessions ({occupiedStands.length})
                 </h3>
               </div>
-              <span className="text-xs text-slate-400">
+              <span className="text-xs text-slate-500 dark:text-slate-400">
                 Real-time occupied bicycle stands across campus
               </span>
             </div>
 
             {occupiedStands.length === 0 ? (
-              <div className="py-6 text-center text-slate-400 text-sm">
+              <div className="py-6 text-center text-slate-500 dark:text-slate-400 text-sm">
                 No active bicycle sessions right now. All stands are currently free.
               </div>
             ) : (
@@ -591,16 +591,16 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                 {occupiedStands.map((stand) => (
                   <div
                     key={stand.id}
-                    className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 flex items-center justify-between gap-3"
+                    className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 flex items-center justify-between gap-3"
                   >
                     <div>
                       <div className="flex items-center gap-2">
-                        <span className="font-bold text-sm text-white">Stand {stand.id}</span>
-                        <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-red-500/20 text-red-400 border border-red-500/40">
+                        <span className="font-bold text-sm text-slate-900 dark:text-white">Stand {stand.id}</span>
+                        <span className="text-[10px] font-bold uppercase px-1.5 py-0.5 rounded bg-red-100 dark:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-500/40">
                           Occupied
                         </span>
                       </div>
-                      <p className="text-xs text-slate-400 mt-0.5">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                         {stand.building} Section &bull; Slot #{stand.slot}
                       </p>
                     </div>
@@ -621,11 +621,11 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
           </Card>
 
           {/* Stand Management Filter & Grid */}
-          <Card className="p-5 bg-slate-900/90 border-slate-800 shadow-xl space-y-4">
+          <Card className="p-5 bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 shadow-xl space-y-4 text-slate-900 dark:text-slate-100">
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
               <div className="flex items-center gap-2">
-                <Bike className="size-5 text-sky-400" />
-                <h3 className="text-base font-bold text-white">
+                <Bike className="size-5 text-sky-500 dark:text-sky-400" />
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">
                   Stand Directory ({filteredStands.length} matching)
                 </h3>
               </div>
@@ -633,17 +633,17 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
               {/* Filters */}
               <div className="flex flex-wrap items-center gap-2">
                 <div className="relative w-48">
-                  <Search className="size-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <Search className="size-3.5 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500" />
                   <input
                     type="text"
                     placeholder="Search stand ID..."
                     value={standSearch}
                     onChange={(e) => setStandSearch(e.target.value)}
-                    className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-slate-800 border border-slate-700 text-xs text-white placeholder-slate-400 focus:outline-none focus:ring-1 focus:ring-sky-400"
+                    className="w-full pl-8 pr-3 py-1.5 rounded-xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
                   />
                 </div>
 
-                <div className="flex items-center gap-1 bg-slate-800 p-0.5 rounded-xl border border-slate-700 text-xs">
+                <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-0.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
                   {(["ALL", "AB1", "AB2", "AB3"] as const).map((b) => (
                     <button
                       key={b}
@@ -651,7 +651,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                       className={`px-2.5 py-1 rounded-lg font-semibold transition-all ${
                         selectedBuilding === b
                           ? "bg-[#1d4ed8] text-white"
-                          : "text-slate-400 hover:text-white"
+                          : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                       }`}
                     >
                       {b}
@@ -659,7 +659,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                   ))}
                 </div>
 
-                <div className="flex items-center gap-1 bg-slate-800 p-0.5 rounded-xl border border-slate-700 text-xs">
+                <div className="flex items-center gap-1 bg-slate-100 dark:bg-slate-800 p-0.5 rounded-xl border border-slate-200 dark:border-slate-700 text-xs">
                   {(["ALL", "available", "occupied", "maintenance"] as const).map((st) => (
                     <button
                       key={st}
@@ -667,7 +667,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                       className={`px-2.5 py-1 rounded-lg font-semibold capitalize transition-all ${
                         selectedStatus === st
                           ? "bg-[#1d4ed8] text-white"
-                          : "text-slate-400 hover:text-white"
+                          : "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                       }`}
                     >
                       {st}
@@ -680,7 +680,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
             {/* Stands Table */}
             <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
               <table className="w-full text-left text-xs">
-                <thead className="sticky top-0 bg-slate-900 border-b border-slate-800 text-slate-400 z-10">
+                <thead className="sticky top-0 bg-slate-100 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 z-10">
                   <tr>
                     <th className="py-2.5 font-bold uppercase">Stand ID</th>
                     <th className="py-2.5 font-bold uppercase">Building</th>
@@ -689,24 +689,24 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                     <th className="py-2.5 font-bold uppercase text-right">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="divide-y divide-slate-800/80">
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/80">
                   {filteredStands.slice(0, 50).map((stand) => (
-                    <tr key={stand.id} className="hover:bg-slate-800/40 transition-colors">
-                      <td className="py-2.5 font-mono font-bold text-white">
+                    <tr key={stand.id} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                      <td className="py-2.5 font-mono font-bold text-slate-900 dark:text-white">
                         <div className="flex items-center gap-2">
                           <span>{stand.id}</span>
                           <button
                             type="button"
                             onClick={() => setViewingQrStand(stand)}
-                            className="p-1 rounded-md bg-slate-800 hover:bg-slate-700 text-sky-400 hover:text-sky-300 border border-slate-700 transition-colors"
+                            className="p-1 rounded-md bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-sky-600 dark:text-sky-400 border border-slate-200 dark:border-slate-700 transition-colors"
                             title={`View QR Code for ${stand.id}`}
                           >
                             <QrCode className="size-3" />
                           </button>
                         </div>
                       </td>
-                      <td className="py-2.5 text-slate-300">{stand.building}</td>
-                      <td className="py-2.5 font-mono text-slate-400">#{stand.slot}</td>
+                      <td className="py-2.5 text-slate-700 dark:text-slate-300">{stand.building}</td>
+                      <td className="py-2.5 font-mono text-slate-500 dark:text-slate-400">#{stand.slot}</td>
                       <td className="py-2.5">
                         <StatusPill status={stand.status} size="sm" />
                       </td>
@@ -714,7 +714,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                         {stand.status === "occupied" ? (
                           <button
                             onClick={() => handleForceRelease(stand.id)}
-                            className="px-2.5 py-1 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 text-rose-400 font-semibold text-[11px] border border-rose-500/30 transition-colors"
+                            className="px-2.5 py-1 rounded-lg bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-rose-600 dark:text-rose-400 font-semibold text-[11px] border border-rose-200 dark:border-rose-500/30 transition-colors"
                           >
                             Release
                           </button>
@@ -723,8 +723,8 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                             onClick={() => handleToggleMaintenance(stand)}
                             className={`px-2.5 py-1 rounded-lg font-semibold text-[11px] border transition-colors ${
                               stand.status === "maintenance"
-                                ? "bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border-emerald-500/30"
-                                : "bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border-amber-500/30"
+                                ? "bg-emerald-50 dark:bg-emerald-500/10 hover:bg-emerald-100 dark:hover:bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border-emerald-200 dark:border-emerald-500/30"
+                                : "bg-amber-50 dark:bg-amber-500/10 hover:bg-amber-100 dark:hover:bg-amber-500/20 text-amber-600 dark:text-amber-400 border-amber-200 dark:border-amber-500/30"
                             }`}
                           >
                             {stand.status === "maintenance" ? "Clear Maint" : "Set Maint"}
@@ -736,7 +736,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                             setEditingStand(stand);
                             setEditStatus(stand.status);
                           }}
-                          className="px-2 py-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-[11px] border border-slate-700 transition-colors"
+                          className="px-2 py-1 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 font-semibold text-[11px] border border-slate-200 dark:border-slate-700 transition-colors"
                           title="Edit stand"
                         >
                           <Edit2 className="size-3" />
@@ -747,7 +747,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                 </tbody>
               </table>
               {filteredStands.length > 50 && (
-                <div className="py-2 text-center text-slate-500 text-[11px]">
+                <div className="py-2 text-center text-slate-500 dark:text-slate-400 text-[11px]">
                   Showing first 50 of {filteredStands.length} stands. Use filters to narrow down.
                 </div>
               )}
@@ -759,14 +759,14 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
       {/* TAB 3: BULK STUDENT REGISTRATION (CSV) */}
       {activeTab === "bulk-upload" && (
         <div className="space-y-6">
-          <Card className="p-6 bg-slate-900/90 border-slate-800 shadow-xl space-y-5">
+          <Card className="p-6 bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 shadow-xl space-y-5 text-slate-900 dark:text-slate-100">
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                  <Upload className="size-5 text-sky-400" />
+                <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Upload className="size-5 text-sky-500 dark:text-sky-400" />
                   <span>Bulk Register Students via CSV</span>
                 </h3>
-                <p className="text-xs text-slate-400 mt-0.5">
+                <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                   Import college student records to grant access to the ParkShark bicycle locking system
                 </p>
               </div>
@@ -784,12 +784,12 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
             {/* Upload Area / Textarea */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* File Drop Area */}
-              <div className="border-2 border-dashed border-slate-700 hover:border-sky-400 rounded-2xl p-6 text-center flex flex-col items-center justify-center bg-slate-950/40 transition-colors">
-                <FileText className="size-10 text-slate-500 mb-2" />
-                <span className="text-xs font-bold text-white block">
+              <div className="border-2 border-dashed border-slate-300 dark:border-slate-700 hover:border-sky-500 rounded-2xl p-6 text-center flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-950/40 transition-colors">
+                <FileText className="size-10 text-slate-400 mb-2" />
+                <span className="text-xs font-bold text-slate-900 dark:text-white block">
                   Select CSV File from Computer
                 </span>
-                <span className="text-[11px] text-slate-400 mt-1 block">
+                <span className="text-[11px] text-slate-500 dark:text-slate-400 mt-1 block">
                   Supported formats: .csv (columns: name, collegeId, phone, role)
                 </span>
                 <label className="mt-4">
@@ -807,7 +807,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
 
               {/* Paste CSV Textarea */}
               <div className="space-y-1.5">
-                <label className="text-xs font-semibold text-slate-300 block">
+                <label className="text-xs font-semibold text-slate-700 dark:text-slate-300 block">
                   Or Paste CSV Data Directly:
                 </label>
                 <textarea
@@ -815,23 +815,23 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                   value={csvText}
                   onChange={(e) => handleParseCsv(e.target.value)}
                   placeholder="name,collegeId,phone,role&#10;Kavya Nair,21BCE2045,+919876543230,student&#10;Aditya Sen,21BCE2046,+919876543231,student"
-                  className="w-full p-3 rounded-xl bg-slate-950 border border-slate-700 text-xs text-white font-mono placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-400"
+                  className="w-full p-3 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-xs text-slate-900 dark:text-white font-mono placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
                 />
               </div>
             </div>
 
             {/* Parse Preview */}
             {parsedResult && (
-              <div className="p-4 rounded-xl bg-slate-950 border border-slate-800 space-y-3">
+              <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 space-y-3">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
-                    <span className="text-xs font-bold text-white">Parsed Preview:</span>
-                    <span className="text-xs text-emerald-400 font-semibold flex items-center gap-1">
+                    <span className="text-xs font-bold text-slate-900 dark:text-white">Parsed Preview:</span>
+                    <span className="text-xs text-emerald-600 dark:text-emerald-400 font-semibold flex items-center gap-1">
                       <CheckCircle2 className="size-3.5" />
                       <span>{parsedResult.valid.length} Valid Records</span>
                     </span>
                     {parsedResult.errors.length > 0 && (
-                      <span className="text-xs text-rose-400 font-semibold flex items-center gap-1">
+                      <span className="text-xs text-rose-600 dark:text-rose-400 font-semibold flex items-center gap-1">
                         <XCircle className="size-3.5" />
                         <span>{parsedResult.errors.length} Formatting Errors</span>
                       </span>
@@ -853,7 +853,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                 {/* Validation Preview Table */}
                 <div className="max-h-48 overflow-y-auto">
                   <table className="w-full text-left text-xs">
-                    <thead className="border-b border-slate-800 text-slate-400 sticky top-0 bg-slate-950">
+                    <thead className="border-b border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 sticky top-0 bg-slate-100 dark:bg-slate-950">
                       <tr>
                         <th className="py-1.5">Name</th>
                         <th className="py-1.5">College ID</th>
@@ -862,22 +862,22 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                         <th className="py-1.5 text-right">Status</th>
                       </tr>
                     </thead>
-                    <tbody className="divide-y divide-slate-900">
+                    <tbody className="divide-y divide-slate-200 dark:divide-slate-900">
                       {parsedResult.valid.map((s, idx) => (
-                        <tr key={idx} className="hover:bg-slate-900/40">
-                          <td className="py-1.5 text-white">{s.name}</td>
-                          <td className="py-1.5 font-mono text-sky-400">{s.collegeId}</td>
-                          <td className="py-1.5 font-mono text-slate-300">{s.phone}</td>
-                          <td className="py-1.5 capitalize text-slate-400">{s.role}</td>
-                          <td className="py-1.5 text-right text-emerald-400 font-semibold">Valid</td>
+                        <tr key={idx} className="hover:bg-slate-100 dark:hover:bg-slate-900/40">
+                          <td className="py-1.5 text-slate-900 dark:text-white">{s.name}</td>
+                          <td className="py-1.5 font-mono text-sky-600 dark:text-sky-400">{s.collegeId}</td>
+                          <td className="py-1.5 font-mono text-slate-700 dark:text-slate-300">{s.phone}</td>
+                          <td className="py-1.5 capitalize text-slate-500 dark:text-slate-400">{s.role}</td>
+                          <td className="py-1.5 text-right text-emerald-600 dark:text-emerald-400 font-semibold">Valid</td>
                         </tr>
                       ))}
                       {parsedResult.errors.map((err, idx) => (
-                        <tr key={`err-${idx}`} className="bg-rose-950/20 text-rose-300">
+                        <tr key={`err-${idx}`} className="bg-rose-50 dark:bg-rose-950/20 text-rose-700 dark:text-rose-300">
                           <td colSpan={4} className="py-1.5">
                             Row {err.row}: {err.reason} ({err.raw})
                           </td>
-                          <td className="py-1.5 text-right text-rose-400 font-bold">Error</td>
+                          <td className="py-1.5 text-right text-rose-600 dark:text-rose-400 font-bold">Error</td>
                         </tr>
                       ))}
                     </tbody>
@@ -887,10 +887,10 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
             )}
 
             {/* Currently Registered Students Directory */}
-            <div className="pt-4 border-t border-slate-800 space-y-3">
+            <div className="pt-4 border-t border-slate-200 dark:border-slate-800 space-y-3">
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-bold text-white flex items-center gap-2">
-                  <Users className="size-4 text-purple-400" />
+                <h4 className="text-sm font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                  <Users className="size-4 text-purple-500 dark:text-purple-400" />
                   <span>Whitelisted Students Directory ({registeredList.length})</span>
                 </h4>
                 <span className="text-xs text-slate-500">Authorized for Stand Locking</span>
@@ -900,13 +900,13 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                 {registeredList.map((stu) => (
                   <div
                     key={stu.collegeId}
-                    className="p-2.5 rounded-xl bg-slate-950/60 border border-slate-800 flex items-center justify-between text-xs"
+                    className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs"
                   >
                     <div>
-                      <span className="font-semibold text-white block">{stu.name}</span>
-                      <span className="font-mono text-[11px] text-sky-400 block">{stu.collegeId}</span>
+                      <span className="font-semibold text-slate-900 dark:text-white block">{stu.name}</span>
+                      <span className="font-mono text-[11px] text-sky-600 dark:text-sky-400 block">{stu.collegeId}</span>
                     </div>
-                    <div className="text-right text-[11px] text-slate-400 font-mono">
+                    <div className="text-right text-[11px] text-slate-500 dark:text-slate-400 font-mono">
                       <span>{stu.phone}</span>
                     </div>
                   </div>
@@ -922,43 +922,43 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
         <div className="space-y-6 animate-fade-in">
           {/* KPI Summary Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-4">
-            <Card className="p-4 bg-slate-900/90 border-slate-800">
-              <span className="text-xs uppercase font-semibold text-slate-400">Total Logged</span>
-              <div className="text-2xl font-bold font-mono text-white mt-1">
+            <Card className="p-4 bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 shadow-sm text-slate-900 dark:text-slate-100">
+              <span className="text-xs uppercase font-semibold text-slate-500 dark:text-slate-400">Total Logged</span>
+              <div className="text-2xl font-bold font-mono text-slate-900 dark:text-white mt-1">
                 {complaints.length}
               </div>
               <span className="text-[11px] text-slate-500">All student reports</span>
             </Card>
 
-            <Card className="p-4 bg-slate-900/90 border-amber-500/30">
-              <span className="text-xs uppercase font-semibold text-amber-400">Pending Review</span>
-              <div className="text-2xl font-bold font-mono text-amber-300 mt-1">
+            <Card className="p-4 bg-white/90 dark:bg-slate-900/90 border-amber-300 dark:border-amber-500/30 shadow-sm text-slate-900 dark:text-slate-100">
+              <span className="text-xs uppercase font-semibold text-amber-600 dark:text-amber-400">Pending Review</span>
+              <div className="text-2xl font-bold font-mono text-amber-600 dark:text-amber-300 mt-1">
                 {complaints.filter((c) => c.status === "pending").length}
               </div>
-              <span className="text-[11px] text-amber-500/80">Requires facility action</span>
+              <span className="text-[11px] text-amber-600 dark:text-amber-500/80">Requires facility action</span>
             </Card>
 
-            <Card className="p-4 bg-slate-900/90 border-sky-500/30">
-              <span className="text-xs uppercase font-semibold text-sky-400">Under Investigation</span>
-              <div className="text-2xl font-bold font-mono text-sky-300 mt-1">
+            <Card className="p-4 bg-white/90 dark:bg-slate-900/90 border-sky-300 dark:border-sky-500/30 shadow-sm text-slate-900 dark:text-slate-100">
+              <span className="text-xs uppercase font-semibold text-sky-600 dark:text-sky-400">Under Investigation</span>
+              <div className="text-2xl font-bold font-mono text-sky-600 dark:text-sky-300 mt-1">
                 {complaints.filter((c) => c.status === "investigating").length}
               </div>
-              <span className="text-[11px] text-sky-500/80">Technician assigned</span>
+              <span className="text-[11px] text-sky-600 dark:text-sky-500/80">Technician assigned</span>
             </Card>
 
-            <Card className="p-4 bg-slate-900/90 border-emerald-500/30">
-              <span className="text-xs uppercase font-semibold text-emerald-400">Resolved</span>
-              <div className="text-2xl font-bold font-mono text-emerald-300 mt-1">
+            <Card className="p-4 bg-white/90 dark:bg-slate-900/90 border-emerald-300 dark:border-emerald-500/30 shadow-sm text-slate-900 dark:text-slate-100">
+              <span className="text-xs uppercase font-semibold text-emerald-600 dark:text-emerald-400">Resolved</span>
+              <div className="text-2xl font-bold font-mono text-emerald-600 dark:text-emerald-300 mt-1">
                 {complaints.filter((c) => c.status === "resolved").length}
               </div>
-              <span className="text-[11px] text-emerald-500/80">Closed & verified</span>
+              <span className="text-[11px] text-emerald-600 dark:text-emerald-500/80">Closed & verified</span>
             </Card>
           </div>
 
           {/* Filter Bar */}
-          <Card className="p-4 bg-slate-900/90 border-slate-800 flex flex-wrap items-center justify-between gap-3">
+          <Card className="p-4 bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 flex flex-wrap items-center justify-between gap-3 text-slate-900 dark:text-slate-100">
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs font-semibold text-slate-400 uppercase">Building:</span>
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">Building:</span>
               {(["ALL", "AB1", "AB2", "AB3"] as const).map((b) => (
                 <button
                   key={b}
@@ -966,7 +966,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                   className={`px-3 py-1 rounded-lg text-xs font-semibold transition-all ${
                     complaintBuildingFilter === b
                       ? "bg-[#1d4ed8] text-white shadow-sm"
-                      : "bg-slate-800 text-slate-400 hover:text-white"
+                      : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
                   {b}
@@ -975,7 +975,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
             </div>
 
             <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs font-semibold text-slate-400 uppercase">Status:</span>
+              <span className="text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase">Status:</span>
               {(["ALL", "pending", "investigating", "resolved"] as const).map((st) => (
                 <button
                   key={st}
@@ -983,7 +983,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                   className={`px-3 py-1 rounded-lg text-xs font-semibold capitalize transition-all ${
                     complaintStatusFilter === st
                       ? "bg-[#1d4ed8] text-white shadow-sm"
-                      : "bg-slate-800 text-slate-400 hover:text-white"
+                      : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white"
                   }`}
                 >
                   {st}
@@ -1006,29 +1006,29 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                 return (
                   <Card
                     key={comp.id}
-                    className="p-5 bg-slate-900/95 border-slate-800 shadow-xl space-y-3.5"
+                    className="p-5 bg-white/95 dark:bg-slate-900/95 border-slate-200 dark:border-slate-800 shadow-xl space-y-3.5 text-slate-900 dark:text-slate-100"
                   >
                     {/* Header */}
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2 border-b border-slate-800">
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-2 border-b border-slate-200 dark:border-slate-800">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="font-mono font-bold text-xs text-sky-400 bg-sky-950/70 border border-sky-800 px-2 py-0.5 rounded-lg">
+                        <span className="font-mono font-bold text-xs text-sky-700 dark:text-sky-400 bg-sky-100 dark:bg-sky-950/70 border border-sky-300 dark:border-sky-800 px-2 py-0.5 rounded-lg">
                           {comp.id}
                         </span>
                         {comp.standId && (
-                          <span className="font-mono font-bold text-xs text-white bg-slate-800 border border-slate-700 px-2 py-0.5 rounded-lg">
+                          <span className="font-mono font-bold text-xs text-slate-800 dark:text-white bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-2 py-0.5 rounded-lg">
                             Stand {comp.standId} ({comp.building})
                           </span>
                         )}
-                        <span className="text-xs text-slate-300 font-semibold">
+                        <span className="text-xs text-slate-700 dark:text-slate-300 font-semibold">
                           {CATEGORY_LABELS[comp.category]?.label || comp.category}
                         </span>
                         <span
                           className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${
                             comp.priority === "urgent"
-                              ? "bg-rose-500/20 text-rose-300 border-rose-500/40"
+                              ? "bg-rose-100 dark:bg-rose-500/20 text-rose-700 dark:text-rose-300 border-rose-300 dark:border-rose-500/40"
                               : comp.priority === "high"
-                              ? "bg-orange-500/20 text-orange-300 border-orange-500/40"
-                              : "bg-blue-500/20 text-blue-300 border-blue-500/40"
+                              ? "bg-orange-100 dark:bg-orange-500/20 text-orange-700 dark:text-orange-300 border-orange-300 dark:border-orange-500/40"
+                              : "bg-blue-100 dark:bg-blue-500/20 text-blue-700 dark:text-blue-300 border-blue-300 dark:border-blue-500/40"
                           }`}
                         >
                           {comp.priority}
@@ -1039,10 +1039,10 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                         <span
                           className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
                             comp.status === "pending"
-                              ? "bg-amber-500/20 text-amber-300 border-amber-500/40"
+                              ? "bg-amber-100 dark:bg-amber-500/20 text-amber-700 dark:text-amber-300 border-amber-300 dark:border-amber-500/40"
                               : comp.status === "investigating"
-                              ? "bg-sky-500/20 text-sky-300 border-sky-500/40"
-                              : "bg-emerald-500/20 text-emerald-300 border-emerald-500/40"
+                              ? "bg-sky-100 dark:bg-sky-500/20 text-sky-700 dark:text-sky-300 border-sky-300 dark:border-sky-500/40"
+                              : "bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border-emerald-300 dark:border-emerald-500/40"
                           }`}
                         >
                           {comp.status}
@@ -1060,27 +1060,27 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
 
                     {/* Content */}
                     <div>
-                      <h3 className="text-base font-bold text-white">{comp.title}</h3>
-                      <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                      <h3 className="text-base font-bold text-slate-900 dark:text-white">{comp.title}</h3>
+                      <p className="text-xs text-slate-600 dark:text-slate-300 mt-1 leading-relaxed">
                         {comp.description}
                       </p>
                     </div>
 
                     {/* Student Info */}
-                    <div className="p-2.5 rounded-xl bg-slate-950/50 border border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs">
+                    <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-xs">
                       <div className="flex items-center gap-2">
-                        <span className="text-slate-400">Reporter:</span>
-                        <span className="font-semibold text-white">{comp.studentName}</span>
-                        <span className="font-mono text-sky-400">({comp.studentId})</span>
+                        <span className="text-slate-500 dark:text-slate-400">Reporter:</span>
+                        <span className="font-semibold text-slate-900 dark:text-white">{comp.studentName}</span>
+                        <span className="font-mono text-sky-600 dark:text-sky-400">({comp.studentId})</span>
                       </div>
-                      <span className="font-mono text-slate-400 text-[11px]">
+                      <span className="font-mono text-slate-500 dark:text-slate-400 text-[11px]">
                         Phone: {comp.studentPhone}
                       </span>
                     </div>
 
                     {/* Admin Resolution Section */}
-                    <div className="pt-2 space-y-2 border-t border-slate-800">
-                      <label className="text-xs font-semibold uppercase tracking-wider text-slate-400 block">
+                    <div className="pt-2 space-y-2 border-t border-slate-200 dark:border-slate-800">
+                      <label className="text-xs font-semibold uppercase tracking-wider text-slate-600 dark:text-slate-400 block">
                         Admin / Facilities Resolution Notes:
                       </label>
                       <div className="flex flex-col sm:flex-row gap-2">
@@ -1091,7 +1091,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                             setResolutionNotes({ ...resolutionNotes, [comp.id]: e.target.value })
                           }
                           placeholder="e.g. Technician Ramesh inspected Stand; solenoid lock lubricated and recalibrated."
-                          className="flex-1 bg-slate-950/80 border border-slate-700 rounded-xl px-3 py-1.5 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
+                          className="flex-1 bg-slate-50 dark:bg-slate-950/80 border border-slate-300 dark:border-slate-700 rounded-xl px-3 py-1.5 text-xs text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-1 focus:ring-sky-500"
                         />
                       </div>
 
@@ -1105,9 +1105,9 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                                 updateStandStatus(comp.standId!, "maintenance");
                                 showToast(`Stand ${comp.standId} set to MAINTENANCE`, "info");
                               }}
-                              className="px-2.5 py-1 rounded-lg border border-amber-500/40 bg-amber-500/10 hover:bg-amber-500/20 text-amber-300 text-xs font-medium transition-colors flex items-center gap-1.5"
+                              className="px-2.5 py-1 rounded-lg border border-amber-300 dark:border-amber-500/40 bg-amber-50 dark:bg-amber-500/10 hover:bg-amber-100 dark:hover:bg-amber-500/20 text-amber-700 dark:text-amber-300 text-xs font-medium transition-colors flex items-center gap-1.5"
                             >
-                              <Wrench className="size-3.5 text-amber-400" />
+                              <Wrench className="size-3.5 text-amber-600 dark:text-amber-400" />
                               <span>Set Stand to Maintenance</span>
                             </button>
                           )}
@@ -1126,7 +1126,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                                 );
                                 showToast(`Ticket ${comp.id} marked as Investigating`, "info");
                               }}
-                              className="text-xs bg-slate-800 hover:bg-slate-700 text-sky-300"
+                              className="text-xs"
                             >
                               Investigate
                             </Button>
@@ -1170,13 +1170,13 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
         >
           <form onSubmit={handleSaveEdit} className="space-y-4 pt-2">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 mb-1.5">
+              <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">
                 Stand Status
               </label>
               <select
                 value={editStatus}
                 onChange={(e) => setEditStatus(e.target.value as StandStatus)}
-                className="w-full p-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:ring-2 focus:ring-sky-400"
+                className="w-full p-2.5 rounded-xl bg-slate-50 dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500"
               >
                 <option value="available">Available (Operational)</option>
                 <option value="occupied">Occupied (In-Use)</option>
@@ -1215,8 +1215,8 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
               </div>
             </div>
 
-            <div className="text-xs text-slate-400">
-              Payload: <code className="text-sky-300 font-mono text-[11px] bg-slate-800 px-1.5 py-0.5 rounded">{createStandQRPayload(viewingQrStand.id)}</code>
+            <div className="text-xs text-slate-500 dark:text-slate-400">
+              Payload: <code className="text-sky-700 dark:text-sky-300 font-mono text-[11px] bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">{createStandQRPayload(viewingQrStand.id)}</code>
             </div>
 
             <div className="flex gap-2 pt-2">

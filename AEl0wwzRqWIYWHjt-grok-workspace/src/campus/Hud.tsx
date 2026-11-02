@@ -409,26 +409,26 @@ export function Hud() {
       </div>
 
       {showPlaces && (
-        <div className="pointer-events-auto absolute top-28 right-3 left-3 max-h-72 overflow-y-auto rounded-2xl border border-slate-700 bg-slate-900/95 p-4 text-white shadow-2xl backdrop-blur-xl md:right-auto md:w-84 z-30">
-          <div className="mb-3 flex items-center justify-between border-b border-slate-800 pb-2">
+        <div className="pointer-events-auto absolute top-28 right-3 left-3 max-h-72 overflow-y-auto rounded-2xl border border-slate-200 dark:border-slate-700 bg-white/95 dark:bg-slate-900/95 p-4 text-slate-900 dark:text-white shadow-2xl backdrop-blur-xl md:right-auto md:w-84 z-30">
+          <div className="mb-3 flex items-center justify-between border-b border-slate-200 dark:border-slate-800 pb-2">
             <div className="flex items-center gap-2">
               <span className="size-2 rounded-full bg-amber-400" />
               <p className="font-display text-lg font-bold">Campus Places</p>
             </div>
             <button
               type="button"
-              className="grid size-9 place-items-center rounded-lg hover:bg-slate-800 text-slate-400 hover:text-white"
+              className="grid size-9 place-items-center rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-400 hover:text-slate-800 dark:hover:text-white"
               onClick={() => setShowPlaces(false)}
               aria-label="Close places"
             >
               <X className="size-5" />
             </button>
           </div>
-          <ul className="space-y-1.5 divide-y divide-slate-800/60">
+          <ul className="space-y-1.5 divide-y divide-slate-100 dark:divide-slate-800/60">
             {rows.map((row) => (
               <li key={row.name} className="flex items-baseline justify-between gap-3 pt-1.5 text-xs">
-                <span className="font-semibold text-slate-200">{row.name}</span>
-                <span className="text-sky-400 font-mono text-[11px]">
+                <span className="font-semibold text-slate-800 dark:text-slate-200">{row.name}</span>
+                <span className="text-sky-600 dark:text-sky-400 font-mono text-[11px]">
                   {Math.round(row.dist)} m &bull; {row.hint}
                 </span>
               </li>

@@ -134,23 +134,23 @@ export const LocationTracerModal: React.FC<LocationTracerModalProps> = ({
     : 0;
 
   return (
-    <div className="fixed inset-0 z-50 pointer-events-auto flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fade-in">
-      <Card className="w-full max-w-lg p-5 sm:p-6 bg-slate-900/95 border-sky-500/30 shadow-2xl rounded-2xl relative overflow-hidden">
+    <div className="fixed inset-0 z-50 pointer-events-auto flex items-center justify-center p-4 bg-black/60 dark:bg-slate-950/80 backdrop-blur-md animate-fade-in">
+      <Card className="w-full max-w-lg p-5 sm:p-6 bg-white dark:bg-slate-900/95 border-slate-200 dark:border-sky-500/30 shadow-2xl rounded-2xl relative overflow-hidden text-slate-900 dark:text-slate-100">
         {/* Glow ambient background accents */}
-        <div className="absolute -top-24 -right-24 size-48 rounded-full bg-sky-500/15 blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-24 -left-24 size-48 rounded-full bg-blue-600/15 blur-3xl pointer-events-none" />
+        <div className="absolute -top-24 -right-24 size-48 rounded-full bg-sky-500/10 blur-3xl pointer-events-none" />
+        <div className="absolute -bottom-24 -left-24 size-48 rounded-full bg-blue-600/10 blur-3xl pointer-events-none" />
 
         {/* Top Header */}
-        <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-800">
+        <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-2.5">
-            <div className="size-9 rounded-xl bg-sky-500/15 text-sky-400 flex items-center justify-center">
+            <div className="size-9 rounded-xl bg-sky-500/15 text-sky-600 dark:text-sky-400 flex items-center justify-center">
               <Compass className="size-5 animate-spin-slow" />
             </div>
             <div>
-              <h2 className="text-base font-bold text-white font-display">
+              <h2 className="text-base font-bold text-slate-900 dark:text-white font-display">
                 Smart Parking Assistant
               </h2>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Live location tracing & nearest slot matching
               </p>
             </div>
@@ -159,7 +159,7 @@ export const LocationTracerModal: React.FC<LocationTracerModalProps> = ({
           <button
             type="button"
             onClick={onClose}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-lg text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
             title="Dismiss"
           >
             <X className="size-5" />
@@ -172,22 +172,22 @@ export const LocationTracerModal: React.FC<LocationTracerModalProps> = ({
             <div className="relative size-24 flex items-center justify-center">
               <div className="absolute inset-0 rounded-full border-2 border-sky-400/40 animate-ping" />
               <div className="absolute inset-2 rounded-full border border-sky-400/60 animate-pulse" />
-              <div className="size-16 rounded-full bg-sky-500/20 text-sky-400 flex items-center justify-center shadow-lg shadow-sky-500/30">
+              <div className="size-16 rounded-full bg-sky-500/20 text-sky-600 dark:text-sky-400 flex items-center justify-center shadow-lg shadow-sky-500/30">
                 <Radio className="size-8 animate-spin" />
               </div>
             </div>
 
             <div>
-              <h3 className="text-lg font-bold text-white">
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white">
                 Tracing Your Location...
               </h3>
-              <p className="text-xs text-slate-400 mt-1 max-w-xs mx-auto">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xs mx-auto">
                 Connecting to campus GPS beacons and mapping your coordinates to VIT Vellore 3D ground.
               </p>
             </div>
 
-            <div className="flex items-center gap-2 text-[11px] font-mono text-sky-400 bg-sky-950/60 px-3 py-1.5 rounded-full border border-sky-500/30">
-              <span className="size-2 rounded-full bg-sky-400 animate-ping" />
+            <div className="flex items-center gap-2 text-[11px] font-mono text-sky-700 dark:text-sky-400 bg-sky-100 dark:bg-sky-950/60 px-3 py-1.5 rounded-full border border-sky-300 dark:border-sky-500/30">
+              <span className="size-2 rounded-full bg-sky-500 animate-ping" />
               <span>Scanning campus nodes &amp; parking sensors...</span>
             </div>
           </div>
@@ -195,67 +195,67 @@ export const LocationTracerModal: React.FC<LocationTracerModalProps> = ({
           /* Location Traced & Nearest Slot Found */
           <div className="space-y-4 animate-fade-in">
             {/* User Location Detected Banner */}
-            <div className="p-3 rounded-xl bg-slate-800/80 border border-slate-700/80 flex items-center justify-between gap-3 text-xs">
+            <div className="p-3 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/80 flex items-center justify-between gap-3 text-xs">
               <div className="flex items-center gap-2.5">
-                <div className="size-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center shrink-0">
+                <div className="size-8 rounded-lg bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
                   <CheckCircle2 className="size-4" />
                 </div>
                 <div>
-                  <div className="font-semibold text-white flex items-center gap-1.5">
+                  <div className="font-semibold text-slate-900 dark:text-white flex items-center gap-1.5">
                     <span>Location Traced:</span>
-                    <span className="text-emerald-400">{gpsData.placeName}</span>
+                    <span className="text-emerald-600 dark:text-emerald-400">{gpsData.placeName}</span>
                   </div>
-                  <div className="text-[11px] text-slate-400 font-mono mt-0.5">
+                  <div className="text-[11px] text-slate-500 dark:text-slate-400 font-mono mt-0.5">
                     GPS: {gpsData.lat.toFixed(4)}° N, {gpsData.lng.toFixed(4)}° E &bull; Grid ({sim.x.toFixed(1)}, {sim.z.toFixed(1)})
                   </div>
                 </div>
               </div>
-              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 shrink-0">
+              <span className="text-[10px] uppercase font-bold tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-500/30 shrink-0">
                 Live
               </span>
             </div>
 
             {/* Nearest Available Parking Slot Card */}
             {nearestStandResult ? (
-              <div className="p-4 rounded-xl bg-gradient-to-br from-sky-950/90 via-slate-900 to-slate-900 border-2 border-sky-400/60 shadow-xl space-y-3">
+              <div className="p-4 rounded-xl bg-gradient-to-br from-sky-50 dark:from-sky-950/90 via-white dark:via-slate-900 to-white dark:to-slate-900 border-2 border-sky-400/60 shadow-xl space-y-3">
                 <div className="flex items-start justify-between gap-2">
                   <div>
-                    <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#d4a017]/20 border border-[#d4a017]/40 text-[#d4a017] text-[10px] font-bold uppercase tracking-wider mb-1.5">
+                    <div className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-[#d4a017]/20 border border-[#d4a017]/40 text-amber-700 dark:text-[#d4a017] text-[10px] font-bold uppercase tracking-wider mb-1.5">
                       <Sparkles className="size-3" />
                       Nearest Available Slot
                     </div>
-                    <h3 className="text-2xl font-black font-display text-white tracking-tight flex items-center gap-2">
+                    <h3 className="text-2xl font-black font-display text-slate-900 dark:text-white tracking-tight flex items-center gap-2">
                       <span>Stand {nearestStandResult.stand.id}</span>
                       <StatusPill status={nearestStandResult.stand.status} size="sm" />
                     </h3>
-                    <p className="text-xs text-slate-300 flex items-center gap-1 mt-0.5">
-                      <MapPin className="size-3.5 text-rose-400 shrink-0" />
+                    <p className="text-xs text-slate-600 dark:text-slate-300 flex items-center gap-1 mt-0.5">
+                      <MapPin className="size-3.5 text-rose-500 shrink-0" />
                       <span>
                         {nearestStandResult.stand.building} Section &bull; Slot #{nearestStandResult.stand.slot}
                       </span>
                     </p>
                   </div>
 
-                  <div className="text-right bg-slate-800/80 px-3 py-2 rounded-xl border border-slate-700/80 shrink-0">
-                    <div className="text-xl font-black font-mono text-sky-400">
+                  <div className="text-right bg-slate-100 dark:bg-slate-800/80 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700/80 shrink-0">
+                    <div className="text-xl font-black font-mono text-sky-600 dark:text-sky-400">
                       {nearestStandResult.distance}m
                     </div>
-                    <div className="text-[10px] text-emerald-400 font-semibold flex items-center justify-end gap-1 mt-0.5">
+                    <div className="text-[10px] text-emerald-600 dark:text-emerald-400 font-semibold flex items-center justify-end gap-1 mt-0.5">
                       <Clock className="size-3" />
                       <span>~{walkingSeconds}s walk</span>
                     </div>
                   </div>
                 </div>
 
-                <div className="text-[11px] text-slate-300 bg-slate-900/60 p-2.5 rounded-lg border border-white/5 flex items-center gap-2">
-                  <ShieldCheck className="size-4 text-emerald-400 shrink-0" />
+                <div className="text-[11px] text-slate-600 dark:text-slate-300 bg-slate-50 dark:bg-slate-900/60 p-2.5 rounded-lg border border-slate-200 dark:border-white/5 flex items-center gap-2">
+                  <ShieldCheck className="size-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
                   <span>
                     Secured smart rack with QR-code locking and real-time electronic occupancy detection.
                   </span>
                 </div>
               </div>
             ) : (
-              <div className="p-4 rounded-xl bg-slate-800 text-center text-xs text-slate-400">
+              <div className="p-4 rounded-xl bg-slate-100 dark:bg-slate-800 text-center text-xs text-slate-500 dark:text-slate-400">
                 No stands are currently marked available.
               </div>
             )}
@@ -280,8 +280,8 @@ export const LocationTracerModal: React.FC<LocationTracerModalProps> = ({
                 size="md"
                 fullWidth
                 onClick={handleTakeMeThere}
-                leftIcon={<Footprints className="size-4 text-sky-400" />}
-                className="border-sky-500/40 text-slate-200 hover:bg-slate-800/80 hover:text-white text-xs font-semibold"
+                leftIcon={<Footprints className="size-4 text-sky-500 dark:text-sky-400" />}
+                className="border-slate-300 dark:border-sky-500/40 text-slate-800 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/80 text-xs font-semibold"
               >
                 Take Me to Slot (Auto-Walk Along Route)
               </Button>
@@ -290,7 +290,7 @@ export const LocationTracerModal: React.FC<LocationTracerModalProps> = ({
               <button
                 type="button"
                 onClick={onClose}
-                className="w-full text-center py-1 text-xs text-slate-400 hover:text-slate-300 transition-colors"
+                className="w-full text-center py-1 text-xs text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-300 transition-colors"
               >
                 Explore campus freely on your own
               </button>

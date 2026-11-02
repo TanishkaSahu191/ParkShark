@@ -281,9 +281,9 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
   if (!stand) {
     return (
       <div className="absolute inset-0 z-20 flex items-center justify-center p-4">
-        <Card className="max-w-sm p-6 text-center bg-slate-900 border-slate-700">
-          <h2 className="text-lg font-bold mb-2 text-white">Stand Not Found</h2>
-          <p className="text-sm text-slate-400 mb-4">No stand matching ID "{standId}" exists.</p>
+        <Card className="max-w-sm p-6 text-center bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700">
+          <h2 className="text-lg font-bold mb-2 text-slate-900 dark:text-white">Stand Not Found</h2>
+          <p className="text-sm text-slate-500 dark:text-slate-400 mb-4">No stand matching ID "{standId}" exists.</p>
           <Button fullWidth onClick={() => onNavigate("/campus")}>
             Return to Campus
           </Button>
@@ -295,24 +295,24 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
   // Requirement 7: Success state
   if (lockSuccess) {
     return (
-      <div className="relative min-h-[calc(100vh-3.5rem)] flex items-center justify-center p-4 pb-24 animate-fade-in">
-        <Card className="w-full max-w-md p-8 text-center bg-slate-900 border-emerald-500/50 shadow-2xl space-y-4">
-          <div className="size-20 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border-2 border-emerald-400 animate-bounce-short">
+      <div className="relative min-h-[calc(100vh-3.5rem)] flex items-center justify-center p-4 pb-24 animate-fade-in text-slate-900 dark:text-slate-100">
+        <Card className="w-full max-w-md p-8 text-center bg-white dark:bg-slate-900 border-emerald-500/50 shadow-2xl space-y-4">
+          <div className="size-20 rounded-full bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto border-2 border-emerald-400 animate-bounce-short">
             <Check className="size-10 stroke-[3]" />
           </div>
           <div>
-            <span className="text-xs font-mono uppercase tracking-widest text-emerald-400 font-bold">
+            <span className="text-xs font-mono uppercase tracking-widest text-emerald-600 dark:text-emerald-400 font-bold">
               Lock Secured
             </span>
-            <h2 className="text-2xl font-black font-display text-white mt-1">
+            <h2 className="text-2xl font-black font-display text-slate-900 dark:text-white mt-1">
               Stand {stand.id} Locked!
             </h2>
-            <p className="text-xs text-slate-300 mt-1">
+            <p className="text-xs text-slate-600 dark:text-slate-300 mt-1">
               Your {duration}-hour parking session is active. Opening timer...
             </p>
           </div>
-          <div className="pt-2 flex items-center justify-center gap-2 text-xs text-slate-400 font-mono">
-            <Clock className="size-4 text-sky-400 animate-spin" />
+          <div className="pt-2 flex items-center justify-center gap-2 text-xs text-slate-500 dark:text-slate-400 font-mono">
+            <Clock className="size-4 text-sky-500 dark:text-sky-400 animate-spin" />
             <span>Redirecting to Session Screen...</span>
           </div>
         </Card>
@@ -321,14 +321,14 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
   }
 
   return (
-    <div className="relative min-h-[calc(100vh-3.5rem)] flex items-center justify-center p-4 pb-24 animate-fade-in text-slate-100">
-      <Card className="w-full max-w-md p-6 sm:p-7 shadow-2xl border-white/20 bg-slate-900/95 backdrop-blur-xl">
+    <div className="relative min-h-[calc(100vh-3.5rem)] flex items-center justify-center p-4 pb-24 animate-fade-in text-slate-900 dark:text-slate-100">
+      <Card className="w-full max-w-md p-6 sm:p-7 shadow-2xl border-slate-200 dark:border-white/20 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl">
         {/* Top Header */}
-        <div className="flex items-center justify-between mb-4 border-b border-slate-800 pb-3">
+        <div className="flex items-center justify-between mb-4 border-b border-slate-200 dark:border-slate-800 pb-3">
           <button
             type="button"
             onClick={() => onNavigate("/campus")}
-            className="flex items-center gap-1.5 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
+            className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-white transition-colors"
           >
             <ArrowLeft className="size-4" />
             <span>Cancel</span>
@@ -338,13 +338,13 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
 
         {/* Stand Title */}
         <div className="mb-5">
-          <span className="text-[11px] uppercase tracking-wider font-bold text-sky-400 font-mono">
+          <span className="text-[11px] uppercase tracking-wider font-bold text-sky-600 dark:text-sky-400 font-mono">
             Smart Bicycle Locking
           </span>
-          <h1 className="text-2xl font-black font-display text-white tracking-tight">
+          <h1 className="text-2xl font-black font-display text-slate-900 dark:text-white tracking-tight">
             Stand {stand.id}
           </h1>
-          <p className="text-xs text-slate-400 mt-0.5">
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
             {stand.building} Section &bull; Slot #{stand.slot}
           </p>
         </div>
@@ -358,16 +358,16 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
 
         {/* Requirement 4: Verification Banner when scanned */}
         {scanned ? (
-          <div className="mb-6 p-4 rounded-2xl bg-emerald-950/70 border border-emerald-500/60 text-emerald-300 flex items-center justify-between gap-3 animate-slide-down">
+          <div className="mb-6 p-4 rounded-2xl bg-emerald-50 dark:bg-emerald-950/70 border border-emerald-300 dark:border-emerald-500/60 text-emerald-800 dark:text-emerald-300 flex items-center justify-between gap-3 animate-slide-down">
             <div className="flex items-center gap-3">
-              <div className="size-10 rounded-xl bg-emerald-500 text-slate-950 flex items-center justify-center font-bold shadow-md">
+              <div className="size-10 rounded-xl bg-emerald-500 text-white flex items-center justify-center font-bold shadow-md">
                 <Check className="size-6 stroke-[3]" />
               </div>
               <div>
-                <div className="font-extrabold text-sm text-white">
+                <div className="font-extrabold text-sm text-slate-900 dark:text-white">
                   QR Code Scanned! Stand {stand.id} is available.
                 </div>
-                <div className="text-[11px] text-emerald-400 flex items-center gap-1 font-mono">
+                <div className="text-[11px] text-emerald-700 dark:text-emerald-400 flex items-center gap-1 font-mono">
                   <ShieldCheck className="size-3.5" />
                   <span>Token Verified &bull; Ready to Lock</span>
                 </div>
@@ -379,7 +379,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
                 setScanned(false);
                 setScanMode("camera");
               }}
-              className="text-[11px] text-slate-400 hover:text-white underline"
+              className="text-[11px] text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white underline"
             >
               Re-scan
             </button>
@@ -388,11 +388,11 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
           /* Step 1: QR Scanner (html5-qrcode camera with permission handling + manual fallback) */
           <div className="mb-6 space-y-3">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                 1. Stand QR Verification
               </label>
               {/* Scan Mode Toggle */}
-              <div className="flex items-center gap-1.5 bg-slate-800/90 p-1 rounded-xl border border-slate-700/80">
+              <div className="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-800/90 p-1 rounded-xl border border-slate-200 dark:border-slate-700/80">
                 <button
                   type="button"
                   id="tab-scan-camera"
@@ -400,7 +400,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                     scanMode === "camera"
                       ? "bg-blue-600 text-white shadow-md ring-1 ring-blue-400/40"
-                      : "text-slate-300 hover:text-white hover:bg-slate-700/60"
+                      : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700/60"
                   }`}
                 >
                   <Camera className="size-3.5" />
@@ -413,7 +413,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
                   className={`px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
                     scanMode === "manual"
                       ? "bg-blue-600 text-white shadow-md ring-1 ring-blue-400/40"
-                      : "text-slate-300 hover:text-white hover:bg-slate-700/60"
+                      : "text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700/60"
                   }`}
                 >
                   <Keyboard className="size-3.5" />
@@ -424,7 +424,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
 
             {/* Mode A: Real Camera Scanner (html5-qrcode) - Kept in DOM with hidden to prevent teardown crashes */}
             <div
-              className={`relative rounded-2xl overflow-hidden border border-slate-700 bg-black min-h-[220px] flex-col items-center justify-center ${
+              className={`relative rounded-2xl overflow-hidden border border-slate-200 dark:border-slate-700 bg-black min-h-[220px] flex-col items-center justify-center ${
                 scanMode === "camera" ? "flex" : "hidden"
               }`}
             >
@@ -476,14 +476,14 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
             {scanMode === "manual" && (
               <form
                 onSubmit={handleManualSubmit}
-                className="p-4 rounded-2xl bg-slate-800/90 border border-slate-700 space-y-3 animate-fade-in"
+                className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/90 border border-slate-200 dark:border-slate-700 space-y-3 animate-fade-in"
               >
                 <div>
                   <div className="flex items-center justify-between mb-1">
-                    <label className="block text-xs text-slate-300 font-medium">
+                    <label className="block text-xs text-slate-700 dark:text-slate-300 font-medium">
                       Stand Code or QR String
                     </label>
-                    <span className="text-[10px] text-sky-400 font-mono font-semibold">
+                    <span className="text-[10px] text-sky-600 dark:text-sky-400 font-mono font-semibold">
                       Current Rack: {stand?.id || standId}
                     </span>
                   </div>
@@ -493,12 +493,12 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
                       placeholder={`e.g. ${stand?.id || "AB1-12"} or ${stand?.slot || "12"}`}
                       value={manualCodeInput}
                       onChange={(e) => setManualCodeInput(e.target.value)}
-                      className="w-full px-3 py-2.5 rounded-xl bg-slate-900 border border-slate-700 text-sm text-white font-mono placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
+                      className="w-full px-3 py-2.5 rounded-xl bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 text-sm text-slate-900 dark:text-white font-mono placeholder:text-slate-400 dark:placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-sky-500"
                       autoFocus
                     />
                   </div>
-                  <span className="text-[10px] text-slate-400 mt-1 block">
-                    Located on the metal plaque affixed to this rack. You can type <code className="text-sky-300">{stand?.id || standId}</code>.
+                  <span className="text-[10px] text-slate-500 dark:text-slate-400 mt-1 block">
+                    Located on the metal plaque affixed to this rack. You can type <code className="text-sky-600 dark:text-sky-300 font-bold">{stand?.id || standId}</code>.
                   </span>
                 </div>
 
@@ -514,7 +514,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
                       setManualCodeInput(stand?.id || standId);
                       handleManualSubmit();
                     }}
-                    className="text-xs text-sky-400 whitespace-nowrap"
+                    className="text-xs whitespace-nowrap"
                   >
                     Use Stand {stand?.id || standId}
                   </Button>
@@ -523,12 +523,12 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
             )}
 
             {/* Quick action: Simulated 3D scan shortcut */}
-            <div className="flex items-center justify-between text-[11px] text-slate-400 px-1">
+            <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 px-1">
               <span>Standing at the physical rack?</span>
               <button
                 type="button"
                 onClick={handleSimulateScan}
-                className="text-sky-400 hover:text-sky-300 font-semibold underline"
+                className="text-sky-600 dark:text-sky-400 hover:underline font-semibold"
               >
                 Instant 3D Scan
               </button>
@@ -538,7 +538,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
 
         {/* Requirement 5: Step 2 - Choose Duration (1, 2, or 3 hours) */}
         <div className="mb-6">
-          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-300 mb-2">
+          <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-2">
             2. Choose Duration
           </label>
           <div className="grid grid-cols-3 gap-2.5">
@@ -549,8 +549,8 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
                 onClick={() => setDuration(h)}
                 className={`py-3 px-2 rounded-xl text-center border transition-all ${
                   duration === h
-                    ? "border-sky-400 bg-[#1d4ed8] text-white shadow-lg font-bold scale-[1.02]"
-                    : "border-slate-700 bg-slate-800/80 text-slate-300 hover:border-slate-600"
+                    ? "border-sky-500 bg-[#1d4ed8] text-white shadow-lg font-bold scale-[1.02]"
+                    : "border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 hover:border-slate-300 dark:hover:border-slate-600"
                 }`}
               >
                 <div className="text-base font-extrabold font-mono">
@@ -566,10 +566,10 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
         <form onSubmit={handleLock} className="space-y-6">
           <div>
             <div className="flex justify-between items-center mb-2">
-              <label className="text-xs font-semibold uppercase tracking-wider text-slate-300">
+              <label className="text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300">
                 3. Set 4-Digit Unlock PIN
               </label>
-              <span className="text-[11px] text-slate-400 font-mono">Exactly 4 digits</span>
+              <span className="text-[11px] text-slate-500 dark:text-slate-400 font-mono">Exactly 4 digits</span>
             </div>
 
             <div className="grid grid-cols-4 gap-3 max-w-xs mx-auto">
@@ -586,7 +586,7 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
                   onChange={(e) => handlePinChange(idx, e.target.value)}
                   onKeyDown={(e) => handlePinKeyDown(idx, e)}
                   data-input="true"
-                  className="size-14 rounded-2xl text-center font-extrabold text-2xl bg-slate-800 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-sky-400 focus:border-transparent transition-all shadow-inner font-mono"
+                  className="size-14 rounded-2xl text-center font-extrabold text-2xl bg-slate-50 dark:bg-slate-800 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all shadow-inner font-mono"
                   aria-label={`PIN digit ${idx + 1}`}
                 />
               ))}
@@ -605,8 +605,8 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
             Lock Bicycle & Start Timer
           </Button>
 
-          <p className="text-[11px] text-slate-400 text-center flex items-center justify-center gap-1.5">
-            <ShieldCheck className="size-3.5 text-emerald-400" />
+          <p className="text-[11px] text-slate-500 dark:text-slate-400 text-center flex items-center justify-center gap-1.5">
+            <ShieldCheck className="size-3.5 text-emerald-500 dark:text-emerald-400" />
             <span>PIN is hashed with a cryptographic salt in Firestore.</span>
           </p>
         </form>

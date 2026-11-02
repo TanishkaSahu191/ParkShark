@@ -85,15 +85,15 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
                   setSelectedBuildingTab(code);
                   setShowAllStands(true);
                 }}
-                className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-slate-900/85 backdrop-blur-md border border-slate-700/80 hover:border-sky-500/80 shadow-sm text-xs font-semibold select-none transition-all active:scale-95"
+                className="flex items-center gap-2 px-3 py-1.5 rounded-2xl bg-white/90 dark:bg-slate-900/85 backdrop-blur-md border border-slate-200 dark:border-slate-700/80 hover:border-sky-500/80 shadow-sm text-xs font-semibold select-none transition-all active:scale-95"
                 title={`Click to view ${code} stands`}
               >
                 <div className="flex items-center gap-1.5">
-                  <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
-                  <span className="text-white font-mono">{code}</span>
+                  <span className="size-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
+                  <span className="text-slate-900 dark:text-white font-mono">{code}</span>
                 </div>
-                <span className="text-slate-500">|</span>
-                <span className={`${isFull ? "text-rose-400" : "text-emerald-400 font-medium"}`}>
+                <span className="text-slate-300 dark:text-slate-600">|</span>
+                <span className={`${isFull ? "text-rose-600 dark:text-rose-400" : "text-emerald-600 dark:text-emerald-400 font-medium"}`}>
                   {summary.available}/{summary.total} free
                 </span>
               </button>
@@ -108,8 +108,8 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
             variant="secondary"
             size="sm"
             onClick={() => setShowAllStands(true)}
-            leftIcon={<ListFilter className="size-3.5 text-sky-400" />}
-            className="shadow-md bg-slate-900/90 text-xs backdrop-blur-md"
+            leftIcon={<ListFilter className="size-3.5 text-sky-500 dark:text-sky-400" />}
+            className="shadow-md text-xs backdrop-blur-md"
           >
             All Stands (150)
           </Button>
@@ -119,14 +119,14 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
       {/* 2. Middle Notification: Tapped / Highlighted Stand Banner */}
       {highlightedStand && (
         <div className="pointer-events-auto self-center max-w-md w-full animate-slide-up">
-          <Card className="p-3 bg-sky-950/80 border-sky-400/40 backdrop-blur-md shadow-2xl flex items-center justify-between gap-3 text-xs">
+          <Card className="p-3 bg-white/95 dark:bg-sky-950/80 border-sky-400/50 backdrop-blur-md shadow-2xl flex items-center justify-between gap-3 text-xs text-slate-900 dark:text-slate-100">
             <div className="flex items-center gap-2 min-w-0">
-              <div className="size-7 rounded-lg bg-sky-500/20 text-sky-300 flex items-center justify-center shrink-0">
-                <Sparkles className="size-4 animate-spin text-sky-300" />
+              <div className="size-7 rounded-lg bg-sky-500/20 text-sky-600 dark:text-sky-300 flex items-center justify-center shrink-0">
+                <Sparkles className="size-4 animate-spin text-sky-600 dark:text-sky-300" />
               </div>
               <div className="truncate">
-                <span className="font-semibold text-white">Highlighted: {highlightedStand.id}</span>
-                <span className="text-slate-300 ml-1.5">({highlightedDistance}m away)</span>
+                <span className="font-semibold text-slate-900 dark:text-white">Highlighted: {highlightedStand.id}</span>
+                <span className="text-slate-500 dark:text-slate-300 ml-1.5">({highlightedDistance}m away)</span>
               </div>
             </div>
             <div className="flex items-center gap-1.5 shrink-0">
@@ -203,21 +203,21 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
       {/* 3. Floating Bottom Card: Nearest Available Stand (Requirement 4 & 5) */}
       <div className="pointer-events-auto max-w-sm w-full mx-auto sm:ml-4 sm:mr-auto mb-20 sm:mb-4">
         {nearest ? (
-          <Card className="p-4 shadow-2xl border-white/20 bg-slate-900/90 backdrop-blur-xl">
+          <Card className="p-4 shadow-2xl border-slate-200 dark:border-white/20 bg-white/95 dark:bg-slate-900/90 backdrop-blur-xl text-slate-900 dark:text-slate-100">
             <div className="flex items-start justify-between gap-3 mb-3">
               <div className="flex items-center gap-2.5">
-                <div className="size-10 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center shrink-0">
+                <div className="size-10 rounded-xl bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
                   <Bike className="size-5" />
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <h3 className="font-bold text-base text-white">
+                    <h3 className="font-bold text-base text-slate-900 dark:text-white">
                       Stand {nearest.stand.id}
                     </h3>
                     <StatusPill status={nearest.stand.status} size="sm" />
                   </div>
-                  <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
-                    <MapPin className="size-3 text-sky-400" />
+                  <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1 mt-0.5">
+                    <MapPin className="size-3 text-sky-500 dark:text-sky-400" />
                     <span>{nearest.stand.building} Section &bull; {nearest.distance}m away</span>
                   </p>
                 </div>
@@ -227,7 +227,7 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
               <button
                 type="button"
                 onClick={() => selectStand(nearest.stand.id)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-sky-300 hover:bg-white/10 transition-colors"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-sky-600 dark:hover:text-sky-300 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
                 title="Highlight in 3D campus"
               >
                 <Eye className="size-4" />
@@ -263,37 +263,37 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
 
       {/* 4. All Stands Modal / Drawer Grouped by Building (Requirement 4) */}
       {showAllStands && (
-        <div className="fixed inset-0 z-50 pointer-events-auto flex items-center justify-center p-3 sm:p-4 bg-slate-950/70 backdrop-blur-md animate-fade-in">
-          <Card className="w-full max-w-3xl max-h-[85vh] flex flex-col p-4 sm:p-6 bg-slate-900 border-slate-700 shadow-2xl">
+        <div className="fixed inset-0 z-50 pointer-events-auto flex items-center justify-center p-3 sm:p-4 bg-black/60 dark:bg-slate-950/70 backdrop-blur-md animate-fade-in">
+          <Card className="w-full max-w-3xl max-h-[85vh] flex flex-col p-4 sm:p-6 bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 shadow-2xl text-slate-900 dark:text-slate-100">
             {/* Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-200 dark:border-slate-800">
               <div className="flex items-center gap-2.5">
                 <div className="size-9 rounded-xl bg-[#1d4ed8] text-white flex items-center justify-center">
                   <Bike className="size-5" />
                 </div>
                 <div>
-                  <h2 className="text-lg font-bold text-white font-display">Campus Bicycle Stands</h2>
-                  <p className="text-xs text-slate-400">150 numbered slots across AB1, AB2 and AB3</p>
+                  <h2 className="text-lg font-bold text-slate-900 dark:text-white font-display">Campus Bicycle Stands</h2>
+                  <p className="text-xs text-slate-500 dark:text-slate-400">150 numbered slots across AB1, AB2 and AB3</p>
                 </div>
               </div>
               <button
                 type="button"
                 onClick={() => setShowAllStands(false)}
-                className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+                className="p-1.5 rounded-lg text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               >
                 <X className="size-5" />
               </button>
             </div>
 
             {/* Building Filter Tabs */}
-            <div className="flex items-center gap-2 py-3 border-b border-slate-800 overflow-x-auto">
+            <div className="flex items-center gap-2 py-3 border-b border-slate-200 dark:border-slate-800 overflow-x-auto">
               <button
                 type="button"
                 onClick={() => setSelectedBuildingTab("ALL")}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                   selectedBuildingTab === "ALL"
                     ? "bg-[#1d4ed8] text-white shadow"
-                    : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
                 }`}
               >
                 All Buildings (150)
@@ -306,7 +306,7 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
                   className={`px-3 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all ${
                     selectedBuildingTab === b
                       ? "bg-[#1d4ed8] text-white shadow"
-                      : "bg-slate-800 text-slate-300 hover:bg-slate-700"
+                      : "bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700"
                   }`}
                 >
                   <span>{b}</span>
@@ -325,9 +325,9 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
                   const summary = buildingSummaries[b];
                   return (
                     <div key={b} className="space-y-2">
-                      <div className="flex items-center justify-between bg-slate-800/60 px-3 py-1.5 rounded-xl border border-slate-700/50">
-                        <span className="font-semibold text-sm text-white font-mono">{b} Grounds</span>
-                        <span className="text-xs font-semibold text-emerald-400">
+                      <div className="flex items-center justify-between bg-slate-100 dark:bg-slate-800/60 px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-700/50">
+                        <span className="font-semibold text-sm text-slate-900 dark:text-white font-mono">{b} Grounds</span>
+                        <span className="text-xs font-semibold text-emerald-600 dark:text-emerald-400">
                           {summary.freeCountText}
                         </span>
                       </div>
@@ -348,13 +348,13 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
                               }}
                               className={`p-2.5 rounded-xl border text-left cursor-pointer transition-all ${
                                 isSelected
-                                  ? "bg-sky-950/80 border-sky-400 ring-2 ring-sky-400/50 shadow-lg scale-[1.02]"
-                                  : "bg-slate-800/70 border-slate-700/80 hover:border-slate-600 hover:bg-slate-800"
+                                  ? "bg-sky-50 dark:bg-sky-950/80 border-sky-500 ring-2 ring-sky-400/50 shadow-lg scale-[1.02]"
+                                  : "bg-slate-50 dark:bg-slate-800/70 border-slate-200 dark:border-slate-700/80 hover:border-slate-300 dark:hover:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-800"
                               }`}
                             >
                               <div className="flex items-center justify-between mb-1.5">
                                 <div className="flex items-center gap-1.5">
-                                  <span className="font-mono font-bold text-xs text-white">
+                                  <span className="font-mono font-bold text-xs text-slate-900 dark:text-white">
                                     {stand.id}
                                   </span>
                                   <button
@@ -363,7 +363,7 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
                                       e.stopPropagation();
                                       setViewingQrStand(stand);
                                     }}
-                                    className="p-1 rounded hover:bg-sky-500/20 text-sky-400 hover:text-sky-300 transition-colors"
+                                    className="p-1 rounded hover:bg-sky-500/20 text-sky-600 dark:text-sky-400 transition-colors"
                                     title="View Stand QR Code"
                                   >
                                     <QrCode className="size-3.5" />
@@ -372,7 +372,7 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
                                 <StatusPill status={stand.status} size="sm" />
                               </div>
 
-                              <div className="flex items-center justify-between text-[11px] text-slate-400">
+                              <div className="flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
                                 <span>{dist}m away</span>
                                 {stand.status === "available" && (
                                   <button
@@ -382,7 +382,7 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
                                       setShowAllStands(false);
                                       onNavigate(`/navigate/${stand.id}`);
                                     }}
-                                    className="text-sky-400 hover:text-sky-300 font-semibold hover:underline"
+                                    className="text-sky-600 dark:text-sky-400 hover:underline font-semibold"
                                     title="View Route"
                                   >
                                     Route &rarr;
@@ -399,7 +399,7 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
             </div>
 
             {/* Footer */}
-            <div className="pt-3 border-t border-slate-800 flex justify-between items-center text-xs text-slate-400">
+            <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex justify-between items-center text-xs text-slate-500 dark:text-slate-400">
               <span>Tip: Tap any stand to highlight it with a glowing 3D beacon in the scene.</span>
               <div className="flex items-center gap-2">
                 <Button
@@ -409,7 +409,7 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
                     setShowAllStands(false);
                     onNavigate("/complaints");
                   }}
-                  leftIcon={<AlertTriangle className="size-3.5 text-rose-400" />}
+                  leftIcon={<AlertTriangle className="size-3.5 text-rose-500 dark:text-rose-400" />}
                 >
                   Report an Issue
                 </Button>
@@ -436,25 +436,25 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
 
       {/* Stand QR Code Placard Modal */}
       {viewingQrStand && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/75 backdrop-blur-md animate-fade-in pointer-events-auto">
-          <Card className="max-w-sm w-full p-6 bg-slate-900/95 border-sky-400/40 shadow-2xl relative space-y-4 text-center">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fade-in pointer-events-auto">
+          <Card className="max-w-sm w-full p-6 bg-white dark:bg-slate-900/95 border-slate-200 dark:border-sky-400/40 shadow-2xl relative space-y-4 text-center text-slate-900 dark:text-slate-100">
             <button
               onClick={() => setViewingQrStand(null)}
-              className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+              className="absolute top-4 right-4 p-1.5 rounded-lg text-slate-400 hover:text-slate-800 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
               title="Close"
             >
               <X className="size-5" />
             </button>
 
             <div>
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-950 border border-sky-400/40 text-sky-300 text-xs font-semibold mb-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-sky-100 dark:bg-sky-950 border border-sky-300 dark:border-sky-400/40 text-sky-800 dark:text-sky-300 text-xs font-semibold mb-2">
                 <Bike className="size-3.5" />
                 <span>{viewingQrStand.building} Section &bull; Slot #{viewingQrStand.slot}</span>
               </div>
-              <h3 className="text-2xl font-black font-display text-white tracking-tight">
+              <h3 className="text-2xl font-black font-display text-slate-900 dark:text-white tracking-tight">
                 Stand {viewingQrStand.id}
               </h3>
-              <p className="text-xs text-slate-400 mt-1">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">
                 Scan this official QR code with your camera to lock your bicycle
               </p>
             </div>

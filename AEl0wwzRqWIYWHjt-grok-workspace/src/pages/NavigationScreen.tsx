@@ -158,12 +158,12 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
     <div className="absolute inset-0 pointer-events-none z-20 flex flex-col justify-between p-4 pb-20 overflow-hidden">
       {/* 1. Top Navigation Card (Telemetry, Stand Info, Cancel Button) */}
       <div className="pointer-events-auto max-w-lg w-full mx-auto animate-slide-down">
-        <Card className="p-4 shadow-2xl border-white/20 bg-slate-900/95 backdrop-blur-xl">
+        <Card className="p-4 shadow-2xl border-slate-200 dark:border-white/20 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl text-slate-900 dark:text-slate-100">
           {/* Header row: Waypoint tag, status, Cancel button */}
-          <div className="flex items-center justify-between mb-3 border-b border-slate-800/80 pb-2.5">
+          <div className="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-800/80 pb-2.5">
             <div className="flex items-center gap-2">
-              <span className="flex size-2 rounded-full bg-sky-400 animate-ping" />
-              <span className="text-[11px] uppercase tracking-wider font-bold text-sky-400 font-mono">
+              <span className="flex size-2 rounded-full bg-sky-500 animate-ping" />
+              <span className="text-[11px] uppercase tracking-wider font-bold text-sky-600 dark:text-sky-400 font-mono">
                 Active 3D Waypoint
               </span>
             </div>
@@ -174,10 +174,10 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
               <button
                 type="button"
                 onClick={handleCancel}
-                className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:text-white hover:bg-rose-900/60 transition-all border border-slate-700/80 active:scale-95"
+                className="flex items-center gap-1 px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-rose-50 dark:hover:bg-rose-900/60 transition-all border border-slate-200 dark:border-slate-700/80 active:scale-95"
                 title="Cancel navigation"
               >
-                <X className="size-3.5 text-rose-400" />
+                <X className="size-3.5 text-rose-500" />
                 <span>Cancel</span>
               </button>
             </div>
@@ -186,30 +186,30 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
           {/* Stand identification and live distance metrics */}
           <div className="flex items-start justify-between gap-3">
             <div>
-              <h2 className="text-2xl font-black font-display text-white tracking-tight">
+              <h2 className="text-2xl font-black font-display text-slate-900 dark:text-white tracking-tight">
                 Stand {stand.id}
               </h2>
-              <p className="text-xs text-slate-400 flex items-center gap-1.5 mt-0.5">
-                <MapPin className="size-3.5 text-rose-400 shrink-0" />
+              <p className="text-xs text-slate-500 dark:text-slate-400 flex items-center gap-1.5 mt-0.5">
+                <MapPin className="size-3.5 text-rose-500 shrink-0" />
                 <span>{stand.building} Section &bull; Slot #{stand.slot}</span>
               </p>
               {/* World unit scale documentation badge */}
-              <div className="flex items-center gap-1 mt-2 text-[10px] text-slate-400 font-mono">
-                <Info className="size-3 text-sky-400/80" />
+              <div className="flex items-center gap-1 mt-2 text-[10px] text-slate-400 dark:text-slate-500 font-mono">
+                <Info className="size-3 text-sky-500/80" />
                 <span>Scale: 1 unit = 1.0m &bull; Pace: 1.3 m/s</span>
               </div>
             </div>
 
             {/* Requirement 2: Live distance and walking time */}
-            <div className="text-right bg-slate-800/70 p-2.5 rounded-xl border border-slate-700/60 min-w-28">
-              <div className="text-2xl font-extrabold text-sky-400 font-mono tracking-tight">
+            <div className="text-right bg-slate-100 dark:bg-slate-800/70 p-2.5 rounded-xl border border-slate-200 dark:border-slate-700/60 min-w-28">
+              <div className="text-2xl font-extrabold text-sky-600 dark:text-sky-400 font-mono tracking-tight">
                 {distance.toFixed(1)}m
               </div>
-              <div className="text-[11px] font-semibold text-emerald-400 flex items-center justify-end gap-1 mt-0.5">
+              <div className="text-[11px] font-semibold text-emerald-600 dark:text-emerald-400 flex items-center justify-end gap-1 mt-0.5">
                 <Clock className="size-3" />
                 <span>{formatWalkingTime(walkingTimeSeconds)}</span>
               </div>
-              <span className="text-[9px] uppercase tracking-wider text-slate-400 font-bold block mt-0.5">
+              <span className="text-[9px] uppercase tracking-wider text-slate-500 dark:text-slate-400 font-bold block mt-0.5">
                 {hasArrived ? "Arrived" : "Remaining"}
               </span>
             </div>
@@ -271,12 +271,12 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
 
       {/* 3. Bottom Action Card & Arrival Confirmation */}
       <div className="pointer-events-auto max-w-lg w-full mx-auto space-y-2 mb-16 sm:mb-2">
-        <Card className="p-3.5 shadow-2xl border-white/20 bg-slate-900/95 backdrop-blur-xl">
+        <Card className="p-3.5 shadow-2xl border-slate-200 dark:border-white/20 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl text-slate-900 dark:text-slate-100">
           {/* Requirement 3: "I've arrived" action appears when player is within 2 world units */}
           {hasArrived ? (
             <div className="space-y-2 animate-fade-in">
-              <div className="flex items-center gap-2 p-2 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-300 text-xs">
-                <CheckCircle2 className="size-4 shrink-0 text-emerald-400" />
+              <div className="flex items-center gap-2 p-2 rounded-xl bg-emerald-500/15 border border-emerald-500/40 text-emerald-800 dark:text-emerald-300 text-xs">
+                <CheckCircle2 className="size-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
                 <span className="font-semibold">
                   You are within 2m of Rack {stand.id}! Ready to check in.
                 </span>
@@ -294,18 +294,18 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
             </div>
           ) : (
             <div className="space-y-2">
-              <div className="flex items-center justify-between text-xs text-slate-400">
+              <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400">
                 <span className="flex items-center gap-1.5">
-                  <Footprints className="size-3.5 text-sky-400" />
+                  <Footprints className="size-3.5 text-sky-500 dark:text-sky-400" />
                   <span>Walk within 2.0m to unlock check-in</span>
                 </span>
-                <span className="font-mono text-white font-semibold">
+                <span className="font-mono text-slate-900 dark:text-white font-semibold">
                   {(distance - 2.0).toFixed(1)}m to arrival zone
                 </span>
               </div>
 
               {/* Progress bar to 2m arrival threshold */}
-              <div className="w-full bg-slate-800 rounded-full h-1.5 overflow-hidden">
+              <div className="w-full bg-slate-200 dark:bg-slate-800 rounded-full h-1.5 overflow-hidden">
                 <div
                   className="bg-sky-500 h-full transition-all duration-150"
                   style={{
@@ -316,10 +316,10 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
 
               {/* Auto-walk along route control */}
               {isAutoNavigating ? (
-                <div className="p-2 rounded-xl bg-sky-950/80 border border-sky-500/40 flex items-center justify-between gap-2 text-xs">
-                  <div className="flex items-center gap-2 text-sky-200">
-                    <span className="size-2 rounded-full bg-sky-400 animate-ping" />
-                    <Footprints className="size-4 text-sky-400" />
+                <div className="p-2 rounded-xl bg-sky-50 dark:bg-sky-950/80 border border-sky-300 dark:border-sky-500/40 flex items-center justify-between gap-2 text-xs">
+                  <div className="flex items-center gap-2 text-sky-800 dark:text-sky-200">
+                    <span className="size-2 rounded-full bg-sky-500 animate-ping" />
+                    <Footprints className="size-4 text-sky-600 dark:text-sky-400" />
                     <span className="font-semibold">Auto-navigating to Stand {stand.id}...</span>
                   </div>
                   <Button
@@ -329,8 +329,8 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
                       stopAutoNav();
                       setIsAutoNavigating(false);
                     }}
-                    leftIcon={<Pause className="size-3.5 text-amber-400" />}
-                    className="h-7 text-xs px-2.5 border-amber-500/40 text-amber-300 hover:bg-amber-950/60"
+                    leftIcon={<Pause className="size-3.5 text-amber-500" />}
+                    className="h-7 text-xs px-2.5 border-amber-500/40 text-amber-600 dark:text-amber-300 hover:bg-amber-50 dark:hover:bg-amber-950/60"
                   >
                     Pause
                   </Button>
@@ -357,7 +357,7 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
                   variant="outline"
                   size="sm"
                   onClick={handleCancel}
-                  className="text-xs text-slate-300"
+                  className="text-xs"
                 >
                   Cancel Navigation
                 </Button>
@@ -375,12 +375,12 @@ export const NavigationScreen: React.FC<NavigationScreenProps> = ({ standId, onN
           )}
 
           {/* Test tool: Simulate occupancy toggle for evaluation */}
-          <div className="pt-2 mt-2 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
+          <div className="pt-2 mt-2 border-t border-slate-200 dark:border-slate-800/80 flex items-center justify-between text-[11px] text-slate-500 dark:text-slate-400">
             <span>Test Scenario:</span>
             <button
               type="button"
               onClick={handleToggleSimulateOccupied}
-              className="text-sky-400 hover:text-sky-300 underline font-semibold text-[11px]"
+              className="text-sky-600 dark:text-sky-400 hover:underline font-semibold text-[11px]"
             >
               {stand.status === "available"
                 ? "Simulate: Mark Stand Occupied"

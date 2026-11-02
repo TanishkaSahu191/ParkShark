@@ -38,11 +38,11 @@ export const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       primary:
         "bg-[#1d4ed8] hover:bg-[#1e40af] text-white shadow-sm hover:shadow-md focus-visible:ring-[#1d4ed8]",
       secondary:
-        "bg-slate-200 hover:bg-slate-300 text-slate-800 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-100 focus-visible:ring-slate-500",
+        "bg-slate-100 hover:bg-slate-200 text-slate-900 dark:bg-slate-800 dark:hover:bg-slate-700 dark:text-slate-100 border border-slate-200 dark:border-slate-700/80 focus-visible:ring-slate-500",
       outline:
-        "border border-slate-300 dark:border-slate-700 bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-200 focus-visible:ring-[#1d4ed8]",
+        "border border-slate-300 dark:border-slate-700 bg-white/60 dark:bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/60 text-slate-900 dark:text-slate-100 focus-visible:ring-[#1d4ed8]",
       ghost:
-        "bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-600 dark:text-slate-300 focus-visible:ring-slate-400",
+        "bg-transparent hover:bg-slate-100 dark:hover:bg-slate-800/50 text-slate-800 dark:text-slate-200 focus-visible:ring-slate-400",
       danger:
         "bg-[#dc2626] hover:bg-[#b91c1c] text-white shadow-sm focus-visible:ring-[#dc2626]",
       success:

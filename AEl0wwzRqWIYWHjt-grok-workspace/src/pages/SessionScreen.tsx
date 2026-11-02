@@ -191,7 +191,7 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ onNavigate }) => {
 
           {/* Center Digital Clock */}
           <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-            <span className="text-[11px] font-bold uppercase tracking-widest text-slate-400 mb-1">
+            <span className="text-[11px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 mb-1">
               Time Remaining
             </span>
             <div
@@ -208,7 +208,7 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ onNavigate }) => {
                 &bull; Less Than 10 Min
               </span>
             ) : (
-              <span className="text-[11px] font-medium text-slate-400 mt-1">
+              <span className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 mt-1">
                 Duration: {activeSession.durationHours} hr{activeSession.durationHours > 1 ? "s" : ""}
               </span>
             )}
@@ -230,15 +230,15 @@ export const SessionScreen: React.FC<SessionScreenProps> = ({ onNavigate }) => {
                 <h4 className="font-bold text-base text-slate-900 dark:text-white">
                   Stand {activeSession.standId}
                 </h4>
-                <p className="text-xs text-slate-400 flex items-center gap-1 mt-0.5">
+                <p className="text-xs text-slate-600 dark:text-slate-400 flex items-center gap-1 mt-0.5">
                   <MapPin className="size-3" />
                   <span>{activeSession.building} Section &bull; Slot #{activeSession.slot}</span>
                 </p>
               </div>
             </div>
             <div className="text-right">
-              <span className="text-xs text-slate-400">Total Duration</span>
-              <div className="text-sm font-bold text-slate-800 dark:text-slate-200">
+              <span className="text-xs text-slate-500 dark:text-slate-400">Total Duration</span>
+              <div className="text-sm font-bold text-slate-900 dark:text-slate-200">
                 {activeSession.durationHours} hr{activeSession.durationHours > 1 ? "s" : ""}
               </div>
             </div>

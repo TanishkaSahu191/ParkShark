@@ -247,14 +247,14 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate }) => {
           className="size-full object-cover scale-105"
           src={LOGIN_BG_VIDEO_URL}
         />
-        {/* Deep navy frosted gradient overlay to ensure card readability & contrast */}
-        <div className="absolute inset-0 bg-gradient-to-b from-[#08162b]/85 via-[#08162b]/65 to-[#061224]/90 backdrop-blur-[1px]" />
+        {/* Dual-theme overlay: clean crisp frost in light mode, deep navy frost in dark mode */}
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/30 to-slate-950/50 dark:from-[#08162b]/85 dark:via-[#08162b]/65 dark:to-[#061224]/90 backdrop-blur-[1px]" />
       </div>
 
       {/* Invisible reCAPTCHA container */}
       <div id="recaptcha-container" />
 
-      <Card className="relative z-10 w-full max-w-md p-6 sm:p-8 shadow-2xl border-white/20 bg-slate-900/85 backdrop-blur-xl">
+      <Card className="relative z-10 w-full max-w-md p-6 sm:p-8 shadow-2xl border-slate-200/90 dark:border-white/20 bg-white/95 dark:bg-slate-900/85 backdrop-blur-xl">
         {/* Brand Header */}
         <div className="text-center mb-6">
           <img
@@ -262,11 +262,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate }) => {
             alt="ParkShark Logo"
             className="size-20 mx-auto object-contain mb-3 drop-shadow-2xl"
           />
-          <h1 className="text-2xl font-bold font-display tracking-tight text-white flex items-center justify-center gap-1.5">
+          <h1 className="text-2xl font-bold font-display tracking-tight text-slate-900 dark:text-white flex items-center justify-center gap-1.5">
             <span>Park</span><span className="text-[#00c2cb]">Shark</span>
-            <span className="text-slate-300 font-normal">Login</span>
+            <span className="text-slate-600 dark:text-slate-300 font-normal">Login</span>
           </h1>
-          <p className="text-sm text-slate-400 mt-1">
+          <p className="text-sm text-slate-600 dark:text-slate-400 mt-1">
             Smart Bicycle Management & 3D Campus Explorer
           </p>
         </div>
@@ -275,9 +275,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate }) => {
         {error && (
           <div
             id="auth-error-message"
-            className="mb-5 p-3.5 rounded-xl bg-red-950/60 border border-red-800/80 text-xs text-red-300 flex items-start gap-2.5 animate-shake"
+            className="mb-5 p-3.5 rounded-xl bg-red-50 dark:bg-red-950/60 border border-red-200 dark:border-red-800/80 text-xs text-red-700 dark:text-red-300 flex items-start gap-2.5 animate-shake"
           >
-            <AlertCircle className="size-4 shrink-0 text-red-400 mt-0.5" />
+            <AlertCircle className="size-4 shrink-0 text-red-500 dark:text-red-400 mt-0.5" />
             <div className="flex-1 font-medium">{error}</div>
           </div>
         )}
@@ -306,48 +306,48 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate }) => {
 
             {/* Test Credentials Quick-Fill Chips for Evaluator */}
             <div className="pt-2">
-              <p className="text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-2">
+              <p className="text-[11px] font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-2">
                 Quick Test Credentials (Pre-registered):
               </p>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5 text-xs">
                 <button
                   type="button"
                   onClick={() => setIdentifier("21BCE1042")}
-                  className="px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-left text-slate-300 transition-colors flex items-center justify-between"
+                  className="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-300 text-left text-slate-800 dark:bg-slate-800/80 dark:hover:bg-slate-700/80 dark:border-slate-700 dark:text-slate-200 transition-colors flex items-center justify-between"
                 >
                   <span className="font-mono font-medium">21BCE1042</span>
-                  <span className="text-[11px] text-sky-400">Arjun S.</span>
+                  <span className="text-[11px] text-sky-600 dark:text-sky-400 font-medium">Arjun S.</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setIdentifier("9876543210")}
-                  className="px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-left text-slate-300 transition-colors flex items-center justify-between"
+                  className="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-300 text-left text-slate-800 dark:bg-slate-800/80 dark:hover:bg-slate-700/80 dark:border-slate-700 dark:text-slate-200 transition-colors flex items-center justify-between"
                 >
                   <span className="font-mono font-medium">9876543210</span>
-                  <span className="text-[11px] text-sky-400">Phone</span>
+                  <span className="text-[11px] text-sky-600 dark:text-sky-400 font-medium">Phone</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setIdentifier("21BCE1088")}
-                  className="px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-left text-slate-300 transition-colors flex items-center justify-between"
+                  className="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-300 text-left text-slate-800 dark:bg-slate-800/80 dark:hover:bg-slate-700/80 dark:border-slate-700 dark:text-slate-200 transition-colors flex items-center justify-between"
                 >
                   <span className="font-mono font-medium">21BCE1088</span>
-                  <span className="text-[11px] text-sky-400">Priya P.</span>
+                  <span className="text-[11px] text-sky-600 dark:text-sky-400 font-medium">Priya P.</span>
                 </button>
                 <button
                   type="button"
                   onClick={() => setIdentifier("22BCE1984")}
-                  className="px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700/80 border border-slate-700 text-left text-slate-300 transition-colors flex items-center justify-between"
+                  className="px-2.5 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 border border-slate-300 text-left text-slate-800 dark:bg-slate-800/80 dark:hover:bg-slate-700/80 dark:border-slate-700 dark:text-slate-200 transition-colors flex items-center justify-between"
                 >
                   <span className="font-mono font-medium">22BCE1984</span>
-                  <span className="text-[11px] text-sky-400">Rohan V.</span>
+                  <span className="text-[11px] text-sky-600 dark:text-sky-400 font-medium">Rohan V.</span>
                 </button>
               </div>
             </div>
 
-            <div className="pt-2 text-center text-xs text-slate-400">
+            <div className="pt-2 text-center text-xs text-slate-600 dark:text-slate-400">
               <span className="inline-flex items-center gap-1.5">
-                <ShieldCheck className="size-3.5 text-emerald-400" />
+                <ShieldCheck className="size-3.5 text-emerald-600 dark:text-emerald-400" />
                 Protected by reCAPTCHA & Firebase Auth
               </span>
             </div>
@@ -357,11 +357,11 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate }) => {
             <div>
               <div className="flex justify-between items-center mb-2">
                 <div>
-                  <label className="text-xs font-semibold uppercase tracking-wider text-slate-300 block">
+                  <label className="text-xs font-semibold uppercase tracking-wider text-slate-700 dark:text-slate-300 block">
                     Enter 6-digit Code
                   </label>
                   {matchedStudent && (
-                    <span className="text-[11px] text-sky-400 flex items-center gap-1 mt-0.5">
+                    <span className="text-[11px] text-sky-600 dark:text-sky-400 font-medium flex items-center gap-1 mt-0.5">
                       <UserCheck className="size-3" />
                       {matchedStudent.name} ({matchedStudent.phone})
                     </span>
@@ -373,7 +373,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate }) => {
                     setStep("phone");
                     setError(null);
                   }}
-                  className="text-xs text-sky-400 hover:text-sky-300 hover:underline"
+                  className="text-xs text-sky-600 dark:text-sky-400 hover:underline font-medium"
                 >
                   Change ID / Phone
                 </button>
@@ -394,7 +394,7 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate }) => {
                     value={digit}
                     onChange={(e) => handleOtpChange(idx, e.target.value)}
                     onKeyDown={(e) => handleOtpKeyDown(idx, e)}
-                    className="size-11 sm:size-12 rounded-xl text-center font-bold text-lg bg-slate-800/90 border border-slate-700 text-white focus:outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-transparent transition-all shadow-inner"
+                    className="size-11 sm:size-12 rounded-xl text-center font-bold text-lg bg-slate-100 dark:bg-slate-800/90 border border-slate-300 dark:border-slate-700 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-[#1d4ed8] focus:border-transparent transition-all shadow-inner"
                     aria-label={`OTP digit ${idx + 1}`}
                   />
                 ))}
@@ -412,14 +412,14 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate }) => {
             </Button>
 
             {/* Resend Cooldown (Requirement 2) */}
-            <div className="flex items-center justify-between text-xs text-slate-400 pt-1">
+            <div className="flex items-center justify-between text-xs text-slate-600 dark:text-slate-400 pt-1">
               <span>Didn't receive code?</span>
               <button
                 type="button"
                 id="resend-otp-button"
                 disabled={cooldown > 0 || isSubmitting}
                 onClick={handleResend}
-                className="font-medium text-sky-400 disabled:opacity-50 disabled:cursor-not-allowed hover:underline flex items-center gap-1"
+                className="font-medium text-sky-600 dark:text-sky-400 disabled:opacity-50 disabled:cursor-not-allowed hover:underline flex items-center gap-1"
               >
                 <RefreshCw className={`size-3 ${cooldown > 0 ? "animate-spin" : ""}`} />
                 <span>{cooldown > 0 ? `Resend in ${cooldown}s` : "Resend OTP"}</span>
