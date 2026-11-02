@@ -28,9 +28,14 @@ export const Route = createRootRoute({
   }),
   notFoundComponent: () => <AppShell />,
   component: () => (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="dark">
       <head>
         <HeadContent />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem('parkshark_theme')||'dark';if(t==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark')}document.documentElement.setAttribute('data-theme',t)}catch(e){}})()`,
+          }}
+        />
       </head>
       <body>
         <PreviewHostBridge />

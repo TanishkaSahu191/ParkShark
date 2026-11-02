@@ -95,7 +95,7 @@ export const BottomTabBar: React.FC<BottomTabBarProps> = ({ currentPath, onNavig
   return (
     <nav
       aria-label="Bottom Navigation"
-      className="fixed bottom-0 inset-x-0 z-40 bg-slate-950/95 dark:bg-[#07192f]/95 backdrop-blur-xl border-t border-slate-800/80 dark:border-[#163c63] shadow-2xl px-2 sm:px-4 py-1.5 pb-safe"
+      className="fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-[#07192f]/95 backdrop-blur-xl border-t border-slate-200 dark:border-[#163c63] shadow-2xl px-2 sm:px-4 py-1.5 pb-safe transition-colors duration-200"
     >
       <div
         className={`max-w-xl mx-auto grid gap-1 sm:gap-2 ${
@@ -106,9 +106,9 @@ export const BottomTabBar: React.FC<BottomTabBarProps> = ({ currentPath, onNavig
           const Icon = tab.icon;
 
           // Distinct styling per action
-          let buttonClasses = "text-slate-400 hover:text-slate-200 hover:bg-slate-800/50";
-          let iconClasses = "size-5 text-slate-400";
-          let labelClasses = "text-slate-400 font-medium";
+          let buttonClasses = "text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800/50";
+          let iconClasses = "size-5 text-slate-500 dark:text-slate-400";
+          let labelClasses = "text-slate-600 dark:text-slate-400 font-medium";
 
           if (tab.colorScheme === "nearest") {
             buttonClasses =
@@ -130,20 +130,20 @@ export const BottomTabBar: React.FC<BottomTabBarProps> = ({ currentPath, onNavig
           } else if (tab.colorScheme === "admin") {
             if (tab.isActive) {
               buttonClasses =
-                "text-purple-300 font-bold bg-purple-950/70 border border-purple-500/50 shadow-sm";
-              iconClasses = "size-5 text-purple-300 scale-110";
-              labelClasses = "text-purple-200 font-bold";
+                "text-purple-700 dark:text-purple-300 font-bold bg-purple-100 dark:bg-purple-950/70 border border-purple-300 dark:border-purple-500/50 shadow-sm";
+              iconClasses = "size-5 text-purple-600 dark:text-purple-300 scale-110";
+              labelClasses = "text-purple-800 dark:text-purple-200 font-bold";
             } else {
               buttonClasses =
-                "text-purple-400/80 hover:text-purple-200 hover:bg-purple-950/40";
-              iconClasses = "size-5 text-purple-400";
-              labelClasses = "text-purple-400 font-medium";
+                "text-purple-600 dark:text-purple-400/80 hover:text-purple-900 dark:hover:text-purple-200 hover:bg-purple-50 dark:hover:bg-purple-950/40";
+              iconClasses = "size-5 text-purple-600 dark:text-purple-400";
+              labelClasses = "text-purple-600 dark:text-purple-400 font-medium";
             }
           } else if (tab.isActive) {
             buttonClasses =
-              "text-sky-300 font-bold bg-sky-950/60 border border-sky-500/40 shadow-sm";
-            iconClasses = "size-5 text-sky-300 scale-110";
-            labelClasses = "text-sky-200 font-bold";
+              "text-sky-700 dark:text-sky-300 font-bold bg-sky-100 dark:bg-sky-950/60 border border-sky-300 dark:border-sky-500/40 shadow-sm";
+            iconClasses = "size-5 text-sky-600 dark:text-sky-300 scale-110";
+            labelClasses = "text-sky-800 dark:text-sky-200 font-bold";
           }
 
           return (

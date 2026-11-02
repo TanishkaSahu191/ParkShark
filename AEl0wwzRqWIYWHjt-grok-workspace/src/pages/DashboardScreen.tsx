@@ -136,9 +136,9 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
   };
 
   return (
-    <div className="relative min-h-[calc(100vh-3.5rem)] p-4 max-w-4xl mx-auto pb-28 space-y-6 animate-fade-in text-slate-100">
+    <div className="relative min-h-[calc(100vh-3.5rem)] p-4 max-w-4xl mx-auto pb-28 space-y-6 animate-fade-in text-slate-900 dark:text-slate-100">
       {/* 1. User Profile Card */}
-      <Card className="p-6 shadow-xl border-white/20 bg-slate-900/90 backdrop-blur-md">
+      <Card className="p-6 shadow-xl border-slate-200 dark:border-white/20 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <div className="size-16 rounded-2xl bg-gradient-to-tr from-[#1d4ed8] via-[#0284c7] to-[#00c2cb] text-white flex items-center justify-center font-bold text-2xl shadow-lg shadow-blue-500/25">
@@ -146,22 +146,22 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
             </div>
             <div>
               <div className="flex items-center gap-2.5">
-                <h1 className="text-xl font-bold font-display text-white">
+                <h1 className="text-xl font-bold font-display text-slate-900 dark:text-white">
                   {user?.name || "Student User"}
                 </h1>
                 <span
                   className={`text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full border ${
                     user?.role === "admin"
-                      ? "bg-purple-950/60 text-purple-300 border-purple-700/60"
-                      : "bg-sky-950/60 text-sky-300 border-sky-800"
+                      ? "bg-purple-100 dark:bg-purple-950/60 text-purple-700 dark:text-purple-300 border-purple-300 dark:border-purple-700/60"
+                      : "bg-sky-100 dark:bg-sky-950/60 text-sky-700 dark:text-sky-300 border-sky-300 dark:border-sky-800"
                   }`}
                 >
                   {user?.role === "admin" ? "Campus Admin" : "Student"}
                 </span>
               </div>
-              <p className="text-xs text-slate-400 mt-1 flex flex-wrap items-center gap-2">
+              <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 flex flex-wrap items-center gap-2">
                 <span>
-                  College ID: <span className="font-semibold text-slate-200">{user?.collegeId || "21BCE1042"}</span>
+                  College ID: <span className="font-semibold text-slate-800 dark:text-slate-200">{user?.collegeId || "21BCE1042"}</span>
                 </span>
                 <span>&bull;</span>
                 <span>{user?.phone || "+91 9876543210"}</span>
@@ -174,9 +174,9 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
             <button
               onClick={handleToggleRole}
               title="Toggle role for testing"
-              className="text-xs font-semibold px-2.5 py-1.5 rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors flex items-center gap-1.5"
+              className="text-xs font-semibold px-2.5 py-1.5 rounded-xl border border-slate-300 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors flex items-center gap-1.5"
             >
-              <Shield className="size-3.5 text-amber-400" />
+              <Shield className="size-3.5 text-amber-500 dark:text-amber-400" />
               <span>Role: {user?.role === "admin" ? "Admin" : "Student"}</span>
             </button>
 
@@ -206,20 +206,20 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
 
       {/* 2. Current Session Card with Live Time Remaining & "Unlock Now" Button */}
       {activeSession ? (
-        <Card className="p-6 border-emerald-500/40 bg-gradient-to-r from-emerald-950/40 via-slate-900/90 to-slate-900/90 shadow-2xl relative overflow-hidden">
+        <Card className="p-6 border-emerald-500/40 bg-gradient-to-r from-emerald-50 dark:from-emerald-950/40 via-white dark:via-slate-900/90 to-white dark:to-slate-900/90 shadow-2xl relative overflow-hidden">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <span className="size-2.5 rounded-full bg-emerald-400 animate-ping" />
-                <span className="text-xs font-bold uppercase tracking-wider text-emerald-400">
+                <span className="size-2.5 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-ping" />
+                <span className="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400">
                   Current Active Parking Session
                 </span>
               </div>
-              <h2 className="text-2xl font-bold font-display text-white">
+              <h2 className="text-2xl font-bold font-display text-slate-900 dark:text-white">
                 Stand {activeSession.standId}
               </h2>
-              <p className="text-xs text-slate-300 flex items-center gap-1.5">
-                <MapPin className="size-3.5 text-emerald-400" />
+              <p className="text-xs text-slate-600 dark:text-slate-300 flex items-center gap-1.5">
+                <MapPin className="size-3.5 text-emerald-500 dark:text-emerald-400" />
                 <span>
                   {activeSession.building} Academic Section &bull; Slot #{activeSession.slot} &bull; Allotted: {activeSession.durationHours} hr{activeSession.durationHours > 1 ? "s" : ""}
                 </span>
@@ -227,14 +227,14 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
             </div>
 
             {/* Live Time Remaining Digital Display */}
-            <div className="flex items-center gap-4 bg-slate-950/60 p-4 rounded-2xl border border-slate-800">
+            <div className="flex items-center gap-4 bg-slate-100 dark:bg-slate-950/60 p-4 rounded-2xl border border-slate-200 dark:border-slate-800">
               <div className="text-center">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-400 block mb-0.5">
+                <span className="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 block mb-0.5">
                   Time Remaining
                 </span>
                 <div
                   className={`text-3xl font-extrabold font-mono tracking-tight ${
-                    isLowTime ? "text-red-400 animate-pulse" : "text-emerald-400"
+                    isLowTime ? "text-red-500 dark:text-red-400 animate-pulse" : "text-emerald-600 dark:text-emerald-400"
                   }`}
                 >
                   {formattedTime}
@@ -255,13 +255,13 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
           </div>
         </Card>
       ) : (
-        <Card className="p-6 border-slate-800 bg-slate-900/70 text-center space-y-3">
-          <div className="size-12 rounded-2xl bg-slate-800 text-slate-400 flex items-center justify-center mx-auto">
+        <Card className="p-6 border-slate-200 dark:border-slate-800 bg-white/80 dark:bg-slate-900/70 text-center space-y-3">
+          <div className="size-12 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 flex items-center justify-center mx-auto">
             <Clock className="size-6" />
           </div>
           <div>
-            <h3 className="text-base font-bold text-white">No Active Session</h3>
-            <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+            <h3 className="text-base font-bold text-slate-900 dark:text-white">No Active Session</h3>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
               You do not have a bicycle locked right now. Head over to the 3D campus map to locate an open slot.
             </p>
           </div>
@@ -278,53 +278,53 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
 
       {/* Campus Impact Metrics */}
       <div className="grid grid-cols-3 gap-3 sm:gap-4">
-        <Card className="p-4 text-center bg-slate-900/80 border-slate-800">
-          <div className="size-9 rounded-xl bg-blue-500/10 text-sky-400 flex items-center justify-center mx-auto mb-2">
+        <Card className="p-4 text-center bg-white/85 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="size-9 rounded-xl bg-blue-500/10 text-sky-500 dark:text-sky-400 flex items-center justify-center mx-auto mb-2">
             <Bike className="size-5" />
           </div>
-          <div className="text-2xl font-extrabold text-white font-mono">
+          <div className="text-2xl font-extrabold text-slate-900 dark:text-white font-mono">
             {totalCompletedRides + (activeSession ? 1 : 0)}
           </div>
-          <div className="text-[11px] text-slate-400 uppercase font-semibold mt-0.5">
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 uppercase font-semibold mt-0.5">
             Total Rides
           </div>
         </Card>
 
-        <Card className="p-4 text-center bg-slate-900/80 border-slate-800">
-          <div className="size-9 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mx-auto mb-2">
+        <Card className="p-4 text-center bg-white/85 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="size-9 rounded-xl bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center mx-auto mb-2">
             <Leaf className="size-5" />
           </div>
-          <div className="text-2xl font-extrabold text-emerald-400 font-mono">
+          <div className="text-2xl font-extrabold text-emerald-600 dark:text-emerald-400 font-mono">
             {carbonSavedKg} <span className="text-sm font-normal">kg</span>
           </div>
-          <div className="text-[11px] text-slate-400 uppercase font-semibold mt-0.5">
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 uppercase font-semibold mt-0.5">
             CO₂ Saved
           </div>
         </Card>
 
-        <Card className="p-4 text-center bg-slate-900/80 border-slate-800">
-          <div className="size-9 rounded-xl bg-amber-500/10 text-amber-400 flex items-center justify-center mx-auto mb-2">
+        <Card className="p-4 text-center bg-white/85 dark:bg-slate-900/80 border-slate-200 dark:border-slate-800 shadow-sm">
+          <div className="size-9 rounded-xl bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center justify-center mx-auto mb-2">
             <Clock className="size-5" />
           </div>
-          <div className="text-2xl font-extrabold text-white font-mono">
+          <div className="text-2xl font-extrabold text-slate-900 dark:text-white font-mono">
             {totalHoursParked} <span className="text-sm font-normal">hrs</span>
           </div>
-          <div className="text-[11px] text-slate-400 uppercase font-semibold mt-0.5">
+          <div className="text-[11px] text-slate-500 dark:text-slate-400 uppercase font-semibold mt-0.5">
             Parked Time
           </div>
         </Card>
       </div>
 
       {/* 3. Recent Activity (locked, unlocked, completed, expired) with Timestamps and Pagination */}
-      <Card className="p-6 bg-slate-900/90 border-slate-800 shadow-xl space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-800">
+      <Card className="p-6 bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 shadow-xl space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-2 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-2.5">
-            <div className="p-2 rounded-xl bg-slate-800 text-slate-300">
+            <div className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
               <History className="size-5" />
             </div>
             <div>
-              <h2 className="text-lg font-bold text-white">Recent Activity Feed</h2>
-              <p className="text-xs text-slate-400">
+              <h2 className="text-lg font-bold text-slate-900 dark:text-white">Recent Activity Feed</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Log of all lock, unlock, completion, and expiry events
               </p>
             </div>
@@ -342,7 +342,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
                 className={`px-2.5 py-1 rounded-lg text-xs font-semibold capitalize transition-all ${
                   filterType === filter
                     ? "bg-[#1d4ed8] text-white shadow-sm"
-                    : "bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700"
+                    : "bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
                 }`}
               >
                 {filter}
@@ -357,7 +357,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
             No activity records match the selected filter.
           </div>
         ) : (
-          <div className="divide-y divide-slate-800">
+          <div className="divide-y divide-slate-100 dark:divide-slate-800">
             {paginatedActivities.map((act) => {
               const meta = getActivityBadge(act.type);
               const Icon = meta.icon;
@@ -365,7 +365,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
               return (
                 <div
                   key={act.id}
-                  className="py-3.5 flex items-center justify-between gap-4 hover:bg-slate-800/40 px-2 rounded-xl transition-colors"
+                  className="py-3.5 flex items-center justify-between gap-4 hover:bg-slate-50 dark:hover:bg-slate-800/40 px-2 rounded-xl transition-colors"
                 >
                   <div className="flex items-center gap-3.5">
                     <div className={`size-10 rounded-xl ${meta.iconBg} flex items-center justify-center shrink-0`}>
@@ -373,24 +373,24 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
                     </div>
                     <div>
                       <div className="flex items-center gap-2">
-                        <h4 className="font-semibold text-sm text-white">
+                        <h4 className="font-semibold text-sm text-slate-900 dark:text-white">
                           Stand {act.standId}
                         </h4>
                         <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border ${meta.badgeClass}`}>
                           {meta.label}
                         </span>
                       </div>
-                      <p className="text-xs text-slate-400 mt-0.5">
+                      <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
                         {act.details || `${act.building} Section, Slot #${act.slot}`}
                       </p>
                     </div>
                   </div>
 
                   <div className="text-right shrink-0">
-                    <span className="text-xs font-mono text-slate-300 block">
+                    <span className="text-xs font-mono text-slate-700 dark:text-slate-300 block">
                       {new Date(act.timestamp).toLocaleDateString([], { month: "short", day: "numeric" })}
                     </span>
-                    <span className="text-[11px] text-slate-500 block">
+                    <span className="text-[11px] text-slate-400 dark:text-slate-500 block">
                       {new Date(act.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}
                     </span>
                   </div>
@@ -401,7 +401,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
         )}
 
         {/* Pagination Controls */}
-        <div className="pt-3 border-t border-slate-800 flex items-center justify-between text-xs text-slate-400">
+        <div className="pt-3 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
           <div>
             Showing {(currentPage - 1) * pageSize + 1} to{" "}
             {Math.min(currentPage * pageSize, filteredActivities.length)} of{" "}
@@ -412,18 +412,18 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
             <button
               onClick={() => handlePageChange(currentPage - 1)}
               disabled={currentPage === 1}
-              className="p-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-slate-300"
+              className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-slate-700 dark:text-slate-300"
               aria-label="Previous page"
             >
               <ChevronLeft className="size-4" />
             </button>
-            <span className="px-2 font-semibold text-slate-200">
+            <span className="px-2 font-semibold text-slate-800 dark:text-slate-200">
               Page {currentPage} of {totalPages}
             </span>
             <button
               onClick={() => handlePageChange(currentPage + 1)}
               disabled={currentPage === totalPages}
-              className="p-1.5 rounded-lg border border-slate-700 bg-slate-800 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-slate-300"
+              className="p-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed text-slate-700 dark:text-slate-300"
               aria-label="Next page"
             >
               <ChevronRight className="size-4" />
@@ -433,20 +433,20 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
       </Card>
 
       {/* 4. Register a Complaint & Campus Support Section */}
-      <Card className="p-6 bg-slate-900/90 border-slate-800 shadow-xl space-y-4">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+      <Card className="p-6 bg-white/90 dark:bg-slate-900/90 border-slate-200 dark:border-slate-800 shadow-xl space-y-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-slate-200 dark:border-slate-800">
           <div className="flex items-center gap-2.5">
-            <div className="size-10 rounded-xl bg-rose-500/15 text-rose-400 border border-rose-500/30 flex items-center justify-center shrink-0">
+            <div className="size-10 rounded-xl bg-rose-500/15 text-rose-500 dark:text-rose-400 border border-rose-500/30 flex items-center justify-center shrink-0">
               <MessageSquareWarning className="size-5" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="text-lg font-bold text-white">Register a Complaint</h2>
-                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-rose-950/60 text-rose-300 border border-rose-800">
+                <h2 className="text-lg font-bold text-slate-900 dark:text-white">Register a Complaint</h2>
+                <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-rose-100 dark:bg-rose-950/60 text-rose-700 dark:text-rose-300 border border-rose-300 dark:border-rose-800">
                   Campus Support
                 </span>
               </div>
-              <p className="text-xs text-slate-400">
+              <p className="text-xs text-slate-500 dark:text-slate-400">
                 Report damaged bicycle stands, jammed smart locks, missing QR placards, or timing disputes
               </p>
             </div>
@@ -467,23 +467,23 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
 
         {/* Active Session Stand Quick-Report Shortcut */}
         {activeSession && (
-          <div className="p-3.5 rounded-xl bg-slate-950/70 border border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+          <div className="p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/70 border border-slate-200 dark:border-slate-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
             <div className="flex items-center gap-2.5">
-              <span className="size-2 rounded-full bg-emerald-400 animate-pulse" />
+              <span className="size-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
               <div>
-                <span className="text-slate-300">
-                  Currently parked at <span className="font-bold text-white font-mono">Stand {activeSession.standId}</span> ({activeSession.building} Section)
+                <span className="text-slate-700 dark:text-slate-300">
+                  Currently parked at <span className="font-bold text-slate-900 dark:text-white font-mono">Stand {activeSession.standId}</span> ({activeSession.building} Section)
                 </span>
-                <span className="text-slate-500 block text-[11px]">
+                <span className="text-slate-400 dark:text-slate-500 block text-[11px]">
                   Lock jammed or issue with the rack?
                 </span>
               </div>
             </div>
             <button
               onClick={() => onNavigate(`/complaints?stand=${activeSession.standId}`)}
-              className="px-3 py-1.5 rounded-lg border border-rose-500/40 bg-rose-500/10 hover:bg-rose-500/20 text-rose-300 font-semibold transition-colors shrink-0 flex items-center gap-1.5"
+              className="px-3 py-1.5 rounded-lg border border-rose-300 dark:border-rose-500/40 bg-rose-50 dark:bg-rose-500/10 hover:bg-rose-100 dark:hover:bg-rose-500/20 text-rose-700 dark:text-rose-300 font-semibold transition-colors shrink-0 flex items-center gap-1.5"
             >
-              <AlertTriangle className="size-3.5 text-rose-400" />
+              <AlertTriangle className="size-3.5 text-rose-500 dark:text-rose-400" />
               <span>Report Stand {activeSession.standId}</span>
             </button>
           </div>
@@ -491,13 +491,13 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
 
         {/* Student's complaints overview */}
         {studentComplaints.length === 0 ? (
-          <div className="p-6 rounded-xl border border-slate-800/80 bg-slate-950/40 text-center space-y-2">
-            <p className="text-xs text-slate-400">
+          <div className="p-6 rounded-xl border border-slate-200 dark:border-slate-800/80 bg-slate-50 dark:bg-slate-950/40 text-center space-y-2">
+            <p className="text-xs text-slate-500 dark:text-slate-400">
               You haven't filed any complaints yet. All bicycle stands are regularly maintained by VIT Facilities.
             </p>
             <button
               onClick={() => onNavigate("/complaints")}
-              className="text-xs text-sky-400 hover:text-sky-300 font-medium inline-flex items-center gap-1"
+              className="text-xs text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 font-medium inline-flex items-center gap-1"
             >
               <span>Need help or want to report an issue? Open the Complaint Portal</span>
               <ChevronRight className="size-3.5" />
@@ -505,45 +505,45 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
           </div>
         ) : (
           <div className="space-y-2.5">
-            <div className="flex items-center justify-between text-xs text-slate-400">
-              <span className="font-semibold text-slate-300">
+            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+              <span className="font-semibold text-slate-800 dark:text-slate-300">
                 Your Registered Complaints ({studentComplaints.length})
               </span>
               <button
                 onClick={() => onNavigate("/complaints")}
-                className="text-sky-400 hover:text-sky-300 inline-flex items-center gap-1 font-medium"
+                className="text-sky-600 dark:text-sky-400 hover:text-sky-700 dark:hover:text-sky-300 inline-flex items-center gap-1 font-medium"
               >
                 <span>View Full Details & Status</span>
                 <ExternalLink className="size-3" />
               </button>
             </div>
 
-            <div className="divide-y divide-slate-800 border border-slate-800 rounded-xl overflow-hidden bg-slate-950/50">
+            <div className="divide-y divide-slate-200 dark:divide-slate-800 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden bg-white dark:bg-slate-950/50">
               {studentComplaints.slice(0, 3).map((comp) => {
-                let badgeClass = "bg-amber-500/15 text-amber-300 border-amber-500/30";
-                if (comp.status === "investigating") badgeClass = "bg-sky-500/15 text-sky-300 border-sky-500/30";
-                else if (comp.status === "resolved") badgeClass = "bg-emerald-500/15 text-emerald-300 border-emerald-500/30";
-                else if (comp.status === "rejected") badgeClass = "bg-slate-700/50 text-slate-400 border-slate-600";
+                let badgeClass = "bg-amber-500/15 text-amber-600 dark:text-amber-300 border-amber-500/30";
+                if (comp.status === "investigating") badgeClass = "bg-sky-500/15 text-sky-600 dark:text-sky-300 border-sky-500/30";
+                else if (comp.status === "resolved") badgeClass = "bg-emerald-500/15 text-emerald-600 dark:text-emerald-300 border-emerald-500/30";
+                else if (comp.status === "rejected") badgeClass = "bg-slate-200 dark:bg-slate-700/50 text-slate-600 dark:text-slate-400 border-slate-300 dark:border-slate-600";
 
                 return (
                   <div
                     key={comp.id}
                     onClick={() => onNavigate("/complaints")}
-                    className="p-3 hover:bg-slate-800/40 cursor-pointer transition-colors flex items-center justify-between gap-3 text-xs"
+                    className="p-3 hover:bg-slate-50 dark:hover:bg-slate-800/40 cursor-pointer transition-colors flex items-center justify-between gap-3 text-xs"
                   >
                     <div className="space-y-0.5 min-w-0">
                       <div className="flex items-center gap-2">
-                        <span className="font-mono font-bold text-sky-400">{comp.id}</span>
+                        <span className="font-mono font-bold text-sky-600 dark:text-sky-400">{comp.id}</span>
                         {comp.standId && (
-                          <span className="font-mono text-slate-300 bg-slate-800 px-1.5 py-0.2 rounded text-[11px]">
+                          <span className="font-mono text-slate-700 dark:text-slate-300 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.2 rounded text-[11px]">
                             {comp.standId}
                           </span>
                         )}
-                        <span className="font-medium text-white truncate max-w-[200px] sm:max-w-xs">
+                        <span className="font-medium text-slate-900 dark:text-white truncate max-w-[200px] sm:max-w-xs">
                           {comp.title}
                         </span>
                       </div>
-                      <p className="text-[11px] text-slate-400 truncate">
+                      <p className="text-[11px] text-slate-500 dark:text-slate-400 truncate">
                         {comp.description}
                       </p>
                     </div>
@@ -552,7 +552,7 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
                       <span className={`text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border capitalize ${badgeClass}`}>
                         {comp.status}
                       </span>
-                      <ChevronRight className="size-4 text-slate-500" />
+                      <ChevronRight className="size-4 text-slate-400 dark:text-slate-500" />
                     </div>
                   </div>
                 );

@@ -223,27 +223,27 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6 pb-28 animate-fade-in text-slate-100">
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto space-y-6 pb-28 animate-fade-in text-slate-900 dark:text-slate-100">
       {/* Header bar */}
-      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-800">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
         <div className="flex items-center gap-3">
           <button
             onClick={() => onNavigate("/campus")}
-            className="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white transition-colors border border-slate-700"
+            className="p-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors border border-slate-300 dark:border-slate-700"
             title="Return to campus"
           >
             <ArrowLeft className="size-4" />
           </button>
           <div>
             <div className="flex items-center gap-2.5">
-              <h1 className="text-2xl font-black font-display text-white tracking-tight">
+              <h1 className="text-2xl font-black font-display text-slate-900 dark:text-white tracking-tight">
                 Admin Control Center
               </h1>
-              <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-purple-950/70 border border-purple-500/50 text-purple-300">
+              <span className="text-[11px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-md bg-purple-100 dark:bg-purple-950/70 border border-purple-300 dark:border-purple-500/50 text-purple-700 dark:text-purple-300">
                 Administrator
               </span>
             </div>
-            <p className="text-xs text-slate-400 mt-0.5">
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">
               Manage 150 campus bicycle stands, active sessions, student whitelists, and usage analytics
             </p>
           </div>
@@ -261,10 +261,10 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
             className={`flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold border shadow transition-all ${
               heatmapMode
                 ? "bg-gradient-to-r from-amber-500 to-rose-600 text-white border-rose-400 shadow-rose-900/40"
-                : "bg-slate-800 hover:bg-slate-700 text-slate-200 border-slate-700 hover:text-white"
+                : "bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 border-slate-300 dark:border-slate-700 hover:text-slate-900 dark:hover:text-white"
             }`}
           >
-            <Flame className="size-4 text-orange-400" />
+            <Flame className="size-4 text-orange-500 dark:text-orange-400" />
             <span>3D Heatmap {heatmapMode ? "ON" : "OFF"}</span>
           </button>
 
@@ -280,13 +280,13 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
       </div>
 
       {/* Admin Tab Switcher */}
-      <div className="flex items-center gap-2 border-b border-slate-800 pb-2">
+      <div className="flex items-center gap-2 border-b border-slate-200 dark:border-slate-800 pb-2">
         <button
           onClick={() => setActiveTab("analytics")}
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
             activeTab === "analytics"
               ? "bg-[#1d4ed8] text-white shadow-md"
-              : "bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800"
+              : "bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800"
           }`}
         >
           <BarChart3 className="size-4" />
@@ -298,7 +298,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
             activeTab === "stands"
               ? "bg-[#1d4ed8] text-white shadow-md"
-              : "bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800"
+              : "bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800"
           }`}
         >
           <Bike className="size-4" />
@@ -313,7 +313,7 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
             activeTab === "bulk-upload"
               ? "bg-[#1d4ed8] text-white shadow-md"
-              : "bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800"
+              : "bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800"
           }`}
         >
           <Upload className="size-4" />
@@ -325,10 +325,10 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
           className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all ${
             activeTab === "complaints"
               ? "bg-[#1d4ed8] text-white shadow-md"
-              : "bg-slate-900 text-slate-400 hover:text-white hover:bg-slate-800"
+              : "bg-slate-100 dark:bg-slate-900 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-800"
           }`}
         >
-          <AlertTriangle className="size-4 text-rose-400" />
+          <AlertTriangle className="size-4 text-rose-500 dark:text-rose-400" />
           <span>Complaints & Reports ({complaints.length})</span>
           {complaints.filter((c) => c.status === "pending").length > 0 && (
             <span className="px-1.5 py-0.2 rounded-full bg-rose-500 text-white text-[10px]">

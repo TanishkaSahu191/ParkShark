@@ -122,7 +122,7 @@ export const AppShellContent: React.FC = () => {
     isAdminRoute;
 
   return (
-    <div className="relative h-dvh w-full overflow-hidden bg-[#08162b] text-slate-100 select-none flex flex-col font-sans">
+    <div className="relative h-dvh w-full overflow-hidden bg-slate-100 dark:bg-[#08162b] text-slate-900 dark:text-slate-100 select-none flex flex-col font-sans transition-colors duration-200">
       {/* 
         Requirement 6: "The 3D canvas loads only after login."
         The Three.js / R3F Canvas is ONLY mounted when the student is authenticated.
@@ -169,7 +169,7 @@ export const AppShellContent: React.FC = () => {
 
       {/* 3. Frosted Glass Backdrop for Modal / Card Screens */}
       {hasOverlayBackdrop && (
-        <div className="absolute inset-0 z-15 bg-slate-950/50 backdrop-blur-md pointer-events-none transition-all duration-300" />
+        <div className="absolute inset-0 z-15 bg-slate-900/20 dark:bg-slate-950/50 backdrop-blur-md pointer-events-none transition-all duration-300" />
       )}
 
       {/* 4. App Top Header (sticky) */}
