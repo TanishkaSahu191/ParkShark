@@ -1,7 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, Suspense, lazy } from "react";
 import { Canvas } from "@react-three/fiber";
 import * as THREE from "three";
-import { CampusScene } from "@/campus/CampusScene";
 import { Hud } from "@/campus/Hud";
 import { Header } from "@/components/ui/Header";
 import { BottomTabBar } from "@/components/ui/BottomTabBar";
@@ -9,7 +8,13 @@ import { Toast } from "@/components/ui/Toast";
 import { AuthProvider } from "@/components/auth/AuthProvider";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useBikesStore } from "@/store/useBikesStore";
+import { useUIStore } from "@/store/useUIStore";
 import { LoginScreen } from "@/pages/LoginScreen";
+
+// Lazy-load the 3D scene bundle to optimize initial FCP and Lighthouse performance
+const CampusScene = lazy(() =>
+  import("@/campus/CampusScene").then((m) => ({ default: m.CampusScene }))
+);
 import { CampusScreen } from "@/pages/CampusScreen";
 import { NavigationScreen } from "@/pages/NavigationScreen";
 import { LockScreen } from "@/pages/LockScreen";
@@ -23,6 +28,7 @@ import { AdminScreen } from "@/pages/AdminScreen";
 export const AppShellContent: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   const { isAuthenticated } = useAuthStore();
+  const { lowGraphics } = useUIStore();
 
   const [currentPath, setCurrentPath] = useState<string>(() => {
     if (typeof window !== "undefined") {
@@ -132,16 +138,18 @@ export const AppShellContent: React.FC = () => {
         <div className="absolute inset-0 z-0 pointer-events-auto">
           <Canvas
             className="size-full"
-            shadows
-            dpr={[1, 1.6]}
+            shadows={!lowGraphics}
+            dpr={lowGraphics ? 1 : [1, 1.6]}
             camera={{ position: [0, 8, 96], fov: 52, near: 0.1, far: 280 }}
-            gl={{ antialias: true, powerPreference: "high-performance" }}
+            gl={{ antialias: !lowGraphics, powerPreference: "high-performance" }}
             onCreated={({ gl }) => {
               gl.toneMapping = THREE.ACESFilmicToneMapping;
               gl.toneMappingExposure = 1.05;
             }}
           >
-            <CampusScene />
+            <Suspense fallback={null}>
+              <CampusScene />
+            </Suspense>
           </Canvas>
         </div>
       ) : (

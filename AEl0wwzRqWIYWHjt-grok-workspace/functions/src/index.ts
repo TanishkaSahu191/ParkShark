@@ -9,6 +9,43 @@ if (!admin.apps.length) {
 export const db = admin.firestore();
 
 const QR_SECRET_KEY = "PARKSHARK_VIT_STAND_SECURE_TOKEN_2026";
+const STAND_ID_REGEX = /^AB[1-3]-(0[1-9]|[1-4][0-9]|50)$/;
+
+/**
+ * In-memory sliding window rate limiter for Cloud Functions callable requests
+ */
+const rateLimits = new Map<string, number[]>();
+
+export function checkRateLimit(key: string, maxCalls: number, windowMs: number): void {
+  const now = Date.now();
+  const timestamps = rateLimits.get(key) || [];
+  const validTimestamps = timestamps.filter((t) => now - t < windowMs);
+
+  if (validTimestamps.length >= maxCalls) {
+    const oldest = validTimestamps[0];
+    const waitSec = Math.ceil((windowMs - (now - oldest)) / 1000);
+    throw new HttpsError(
+      "resource-exhausted",
+      `Rate limit exceeded. Please wait ${waitSec}s before making another request.`
+    );
+  }
+
+  validTimestamps.push(now);
+  rateLimits.set(key, validTimestamps);
+}
+
+/**
+ * Firebase App Check enforcer helper
+ */
+export function verifyAppCheck(request: any): void {
+  const enforce = process.env.ENFORCE_APP_CHECK === "true";
+  if (enforce && !request.app) {
+    throw new HttpsError(
+      "unauthenticated",
+      "App Check verification failed. Request must originate from an authorized ParkShark client application."
+    );
+  }
+}
 
 /**
  * Token verification for stand QR codes
@@ -64,14 +101,20 @@ export interface LockBicycleRequest {
  * 8. Returns the session
  */
 export const lockBicycle = onCall({ cors: true }, async (request) => {
+  verifyAppCheck(request);
+
   const data = request.data as LockBicycleRequest;
   const { standId, token, hours, code } = data || {};
 
+  // Rate limiting per user / IP: 5 lock attempts per minute
+  const clientKey = request.auth?.uid || (request as any).rawRequest?.ip || data?.userId || "anonymous";
+  checkRateLimit(`lock_${clientKey}`, 5, 60000);
+
   // Validate parameters
-  if (!standId || typeof standId !== "string") {
-    throw new HttpsError("invalid-argument", "Missing or invalid standId");
+  if (!standId || typeof standId !== "string" || !STAND_ID_REGEX.test(standId)) {
+    throw new HttpsError("invalid-argument", "Missing or invalid standId format (must be AB1-01 to AB3-50)");
   }
-  if (!token || typeof token !== "string") {
+  if (!token || typeof token !== "string" || token.length < 5 || token.length > 120) {
     throw new HttpsError("invalid-argument", "Missing or invalid stand token");
   }
   if (![1, 2, 3].includes(hours)) {
@@ -197,10 +240,16 @@ export interface UnlockBicycleRequest {
  * 4. Returns exact success message: "Bicycle unlocked successfully! Stand <standId> is now available."
  */
 export const unlockBicycle = onCall({ cors: true }, async (request) => {
+  verifyAppCheck(request);
+
   const data = request.data as UnlockBicycleRequest;
   const { sessionId, code } = data || {};
 
-  if (!sessionId || typeof sessionId !== "string") {
+  // Rate limiting per user / IP: max 10 unlock attempts per minute
+  const clientKey = request.auth?.uid || (request as any).rawRequest?.ip || "anonymous";
+  checkRateLimit(`unlock_${clientKey}`, 10, 60000);
+
+  if (!sessionId || typeof sessionId !== "string" || sessionId.length < 3 || sessionId.length > 128) {
     throw new HttpsError("invalid-argument", "Missing or invalid sessionId");
   }
   if (!code || !/^\d{4}$/.test(code)) {

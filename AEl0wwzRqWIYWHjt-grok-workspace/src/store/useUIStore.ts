@@ -1,6 +1,7 @@
 import { create } from "zustand";
 
 const THEME_STORAGE_KEY = "parkshark_theme";
+const GRAPHICS_STORAGE_KEY = "parkshark_low_graphics";
 
 const getInitialTheme = (): "dark" | "light" => {
   if (typeof window === "undefined") return "dark";
@@ -13,6 +14,15 @@ const getInitialTheme = (): "dark" | "light" => {
     // ignore
   }
   return "dark";
+};
+
+const getInitialLowGraphics = (): boolean => {
+  if (typeof window === "undefined") return false;
+  try {
+    return localStorage.getItem(GRAPHICS_STORAGE_KEY) === "true";
+  } catch {
+    return false;
+  }
 };
 
 export const applyThemeToDom = (theme: "dark" | "light") => {
@@ -38,11 +48,13 @@ if (typeof window !== "undefined") {
 
 interface UIState {
   theme: "dark" | "light";
+  lowGraphics: boolean;
   activeTab: "campus" | "session" | "dashboard";
   navigatingStandId: string | null;
   toast: { message: string; type: "info" | "success" | "error" | "warning" } | null;
   showPlaces: boolean;
   toggleTheme: () => void;
+  toggleLowGraphics: () => void;
   setTheme: (theme: "dark" | "light") => void;
   setActiveTab: (tab: "campus" | "session" | "dashboard") => void;
   setNavigatingStandId: (id: string | null) => void;
@@ -53,10 +65,20 @@ interface UIState {
 
 export const useUIStore = create<UIState>((set) => ({
   theme: getInitialTheme(),
+  lowGraphics: getInitialLowGraphics(),
   activeTab: "campus",
   navigatingStandId: null,
   toast: null,
   showPlaces: false,
+
+  toggleLowGraphics: () =>
+    set((state) => {
+      const next = !state.lowGraphics;
+      try {
+        localStorage.setItem(GRAPHICS_STORAGE_KEY, String(next));
+      } catch {}
+      return { lowGraphics: next };
+    }),
 
   setShowPlaces: (val) =>
     set((state) => ({

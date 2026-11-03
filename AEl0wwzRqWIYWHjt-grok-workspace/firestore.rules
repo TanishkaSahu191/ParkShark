@@ -3,9 +3,12 @@ rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
     
-    // Helper functions
+    // ===============================================================
+    // Helper Functions & Role-Based Access Control
+    // ===============================================================
+    
     function isAuthenticated() {
-      return request.auth != null;
+      return request.auth != null && request.auth.uid != null;
     }
     
     function isOwner(userId) {
@@ -13,40 +16,106 @@ service cloud.firestore {
     }
     
     function isAdmin() {
-      return isAuthenticated() && 
-        (request.auth.token.role == 'admin' || 
-         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin');
+      return isAuthenticated() && (
+        request.auth.token.role == 'admin' ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin')
+      );
     }
 
-    // User profile documents:
-    // Students can read and update their own document.
+    function isValidComplaintCategory(category) {
+      return category in ['lock_jammed', 'rack_damaged', 'qr_unreadable', 'app_issue', 'billing_issue'];
+    }
+
+    function isValidComplaintPriority(priority) {
+      return priority in ['low', 'medium', 'high', 'urgent'];
+    }
+
+    // ===============================================================
+    // Collection Rules
+    // ===============================================================
+
+    // 1. User Profiles (/users/{userId})
     match /users/{userId} {
       allow read: if isAuthenticated() && (isOwner(userId) || isAdmin());
       allow create, update: if isAuthenticated() && (isOwner(userId) || isAdmin());
       allow delete: if isAdmin();
     }
 
-    // Bicycle parking stands:
-    // Anyone authenticated can read stands to see live availability in 3D scene / navigation.
-    // Only admins or backend Cloud Functions (admin SDK) can create/update stand status.
+    // 2. 150 Bicycle Parking Stands (/stands/{standId})
+    // Students can read real-time availability in 3D campus & navigation.
+    // Writes (locking, maintenance toggles) must go through Admin or Cloud Functions (Admin SDK).
     match /stands/{standId} {
       allow read: if isAuthenticated();
       allow write: if isAdmin();
     }
 
-    // Active & completed sessions:
-    // Users can read only their own sessions.
-    // Writes (locking, unlocking, expiring) must go through secure Cloud Functions (Admin SDK).
+    // 3. Active & Historical Parking Sessions (/sessions/{sessionId})
+    // Students can read only their own active/past sessions.
+    // Writes are strictly mediated through secure Cloud Functions (Admin SDK) to enforce atomic transactions.
     match /sessions/{sessionId} {
-      allow read: if isAuthenticated() && (resource.data.uid == request.auth.uid || isAdmin());
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid ||
+        resource.data.uid == request.auth.uid ||
+        isAdmin()
+      );
       allow write: if isAdmin();
     }
 
-    // Activity log:
-    // Users can read only their own activity history.
-    // Writes are made by Cloud Functions upon session events.
+    // 4. Audit & Activity Logs (/activity_logs/{logId} and /activity/{activityId})
+    match /activity_logs/{logId} {
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid ||
+        isAdmin()
+      );
+      allow write: if isAdmin();
+    }
+
     match /activity/{activityId} {
-      allow read: if isAuthenticated() && (resource.data.uid == request.auth.uid || isAdmin());
+      allow read: if isAuthenticated() && (
+        resource.data.userId == request.auth.uid ||
+        resource.data.uid == request.auth.uid ||
+        isAdmin()
+      );
+      allow write: if isAdmin();
+    }
+
+    // 5. Student Incident Reports & Complaints (/complaints/{ticketId})
+    match /complaints/{ticketId} {
+      // Students can view their own filed complaints; Admins can view all complaints.
+      allow read: if isAuthenticated() && (
+        resource.data.uid == request.auth.uid ||
+        resource.data.studentId == request.auth.uid ||
+        resource.data.studentId == request.auth.token.collegeId ||
+        isAdmin()
+      );
+      
+      // Validated complaint filing by authenticated students
+      allow create: if isAuthenticated() && (
+        request.resource.data.title is string &&
+        request.resource.data.title.size() >= 3 &&
+        request.resource.data.title.size() <= 120 &&
+        request.resource.data.description is string &&
+        request.resource.data.description.size() <= 1000 &&
+        isValidComplaintCategory(request.resource.data.category) &&
+        isValidComplaintPriority(request.resource.data.priority) &&
+        request.resource.data.status == 'pending'
+      );
+      
+      // Only admins or facilities technicians can update status and resolution notes
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    // 6. Pre-registered Student Whitelist (/preRegisteredStudents/{studentId})
+    match /preRegisteredStudents/{studentId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // 7. System Settings & Analytics Heatmaps (/system_settings/{settingId})
+    match /system_settings/{settingId} {
+      allow read: if isAuthenticated();
       allow write: if isAdmin();
     }
   }

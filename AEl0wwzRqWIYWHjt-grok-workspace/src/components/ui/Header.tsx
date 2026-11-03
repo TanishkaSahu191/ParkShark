@@ -1,5 +1,5 @@
 import React from "react";
-import { Moon, Sun, Bike, User, LogOut, QrCode, ShieldCheck, AlertTriangle } from "lucide-react";
+import { Moon, Sun, Bike, User, LogOut, QrCode, ShieldCheck, AlertTriangle, Zap } from "lucide-react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useUIStore } from "@/store/useUIStore";
 import { useSessionStore } from "@/store/useSessionStore";
@@ -10,7 +10,7 @@ interface HeaderProps {
 
 export const Header: React.FC<HeaderProps> = ({ onNavigateRoute }) => {
   const { user, isAuthenticated, logout } = useAuthStore();
-  const { theme, toggleTheme } = useUIStore();
+  const { theme, toggleTheme, lowGraphics, toggleLowGraphics } = useUIStore();
   const { activeSession } = useSessionStore();
 
   return (
@@ -93,6 +93,23 @@ export const Header: React.FC<HeaderProps> = ({ onNavigateRoute }) => {
               <span className="hidden sm:inline">Complaints</span>
             </button>
           )}
+
+          {/* Low Graphics / Performance Mode Toggle */}
+          <button
+            onClick={toggleLowGraphics}
+            title={lowGraphics ? "Low Graphics Mode: ON (High FPS, shadows disabled)" : "High Fidelity Mode (Full shadows & trees)"}
+            aria-label="Toggle Low Graphics mode for performance"
+            className={`p-2 rounded-xl transition-colors flex items-center gap-1 ${
+              lowGraphics
+                ? "bg-amber-100 dark:bg-amber-950/60 text-amber-700 dark:text-amber-300 border border-amber-300 dark:border-amber-700/60"
+                : "text-slate-500 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-white/10"
+            }`}
+          >
+            <Zap className={`size-4.5 ${lowGraphics ? "fill-amber-400 text-amber-500" : ""}`} />
+            <span className="hidden md:inline text-[10px] font-bold uppercase tracking-wider">
+              {lowGraphics ? "Low FX" : "High FX"}
+            </span>
+          </button>
 
           {/* Theme Toggle Button */}
           <button

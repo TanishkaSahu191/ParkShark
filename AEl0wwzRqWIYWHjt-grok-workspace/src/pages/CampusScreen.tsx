@@ -69,10 +69,10 @@ export const CampusScreen: React.FC<CampusScreenProps> = ({ onNavigate }) => {
     : null;
 
   return (
-    <div className="absolute inset-0 pointer-events-none z-10 flex flex-col justify-between p-4 pb-20 overflow-hidden">
-      {/* 1. Top HUD Overlay: Building Occupancy Chips with Free Counts (Requirement 4) */}
-      <div className="pointer-events-auto flex items-center justify-between gap-2 max-w-4xl mx-auto w-full">
-        <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+    <div className="absolute inset-0 pointer-events-none z-10 flex flex-col justify-between p-3 sm:p-4 pb-20 overflow-hidden">
+      {/* 1. Top HUD Overlay: Building Occupancy Chips with Free Counts (Requirement 4; offset cleanly on mobile below location chip) */}
+      <div className="pointer-events-auto flex items-center justify-center lg:justify-between gap-2 max-w-xl lg:max-w-4xl mx-auto w-full mt-16 lg:mt-0 flex-wrap sm:flex-nowrap">
+        <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap justify-center sm:justify-start">
           {(["AB1", "AB2", "AB3"] as const).map((code) => {
             const summary = buildingSummaries[code];
             const isFull = summary.available === 0;

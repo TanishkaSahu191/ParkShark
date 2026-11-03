@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { mat } from "./materials";
+import { useUIStore } from "@/store/useUIStore";
 import {
   BENCHES,
   DASHES,
@@ -104,10 +105,12 @@ function Markings() {
 }
 
 function Trees() {
+  const { lowGraphics } = useUIStore();
   const built = useMemo(() => {
-    const broad = TREES.filter((t) => t.kind !== 1);
-    const pines = TREES.filter((t) => t.kind === 1);
-    const trunks = TREES.filter((t) => t.kind !== 2);
+    const list = lowGraphics ? TREES.filter((_, idx) => idx % 2 === 0) : TREES;
+    const broad = list.filter((t) => t.kind !== 1);
+    const pines = list.filter((t) => t.kind === 1);
+    const trunks = list.filter((t) => t.kind !== 2);
     const trunkGeo = new THREE.CylinderGeometry(0.22, 0.3, 1, 6);
     const ballGeo = new THREE.SphereGeometry(1, 8, 7);
     const coneGeo = new THREE.ConeGeometry(1, 1, 8);
@@ -149,7 +152,7 @@ function Trees() {
       mesh.receiveShadow = true;
     }
     return { trunkMesh, ballMesh, coneMesh };
-  }, []);
+  }, [lowGraphics]);
   useEffect(
     () => () => {
       for (const mesh of [built.trunkMesh, built.ballMesh, built.coneMesh]) {
