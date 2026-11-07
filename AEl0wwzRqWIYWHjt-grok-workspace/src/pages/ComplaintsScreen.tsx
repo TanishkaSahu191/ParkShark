@@ -69,9 +69,13 @@ export const ComplaintsScreen: React.FC<ComplaintsScreenProps> = ({
   // Filter for My Complaints history
   const [statusFilter, setStatusFilter] = useState<"ALL" | ComplaintStatus>("ALL");
 
-  // Filter complaints belonging to the current user
-  const userComplaints = complaints.filter(
-    (c) => c.studentId.toLowerCase() === (user?.collegeId || "21BCE1042").toLowerCase()
+  // Filter complaints belonging to the current user (or all if admin)
+  const userComplaints = complaints.filter((c) =>
+    user?.role === "admin"
+      ? true
+      : user?.collegeId
+      ? c.studentId.toLowerCase() === user.collegeId.toLowerCase()
+      : false
   );
 
   const filteredHistory = userComplaints.filter((c) => {

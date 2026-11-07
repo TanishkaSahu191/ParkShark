@@ -39,8 +39,12 @@ export const DashboardScreen: React.FC<DashboardScreenProps> = ({ onNavigate }) 
   const { showToast } = useUIStore();
   const { complaints } = useComplaintStore();
 
-  const studentComplaints = complaints.filter(
-    (c) => c.studentId.toLowerCase() === (user?.collegeId || "21BCE1042").toLowerCase()
+  const studentComplaints = complaints.filter((c) =>
+    user?.role === "admin"
+      ? true
+      : user?.collegeId
+      ? c.studentId.toLowerCase() === user.collegeId.toLowerCase()
+      : false
   );
 
   // Live timer for current session card
