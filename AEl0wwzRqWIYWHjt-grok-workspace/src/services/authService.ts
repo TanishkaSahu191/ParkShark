@@ -31,6 +31,12 @@ export const PRE_REGISTERED_STUDENTS: Record<string, PreRegisteredStudent> = {
     phone: "+919876543210",
     role: "student",
   },
+  "21BCE1001": {
+    collegeId: "21BCE1001",
+    name: "Tanishka Sahu",
+    phone: "+919876543210",
+    role: "student",
+  },
   "+919876543211": {
     collegeId: "21BCE1088",
     name: "Priya Patel",
@@ -56,13 +62,19 @@ export const PRE_REGISTERED_STUDENTS: Record<string, PreRegisteredStudent> = {
     role: "student",
   },
   "+919876543299": {
-    collegeId: "ADMIN01",
+    collegeId: "ADMIN001",
     name: "Campus Security Admin",
     phone: "+919876543299",
     role: "admin",
   },
   "ADMIN01": {
-    collegeId: "ADMIN01",
+    collegeId: "ADMIN001",
+    name: "Campus Security Admin",
+    phone: "+919876543299",
+    role: "admin",
+  },
+  "ADMIN001": {
+    collegeId: "ADMIN001",
     name: "Campus Security Admin",
     phone: "+919876543299",
     role: "admin",

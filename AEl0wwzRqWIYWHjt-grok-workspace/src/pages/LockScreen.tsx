@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/Button";
 import { StatusPill } from "@/components/ui/StatusPill";
 import { useBikesStore } from "@/store/useBikesStore";
 import { useUIStore } from "@/store/useUIStore";
+import { useAuthStore } from "@/store/useAuthStore";
 import { callLockBicycle } from "@/services/lockService";
 import { parseAndVerifyQRPayload, generateStandToken } from "@/utils/qr";
 
@@ -27,6 +28,7 @@ interface LockScreenProps {
 }
 
 export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) => {
+  const { user } = useAuthStore();
   const { getStandById } = useBikesStore();
   const { showToast } = useUIStore();
 
@@ -258,7 +260,13 @@ export const LockScreen: React.FC<LockScreenProps> = ({ standId, onNavigate }) =
 
     try {
       const activeToken = scannedToken || generateStandToken(stand?.id || standId);
-      const res = await callLockBicycle(stand?.id || standId, activeToken, duration, pinCode);
+      const res = await callLockBicycle(
+        stand?.id || standId,
+        activeToken,
+        duration,
+        pinCode,
+        user?.uid || user?.collegeId || "student-user"
+      );
 
       if (res.success) {
         setLockSuccess(true);
