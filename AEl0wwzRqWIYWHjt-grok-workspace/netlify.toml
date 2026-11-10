@@ -1,0 +1,4 @@
+[build]
+  base = "AEl0wwzRqWIYWHjt-grok-workspace"
+  command = "npm run build"
+  publish = "dist"
