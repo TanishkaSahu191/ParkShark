@@ -190,10 +190,9 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({ onNavigate }) => {
       // 2. Sync / create users/{uid} in Firestore on first login
       const profile = await syncUserProfile(fbUser, matchedStudent);
 
-      // 3. Update store and transition
+      // 3. Update store and transition directly into the 3D campus
       setUser(profile);
-      showToast(`Welcome back, ${profile.name}! Tracing location...`, "success");
-      useBikesStore.getState().setShowLocationTracer(true);
+      showToast(`Welcome to VIT Bhopal Campus, ${profile.name}!`, "success");
       onNavigate("/campus");
     } catch (err: any) {
       console.error("[LoginScreen] verifyOtp error:", err);

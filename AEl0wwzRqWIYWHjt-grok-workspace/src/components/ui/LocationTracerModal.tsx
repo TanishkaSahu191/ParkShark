@@ -74,12 +74,12 @@ export const LocationTracerModal: React.FC<LocationTracerModalProps> = ({
       const nearest = getNearestAvailableStand(sim.x, sim.z);
       setNearestStandResult(nearest);
 
-      // Brief animation pause for high-tech satellite lock feel
+      // Smooth, responsive transition to located view
       setTimeout(() => {
         if (!isCancelled) {
           setStage("located");
         }
-      }, 950);
+      }, 250);
     };
 
     // Query browser geolocation API
@@ -96,7 +96,7 @@ export const LocationTracerModal: React.FC<LocationTracerModalProps> = ({
           // Graceful fallback to VIT Bhopal campus center coordinates
           completeLocationLock(23.0775, 76.8513, 10);
         },
-        { enableHighAccuracy: true, timeout: 2000, maximumAge: 30000 }
+        { enableHighAccuracy: false, timeout: 600, maximumAge: 30000 }
       );
     } else {
       completeLocationLock(23.0775, 76.8513, 10);
