@@ -1,7 +1,7 @@
 {
   "name": "ParkShark — Smart Bicycle Management System",
   "short_name": "ParkShark",
-  "description": "Smart Bicycle Management System & 3D Campus Explorer for VIT Vellore.",
+  "description": "Smart Bicycle Management System & 3D Campus Explorer for VIT Bhopal University.",
   "start_url": "/",
   "display": "standalone",
   "orientation": "any",

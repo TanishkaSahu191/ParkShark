@@ -34,7 +34,7 @@ export function createStandQRPayload(standId: string): string {
     v: 1,
     standId,
     token: generateStandToken(standId),
-    campus: "VIT-Vellore",
+    campus: "VIT-Bhopal",
   };
   return JSON.stringify(payload);
 }

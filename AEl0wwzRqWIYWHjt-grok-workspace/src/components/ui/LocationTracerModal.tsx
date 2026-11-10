@@ -43,8 +43,8 @@ export const LocationTracerModal: React.FC<LocationTracerModalProps> = ({
     accuracy: number;
     placeName: string;
   }>({
-    lat: 12.9692,
-    lng: 79.1559,
+    lat: 23.0775,
+    lng: 76.8513,
     accuracy: 8,
     placeName: sim.place || "Main Gate Entrance",
   });
@@ -93,13 +93,13 @@ export const LocationTracerModal: React.FC<LocationTracerModalProps> = ({
           );
         },
         () => {
-          // Graceful fallback to VIT Vellore campus center coordinates
-          completeLocationLock(12.9692, 79.1559, 10);
+          // Graceful fallback to VIT Bhopal campus center coordinates
+          completeLocationLock(23.0775, 76.8513, 10);
         },
         { enableHighAccuracy: true, timeout: 2000, maximumAge: 30000 }
       );
     } else {
-      completeLocationLock(12.9692, 79.1559, 10);
+      completeLocationLock(23.0775, 76.8513, 10);
     }
 
     return () => {
@@ -182,7 +182,7 @@ export const LocationTracerModal: React.FC<LocationTracerModalProps> = ({
                 Tracing Your Location...
               </h3>
               <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-xs mx-auto">
-                Connecting to campus GPS beacons and mapping your coordinates to VIT Vellore 3D ground.
+                Connecting to campus GPS beacons and mapping your coordinates to VIT Bhopal University 3D ground.
               </p>
             </div>
 

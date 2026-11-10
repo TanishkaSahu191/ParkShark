@@ -1,5 +1,5 @@
 #  ParkShark — Smart Bicycle Management & 3D Campus Explorer
-> **An intelligent, IoT-ready bicycle parking platform and 3D digital twin campus navigation system for VIT Vellore.**
+> **An intelligent, IoT-ready bicycle parking platform and 3D digital twin campus navigation system for VIT Bhopal University.**
 
 [![React 19](https://img.shields.io/badge/React-19.2.0-61dafb?style=flat-square&logo=react)](https://react.dev/)
 [![Three.js](https://img.shields.io/badge/Three.js-0.186-black?style=flat-square&logo=three.js)](https://threejs.org/)
@@ -13,7 +13,7 @@
 
 ##  The Story Behind ParkShark
 
-Every morning across the sprawling campus of VIT Vellore, thousands of students rush to academic blocks like SJT, TT, and MB on bicycles. Finding an open bicycle stand right before an 8:00 AM class is a chaotic scramble. Racks overflow, bicycles get locked onto trees or double-locked against other students' chains, and after class, locating where you parked among hundreds of identical cycles feels like searching for a needle in a haystack.
+Every morning across the sprawling 250-acre campus of VIT Bhopal University, thousands of students rush to academic blocks like AB 1, AB 2, and AB 3 on bicycles. Finding an open bicycle stand right before an 8:30 AM class is a chaotic scramble. Racks overflow, bicycles get parked randomly or double-locked, and after class, locating where you parked among hundreds of identical cycles feels like searching for a needle in a haystack.
 
 **ParkShark** was built to solve this exact problem from the ground up:
 
@@ -265,7 +265,7 @@ To make evaluation effortless without requiring live SMS delivery, ParkShark inc
 
 ## Contributing
 
-Contributions to improve campus sustainability and bicycle accessibility at VIT Vellore are welcome!
+Contributions to improve campus sustainability and bicycle accessibility at VIT Bhopal University are welcome!
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your Changes (`git commit -m "feat: add AmazingFeature"`)
@@ -281,5 +281,5 @@ Distributed under the **MIT License**. See `LICENSE` for more information.
 ---
 
 <div align="center">
-  <sub>Built  for the student community of <b>Vellore Institute of Technology</b>.</sub>
+  <sub>Built  for the student community of <b>VIT Bhopal University</b>.</sub>
 </div>

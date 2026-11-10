@@ -12,7 +12,7 @@ export const Route = createRootRoute({
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { title: APP_NAME },
-      { name: "description", content: "Smart Bicycle Management System & 3D Campus Explorer for VIT Vellore." },
+      { name: "description", content: "Smart Bicycle Management System & 3D Campus Explorer for VIT Bhopal University." },
       { name: "theme-color", content: "#0b2a4a" },
     ],
     links: [

@@ -45,21 +45,21 @@ def create_pptx():
             "tag": "EXECUTIVE PROJECT PRESENTATION",
             "title": "ParkShark: Smart Campus Micro-Mobility & IoT Bicycle Management System",
             "bullets": [
-                "Interactive 3D Digital Twin of the VIT Vellore Campus (Three.js / React Three Fiber)",
+                "Interactive 3D Digital Twin of the VIT Bhopal University Campus (Three.js / React Three Fiber)",
                 "Cryptographic QR Matrix Stand Verification & Salted 4-Digit PIN Locking (HMAC-SHA256)",
                 "Real-Time Occupancy Telemetry, Waypoint Ground Navigation & Centralized Admin Command Center",
                 "Presenter & Developer: Tanishka Sahu (GitHub: @TanishkaSahu191)",
-                "Institution: Vellore Institute of Technology (VIT), Vellore",
+                "Institution: VIT Bhopal University, Bhopal, Madhya Pradesh",
             ]
         },
         {
             "tag": "PROBLEM STATEMENT & CAMPUS CONTEXT",
-            "title": "The Micro-Mobility Challenge at VIT Vellore",
+            "title": "The Micro-Mobility Challenge at VIT Bhopal University",
             "bullets": [
-                "372+ Acres & 35,000+ Students: High daily bicycle dependency across academic blocks and hostels.",
+                "250+ Acres & 15,000+ Students: High daily bicycle dependency across academic blocks and hostels.",
                 "Chaotic Parking & Walkway Obstruction: Haphazard parking blocks fire escapes, ramps, and pathways.",
                 "Theft & Displacement: Standard mechanical locks offer zero security audit trails, resulting in lost or stolen bikes.",
-                "The 8:00 AM 'Blind Rack Hunt': Students waste 10-15 minutes searching for empty slots, causing lecture delays.",
+                "The 8:30 AM 'Blind Rack Hunt': Students waste 10-15 minutes searching for empty slots, causing lecture delays.",
                 "Administrative Blind Spot: Campus security has zero real-time visibility into rack capacity, broken hardware, or abandoned bikes."
             ]
         },
@@ -271,12 +271,12 @@ def create_pdf():
 
     # Title & Header
     story.append(Paragraph("PARKSHARK: SMART CAMPUS MICRO-MOBILITY & IOT BICYCLE MANAGEMENT SYSTEM", title_style))
-    story.append(Paragraph("Comprehensive Project Demonstration & Executive Technical Report | VIT Vellore", sub_style))
+    story.append(Paragraph("Comprehensive Project Demonstration & Executive Technical Report | VIT Bhopal University", sub_style))
     story.append(HRFlowable(width="100%", thickness=2, color=colors.HexColor('#00C2CB'), spaceAfter=10))
 
     # Project Metadata Table
     meta_data = [
-        [Paragraph("<b>Project:</b> ParkShark IoT Smart Rack Platform", body_style), Paragraph("<b>Institution:</b> VIT Vellore (372 Acres)", body_style)],
+        [Paragraph("<b>Project:</b> ParkShark IoT Smart Rack Platform", body_style), Paragraph("<b>Institution:</b> VIT Bhopal University (250 Acres)", body_style)],
         [Paragraph("<b>Author / Lead:</b> Tanishka Sahu (21BCE1001)", body_style), Paragraph("<b>Tech Stack:</b> React 19, Three.js, Cloud Functions, Firestore", body_style)],
         [Paragraph("<b>GitHub:</b> github.com/TanishkaSahu191/ParkShark", body_style), Paragraph("<b>Automated Tests:</b> 105 passing (100% pass rate)", body_style)],
     ]
@@ -294,14 +294,14 @@ def create_pdf():
     # 1. Problem Statement
     story.append(Paragraph("1. Problem Statement & Campus Motivation", h2_style))
     story.append(Paragraph(
-        "With over 35,000 students across 372 acres, bicycle commute is essential at VIT Vellore. However, during morning peak class hours (8:00–9:00 AM), intense rack shortages lead to chaotic parking that blocks fire escape doors, wheelchair ramps, and walkways. Mechanical locks suffer rampant clipping and zero theft accountability. Students waste 10–15 minutes hunting for racks, while security administrators lack data on slot utilization and maintenance.",
+        "With over 15,000 students across 250 acres, bicycle commute is essential at VIT Bhopal University. However, during morning peak class hours (8:30–9:00 AM), intense rack shortages lead to chaotic parking that blocks fire escape doors, wheelchair ramps, and walkways. Mechanical locks suffer rampant clipping and zero theft accountability. Students waste 10–15 minutes hunting for racks, while security administrators lack data on slot utilization and maintenance.",
         body_style
     ))
 
     # 2. The ParkShark Solution
     story.append(Paragraph("2. The ParkShark Solution Architecture", h2_style))
     story.append(Paragraph(
-        "ParkShark unifies physical IoT racks with an interactive 3D digital twin of the VIT campus. Key capabilities include:",
+        "ParkShark unifies physical IoT racks with an interactive 3D digital twin of the VIT Bhopal campus. Key capabilities include:",
         body_style
     ))
     story.append(Paragraph("• <b>3D Digital Twin Engine:</b> Accurate 1:1 scale (1 unit = 1.0 m) mapping of Academic Blocks AB1, AB2, and AB3 with 150 smart racks and live availability status.", bullet_style))

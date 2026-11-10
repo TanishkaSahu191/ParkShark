@@ -279,9 +279,9 @@ function Gate() {
       <mesh position={[9.2, 2.85, -1.2]} material={colored("#4e6274")}>
         <boxGeometry args={[3.4, 0.28, 3.1]} />
       </mesh>
-      <Sign title="VIT VELLORE" subtitle="Main Gate" position={[0, 6.55, 0.85]} width={8.5} />
+      <Sign title="VIT BHOPAL" subtitle="Main Gate" position={[0, 6.55, 0.85]} width={8.5} />
       <Sign
-        title="VIT VELLORE"
+        title="VIT BHOPAL"
         subtitle="Main Gate"
         position={[0, 6.55, -0.85]}
         yaw={Math.PI}
