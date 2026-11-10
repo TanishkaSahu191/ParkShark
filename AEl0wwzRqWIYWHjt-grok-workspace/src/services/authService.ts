@@ -8,6 +8,7 @@ import {
 import { doc, getDoc, setDoc } from "firebase/firestore";
 import { auth, db } from "./firebase";
 import type { UserProfile } from "@/store/useAuthStore";
+import students1000 from "@/data/students_1000.json";
 
 // Pre-registered college registry (fallback & seed data for college admin whitelist)
 export interface PreRegisteredStudent {
@@ -80,6 +81,14 @@ export const PRE_REGISTERED_STUDENTS: Record<string, PreRegisteredStudent> = {
     role: "admin",
   },
 };
+
+// Seed 1,000 pre-registered students into registry
+if (Array.isArray(students1000)) {
+  for (const s of students1000 as PreRegisteredStudent[]) {
+    PRE_REGISTERED_STUDENTS[s.collegeId.toUpperCase()] = s;
+    PRE_REGISTERED_STUDENTS[s.phone] = s;
+  }
+}
 
 /**
  * Format any entered 10-digit phone or +91 phone into E.164 (+91XXXXXXXXXX)

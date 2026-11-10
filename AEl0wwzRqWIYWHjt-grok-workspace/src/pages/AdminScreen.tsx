@@ -771,14 +771,25 @@ export const AdminScreen: React.FC<AdminScreenProps> = ({ onNavigate }) => {
                 </p>
               </div>
 
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={handleDownloadSample}
-                leftIcon={<Download className="size-3.5" />}
-              >
-                Download CSV Template
-              </Button>
+              <div className="flex flex-wrap items-center gap-2">
+                <a
+                  href="/students_1000_whitelist.csv"
+                  download="students_1000_whitelist.csv"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl border border-sky-400/40 bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 hover:bg-sky-100 dark:hover:bg-sky-900/50 text-xs font-semibold shadow-sm transition-colors"
+                  title="Download the full verified dataset of 1,000 pre-registered VIT students"
+                >
+                  <Download className="size-3.5" />
+                  <span>Download 1,000 Students CSV</span>
+                </a>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  onClick={handleDownloadSample}
+                  leftIcon={<Download className="size-3.5" />}
+                >
+                  Download CSV Template
+                </Button>
+              </div>
             </div>
 
             {/* Upload Area / Textarea */}
