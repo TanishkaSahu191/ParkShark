@@ -1,8 +1,9 @@
 import React, { useState, useMemo } from "react";
-import { Printer, QrCode, Search, Copy, Check, ExternalLink, ArrowLeft, ShieldCheck } from "lucide-react";
+import { Printer, QrCode, Search, Copy, Check, ExternalLink, ArrowLeft, ShieldCheck, AlertTriangle } from "lucide-react";
 import { Card } from "@/components/ui/Card";
 import { Button } from "@/components/ui/Button";
 import { QrCodeSvg } from "@/components/ui/QrCodeSvg";
+import { useAuthStore } from "@/store/useAuthStore";
 import { useBikesStore } from "@/store/useBikesStore";
 import { useUIStore } from "@/store/useUIStore";
 import { createStandQRPayload, generateStandToken } from "@/utils/qr";
@@ -12,12 +13,53 @@ interface AdminQrCodesScreenProps {
 }
 
 export const AdminQrCodesScreen: React.FC<AdminQrCodesScreenProps> = ({ onNavigate }) => {
+  const { user, setUser } = useAuthStore();
   const { stands } = useBikesStore();
   const { showToast } = useUIStore();
 
   const [selectedBuilding, setSelectedBuilding] = useState<"ALL" | "AB1" | "AB2" | "AB3">("ALL");
   const [searchQuery, setSearchQuery] = useState("");
   const [copiedId, setCopiedId] = useState<string | null>(null);
+
+  // Access Guard: only enabled for administrators
+  if (user?.role !== "admin") {
+    return (
+      <div className="relative min-h-[calc(100vh-3.5rem)] flex items-center justify-center p-4 pb-24 animate-fade-in text-slate-100">
+        <Card className="max-w-md w-full p-8 text-center bg-slate-900 border-rose-500/30 shadow-2xl space-y-4">
+          <div className="size-16 rounded-2xl bg-rose-500/10 text-rose-400 flex items-center justify-center mx-auto">
+            <AlertTriangle className="size-8" />
+          </div>
+          <div>
+            <h2 className="text-2xl font-bold font-display text-white">
+              Admin Access Restricted
+            </h2>
+            <p className="text-sm text-slate-400 mt-2">
+              The Stand QR Codes Printing Utility is restricted to campus administrators and facility staff. Current role: <span className="font-semibold uppercase text-sky-400">{user?.role || "guest"}</span>.
+            </p>
+          </div>
+          <div className="pt-2 space-y-2">
+            <Button
+              fullWidth
+              variant="primary"
+              onClick={() => {
+                if (user) {
+                  setUser({ ...user, role: "admin" });
+                  showToast("Switched to Campus Administrator role", "success");
+                }
+              }}
+              leftIcon={<ShieldCheck className="size-4" />}
+              className="bg-purple-600 hover:bg-purple-500"
+            >
+              Switch to Admin Role (Demo Mode)
+            </Button>
+            <Button fullWidth variant="ghost" onClick={() => onNavigate("/dashboard")}>
+              Return to Student Dashboard
+            </Button>
+          </div>
+        </Card>
+      </div>
+    );
+  }
 
   // Filter stands
   const filteredStands = useMemo(() => {

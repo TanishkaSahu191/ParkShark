@@ -56,30 +56,29 @@ export const Header: React.FC<HeaderProps> = ({ onNavigateRoute }) => {
             </button>
           )}
 
-          {/* Admin Portal Link */}
-          <button
-            onClick={() => onNavigateRoute?.("/admin")}
-            title={user?.role === "admin" ? "Admin Control Center" : "Admin Portal"}
-            aria-label="Admin Control Center"
-            className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold transition-colors ${
-              user?.role === "admin"
-                ? "bg-purple-100 dark:bg-purple-950/60 border border-purple-300 dark:border-purple-500/50 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/60"
-                : "bg-slate-100 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200 dark:hover:bg-slate-700"
-            }`}
-          >
-            <ShieldCheck className="size-4 text-purple-600 dark:text-purple-400" />
-            <span className="hidden sm:inline">Admin</span>
-          </button>
+          {/* Admin Portal & QR Codes Links (Restricted to Campus Administrators) */}
+          {user?.role === "admin" && (
+            <>
+              <button
+                onClick={() => onNavigateRoute?.("/admin")}
+                title="Admin Control Center"
+                aria-label="Admin Control Center"
+                className="flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-semibold bg-purple-100 dark:bg-purple-950/60 border border-purple-300 dark:border-purple-500/50 text-purple-700 dark:text-purple-300 hover:bg-purple-200 dark:hover:bg-purple-900/60 transition-colors"
+              >
+                <ShieldCheck className="size-4 text-purple-600 dark:text-purple-400" />
+                <span className="hidden sm:inline">Admin</span>
+              </button>
 
-          {/* Admin QR Codes Link */}
-          <button
-            onClick={() => onNavigateRoute?.("/admin/qrcodes")}
-            title="Print Stand QR Codes"
-            aria-label="Print Stand QR Codes"
-            className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-300 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
-          >
-            <QrCode className="size-4.5" />
-          </button>
+              <button
+                onClick={() => onNavigateRoute?.("/admin/qrcodes")}
+                title="Print Stand QR Codes"
+                aria-label="Print Stand QR Codes"
+                className="p-2 rounded-xl text-slate-600 dark:text-slate-300 hover:text-sky-600 dark:hover:text-sky-300 hover:bg-slate-100 dark:hover:bg-white/10 transition-colors"
+              >
+                <QrCode className="size-4.5" />
+              </button>
+            </>
+          )}
 
           {/* Complaints / Report Issue Link */}
           {isAuthenticated && (
